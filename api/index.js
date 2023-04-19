@@ -6,6 +6,7 @@ import cors from "cors";
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
+import gigsRoutes from "./routes/gig.route.js;"
 
 const app = express();
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true}));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/gigs", gigsRoutes);
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
