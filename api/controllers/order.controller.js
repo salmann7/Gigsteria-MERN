@@ -30,3 +30,31 @@ export const intent = async (req, res, next) => {
     res.status(200),send({ clientSecret: paymentIntent.client_secret})
 }
 
+export const getOrders = async (req, res, next) => {
+    try {
+        const orders = await orderModel.find({
+            ...(req.sellerId ? {sellerId: req.userId} : {buyerId: req.userId}),
+            isCompleted: true,  
+        });
+
+        res.status(200).send(orders);
+    } catch(err) {
+        next(err);    
+    }
+}
+
+export const confirm = async (req, res, next) => {
+    try {
+        const order = await orderModel.findOneAndUpdate({
+            payment_intent: req.body.payment_intent,
+        },{
+            $set: {
+                isCompleted: true,
+            }
+        });
+
+        res.status(200).send("order has been confirmed");
+    } catch(err) {
+        next(err);
+    }
+}
