@@ -2,11 +2,17 @@
 import './App.css'
 
 import Navbar from './components/navbar/Navbar'
+import HeroFeature from './components/heroFeature/HeroFeature'
 
 function App() {
 
   return (
-    <Navbar />
+    <>
+      <Navbar />
+      <div className="">
+        <HeroFeature />
+      </div>
+    </>
   )
 }
 
