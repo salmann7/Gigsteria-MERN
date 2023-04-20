@@ -4,7 +4,7 @@ import Container from '../container/Container'
 const HeroFeature = () => {
   return (
     <Container>
-        <div className="flex flex-row items-center pt-[150px] gap-10 justify-between">
+        <div className="flex flex-row items-center pt-[130px] gap-10 justify-between pb-14">
             <div className="flex flex-col gap-10">
                 <h1 className=' leading-relaxed font-light text-neutral-600 text-4xl'><span className='text-blue-600 font-normal'>Find</span> the perfect <span className='line-through'>freelancer</span> <span className='text-green-600 italic font-extrabold'>Gig</span>ster for your project, or offer your own services and start <span className='text-blue-600 font-normal'>earning</span> today with our platform.</h1>
                 <div className="flex flex-row gap-4">
