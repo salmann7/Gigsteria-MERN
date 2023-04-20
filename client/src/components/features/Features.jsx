@@ -11,7 +11,8 @@ const Features = () => {
   return (
     <div className='bg-green-50'>
       <Container>
-        <div className="flex flex-wrap items-center justify-center gap-9 py-20">
+        <div className="text-center text-4xl font-bold text-neutral-700 pt-10">Why Choose Us?</div>
+        <div className="flex flex-wrap items-center justify-center gap-9 py-10">
             <FeatureCard title="Powerful Search" desc="Search and connect with top-rated freelancers in your industry easily." icon={BiSearch} color="blue" />
             <FeatureCard title="Secure Messaging System" desc="Collaborate effectively with secure freelancer messaging for optimal results." icon={AiOutlineMessage} color="purple" />
             <FeatureCard title="Reliable Payment System" desc="Only pay for quality work with our secure payment system." icon={MdPayment} color="red" />
