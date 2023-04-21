@@ -7,11 +7,15 @@ import Features from './components/features/Features'
 import CallToAction from './components/callToAction/CallToAction'
 import Comments from './components/comments/Comments'
 import Footer from './components/footer/Footer'
+import RegisterModal from './components/modals/RegisterModal'
+import LoginModal from './components/modals/LoginModal'
 
 function App() {
 
   return (
     <>
+      <LoginModal />
+      <RegisterModal />
       <Navbar />
       <HeroFeature />
       <hr />
