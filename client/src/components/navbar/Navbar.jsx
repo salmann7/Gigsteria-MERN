@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
 import { BiSearch } from 'react-icons/bi';
 
@@ -6,6 +6,12 @@ import Container from '../container/Container'
 import Avatar from '../avatar/Avatar';
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = useCallback(() => {
+    setIsOpen((value) => (!value))
+  },[]);
+  
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
         <div className="border-b-[1px] py-4">
@@ -36,13 +42,21 @@ const Navbar = () => {
                       Upload Gig
                     </div>
                   </li>
-                  <li>
-                    <div className="border-[1px] rounded-full p-4 md:py-2 md:px-2 border-x-neutral-200 flex flex-row items-center gap-3 cursor-pointer hover:shadow-md transition">
+                  <li className='relative'>
+                    <div onClick={toggleOpen} className="border-[1px] rounded-full p-4 md:py-2 md:px-2 border-x-neutral-200 flex flex-row items-center gap-3 cursor-pointer hover:shadow-md transition">
                         <AiOutlineMenu />
                         <div className="hidden md:block">
                             <Avatar />
                         </div>
                     </div>
+                    {isOpen && (
+                  <div className="absolute bg-white rounded-xl shadow-md w-[150px] overflow-hidden right-0 top-12 text-sm font-semibold">
+                    <div className="flex flex-col cursor-pointer">
+                      <div className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div>
+                      <div className="p-4 hover:bg-neutral-50 transition">Login</div>
+                    </div>
+                  </div>
+                )}
                   </li>
                 </ul>
               </div>
