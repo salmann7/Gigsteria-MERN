@@ -12,7 +12,7 @@ import Button from '../buttton/Button'
 import Heading from '../heading/Heading'
 import Input from '../inputs/Input'
 
-const RegisterModal = () => {
+const LoginModal = () => {
     const [isLoading, setIsLoading] = useState(false);
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
@@ -29,7 +29,7 @@ const RegisterModal = () => {
         axios.post('/', data)
         .then(() => {
             toast.success('Registered.');
-            registerModal.onClose();
+            loginModal.onClose();
         })
         .catch((error) => {
             toast.error(error);
@@ -40,15 +40,14 @@ const RegisterModal = () => {
     }
 
     const onToggle = useCallback(() => {
-        registerModal.onClose();
-        loginModal.onOpen();
+        loginModal.onClose();
+        registerModal.onOpen();
     },[registerModal, loginModal]);
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
-            <Heading title="Welcome to Gigsteria" subtitle="Create an account" />
+            <Heading title="Welcome back" subtitle="Login to your account!" />
             <Input id='email' label='Email' disabled={isLoading} register={register} errors={errors} required />
-            <Input id='name' label='Name' disabled={isLoading} register={register} errors={errors} required />
             <Input id='password' label='Password' disabled={isLoading} register={register} errors={errors} required />
         </div>
     )
@@ -59,8 +58,8 @@ const RegisterModal = () => {
             <Button outline label="Continue with Google" icon={FcGoogle} onClick={() => ({})} />
             <Button outline label="Continue with Github" icon={AiFillGithub} onClick={() => ({})} />
             <div className="text-neutral-500 text-center mt-4 font-light">
-                <p>Already have an account?
-                    <span onClick={onToggle} className='text-neutral-800 cursor-pointer hover:underline'>Log in</span>
+                <p>First time using Gigsteria?
+                    <span onClick={onToggle} className='text-neutral-800 cursor-pointer hover:underline'>Create an account</span>
                 </p>
             </div>
         </div>
@@ -68,10 +67,10 @@ const RegisterModal = () => {
   return (
     <Modal 
       disabled={isLoading}
-      isOpen={registerModal.isOpen}
-      title='Register'
+      isOpen={loginModal.isOpen}
+      title='Login'
       actionLabel="Continue"
-      onClose={registerModal.onClose}
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -79,4 +78,4 @@ const RegisterModal = () => {
   )
 }
 
-export default RegisterModal
+export default LoginModal

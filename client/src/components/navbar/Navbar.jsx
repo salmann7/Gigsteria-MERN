@@ -5,19 +5,23 @@ import { BiSearch } from 'react-icons/bi';
 import Container from '../container/Container'
 import Avatar from '../avatar/Avatar';
 import useRegisterModal from '../../hooks/useRegisterModal';
+import useLoginModal from '../../hooks/useLoginModal';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => (!value))
   },[]);
   
-  const  handleSignup = () => {
-    console.log("click sigup");
+  const handleSignup = () => {
     registerModal.onOpen();
-    console.log(registerModal.isOpen);
+  }
+
+  const handleLogin = () => {
+    loginModal.onOpen();
   }
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
@@ -60,7 +64,7 @@ const Navbar = () => {
                   <div className="absolute bg-white rounded-xl shadow-md w-[150px] overflow-hidden right-0 top-12 text-sm font-semibold">
                     <div className="flex flex-col cursor-pointer">
                       <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div>
-                      <div className="p-4 hover:bg-neutral-50 transition">Login</div>
+                      <div onClick={handleLogin} className="p-4 hover:bg-neutral-50 transition">Login</div>
                     </div>
                   </div>
                 )}
