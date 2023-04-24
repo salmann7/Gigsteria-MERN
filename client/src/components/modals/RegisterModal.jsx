@@ -26,10 +26,11 @@ const RegisterModal = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        axios.post('/', data)
+        axios.post('http://localhost:8800/api/user/register', data)
         .then(() => {
             toast.success('Registered.');
             registerModal.onClose();
+            loginModal.onOpen();
         })
         .catch((error) => {
             toast.error(error);
