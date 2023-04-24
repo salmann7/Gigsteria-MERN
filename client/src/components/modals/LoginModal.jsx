@@ -18,7 +18,6 @@ const LoginModal = () => {
     const loginModal = useLoginModal();
     const { register, handleSubmit, formState: {errors,},} = useForm({
         defaultValues: {
-            name: '',
             email: '',
             password: ''
         },
@@ -26,9 +25,9 @@ const LoginModal = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        axios.post('/', data)
+        axios.post('http://localhost:8800/api/auth/login', data)
         .then(() => {
-            toast.success('Registered.');
+            toast.success('Logged in.');
             loginModal.onClose();
         })
         .catch((error) => {
