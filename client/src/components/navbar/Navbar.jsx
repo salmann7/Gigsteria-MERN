@@ -1,13 +1,16 @@
 import React, { useCallback, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
 import { BiSearch } from 'react-icons/bi';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import Container from '../container/Container'
 import Avatar from '../avatar/Avatar';
 import useRegisterModal from '../../hooks/useRegisterModal';
 import useLoginModal from '../../hooks/useLoginModal';
 
-const Navbar = () => {
+const Navbar = ({currentUser}) => {
+  console.log(currentUser);
   const [isOpen, setIsOpen] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
@@ -23,6 +26,14 @@ const Navbar = () => {
   const handleLogin = () => {
     loginModal.onOpen();
   }
+
+  const handleLogout = async () => {
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
+    await axios.post("http://localhost:8800/api/auth/logout");
+    window.location.reload();
+  }
+
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
         <div className="border-b-[1px] py-4">
@@ -62,10 +73,18 @@ const Navbar = () => {
                     </div>
                     {isOpen && (
                   <div className="absolute bg-white rounded-xl shadow-md w-[150px] overflow-hidden right-0 top-12 text-sm font-semibold">
-                    <div className="flex flex-col cursor-pointer">
+                    {currentUser ? (
+                      <div className="flex flex-col cursor-pointer">
+                      {/* <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div> */}
+                      <div onClick={handleLogout} className="p-4 hover:bg-neutral-50 transition">Logout</div>
+                    </div>
+                    ) : (
+                      <div className="flex flex-col cursor-pointer">
                       <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div>
                       <div onClick={handleLogin} className="p-4 hover:bg-neutral-50 transition">Login</div>
                     </div>
+                    )}
+                    
                   </div>
                 )}
                   </li>

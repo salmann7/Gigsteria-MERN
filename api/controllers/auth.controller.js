@@ -94,5 +94,7 @@ export const getUserSessionHandler = async ( req, res, next) => {
 }
 
 export const logout = async (req, res, next) => {
-    res.clearCookie("accessToken", { sameSite: "none", secure: true}).status(200).send("User has been logged out");
+    res.clearCookie("refreshToken", { sameSite: "none", secure: true})
+    res.clearCookie("accessToken", { sameSite: "none", secure: true})
+    res.status(200).send("User has been logged out");
 }

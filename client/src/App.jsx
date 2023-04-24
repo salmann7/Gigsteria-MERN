@@ -26,7 +26,9 @@ function App() {
     }; 
     console.log(accessToken)
     return axios.get("http://localhost:8800/api/auth/me", config)
-    .then((res) => console.log(res.data._doc))
+    .then((res) => {
+      setCurrentUser(res.data._doc);
+      console.log(res.data._doc)})
     .catch(e => console.log(e))
   }
 
@@ -38,7 +40,7 @@ function App() {
     <>
       <LoginModal />
       <RegisterModal />
-      <Navbar />
+      <Navbar currentUser={currentUser} />
       <HeroFeature />
       <hr />
       <Features />
