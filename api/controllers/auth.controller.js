@@ -40,7 +40,7 @@ export const login = async (req, res, next) => {
 
         if(!user) return next(createError(401, "Invalid email or password"));
 
-        const isCorrectPassword = await bcrypt.compare(req.body.password, user.password);
+        const isCorrectPassword = bcrypt.compare(req.body.password, user.password);
 
         console.log(isCorrectPassword)
 
@@ -83,6 +83,14 @@ export const login = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+}
+
+export const getUserSessionHandler = async ( req, res, next) => {
+    const userId = res.locals.user._id;
+
+    const sessions = await sessionModel.findOne({ user: userId, valid: true});
+
+    return res.send(sessions);
 }
 
 export const logout = async (req, res, next) => {

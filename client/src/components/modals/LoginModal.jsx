@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import React, { useCallback, useState } from 'react'
@@ -26,7 +27,11 @@ const LoginModal = () => {
     const onSubmit = (data) => {
         setIsLoading(true);
         axios.post('http://localhost:8800/api/auth/login', data)
-        .then(() => {
+        .then(( res ) => {
+            console.log('Setting cookies...');
+            Cookies.set('accessToken', res.data.accessToken);
+            Cookies.set('refreshToken', res.data.refreshToken);
+            console.log(Cookies.get());
             toast.success('Logged in.');
             loginModal.onClose();
         })

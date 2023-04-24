@@ -22,6 +22,10 @@ export const register = async (req, res, next) => {
     }
 }
 
+export const getCurrentUser = async ( req, res, next ) => {
+    return res.send(res.locals.user);
+}
+
 export const getUser = async (req, res, next) => {
     try {
         const user = await userModel.findById(req.params.id);
