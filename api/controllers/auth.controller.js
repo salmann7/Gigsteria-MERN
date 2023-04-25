@@ -38,11 +38,11 @@ const refreshTokenCookieOptions = {
 
 export const login = async (req, res, next) => {
     try {
-        const user = await userModel.findOne({username: req.body.username});
+        const user = await userModel.findOne({email: req.body.email});
 
         if(!user) return next(createError(401, "Invalid email or password"));
 
-        const isCorrectPassword = bcrypt.compare(req.body.password, user.password);
+        const isCorrectPassword = bcrypt.compareSync(req.body.password, user.password);
 
         console.log(isCorrectPassword)
 
@@ -165,6 +165,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
             }
         );
 
+        console.log(user);
         const session = await sessionModel.create({ user: user._id, userAgent: req.get("user-agent") || ''});
 
         const accessToken = jwt.sign(
@@ -192,7 +193,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
 
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-        res.redirect("http://localhost:3000")
+        res.redirect("http://localhost:3000/dashboard")
 
     } catch(e) {
         next(e)

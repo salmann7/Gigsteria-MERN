@@ -31,7 +31,7 @@ const Navbar = ({currentUser}) => {
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
     await axios.post("http://localhost:8800/api/auth/logout");
-    window.location.reload();
+    window.location.href = '/';
   }
 
   return (

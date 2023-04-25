@@ -2,6 +2,7 @@
 import './App.css'
 import axios from 'axios'
 import Cookies from 'js-cookie';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from './components/navbar/Navbar'
 import HeroFeature from './components/heroFeature/HeroFeature'
@@ -12,6 +13,8 @@ import Footer from './components/footer/Footer'
 import RegisterModal from './components/modals/RegisterModal'
 import LoginModal from './components/modals/LoginModal'
 import { useEffect, useState } from 'react'
+import LandingPage from './components/landingPage/LandingPage';
+import Dashboard from './components/dashboard/Dashboard';
 
 function App() {
 
@@ -38,18 +41,19 @@ function App() {
 
   return (
     <>
+    <BrowserRouter>
       <LoginModal />
       <RegisterModal />
       <Navbar currentUser={currentUser} />
-      <HeroFeature />
-      <hr />
-      <Features />
-      <hr />
-      <CallToAction />
-      <hr />
-      <Comments />
+
+      <Routes>
+        <Route exact path='/' element={<LandingPage />} />
+        <Route exact path='/dashboard' element={<Dashboard />} />
+      </Routes>
+      
       <hr />
       <Footer />
+    </BrowserRouter>
     </>
   )
 }
