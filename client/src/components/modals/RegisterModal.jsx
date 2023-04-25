@@ -11,6 +11,7 @@ import Modal from './Modal';
 import Button from '../buttton/Button'
 import Heading from '../heading/Heading'
 import Input from '../inputs/Input'
+import getGoogleUrl from '../../utils/getGoogleUrl';
 
 const RegisterModal = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +46,13 @@ const RegisterModal = () => {
         loginModal.onOpen();
     },[registerModal, loginModal]);
 
+    const handleGoogleLogin = async () => {
+        console.log("here")
+        const url = getGoogleUrl();
+        console.log(url)
+        window.location.href = url;
+    }
+
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Heading title="Welcome to Gigsteria" subtitle="Create an account" />
@@ -57,7 +65,7 @@ const RegisterModal = () => {
     const footerContent = (
         <div className="flex gap-4 flex-col mt-3">
             <hr />
-            <Button outline label="Continue with Google" icon={FcGoogle} onClick={() => ({})} />
+            <Button outline label="Continue with Google" icon={FcGoogle} onClick={handleGoogleLogin} />
             <Button outline label="Continue with Github" icon={AiFillGithub} onClick={() => ({})} />
             <div className="text-neutral-500 text-center mt-4 font-light">
                 <p>Already have an account?
