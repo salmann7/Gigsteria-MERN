@@ -8,12 +8,14 @@ import Container from '../container/Container'
 import Avatar from '../avatar/Avatar';
 import useRegisterModal from '../../hooks/useRegisterModal';
 import useLoginModal from '../../hooks/useLoginModal';
+import useUploadGigModal from '../../hooks/useUploadGigModal';
 
 const Navbar = ({currentUser}) => {
   console.log(currentUser);
   const [isOpen, setIsOpen] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+  const uploadGigModal = useUploadGigModal();
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => (!value))
@@ -27,11 +29,15 @@ const Navbar = ({currentUser}) => {
     loginModal.onOpen();
   }
 
+  const handleUploadGig = () => {
+    uploadGigModal.onOpen();
+  }
+
   const handleLogout = async () => {
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
     await axios.post("http://localhost:8800/api/auth/logout");
-    window.location.reload();
+    window.location.href = '/';
   }
 
   return (
@@ -60,7 +66,7 @@ const Navbar = ({currentUser}) => {
                 </div>
                 <ul className='flex items-center'>
                   <li>
-                    <div className="hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 mx-2 hover:bg-neutral-100 py-3 rounded-full">
+                    <div onClick={handleUploadGig} className="hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 mx-2 hover:bg-neutral-100 py-3 rounded-full">
                       Upload Gig
                     </div>
                   </li>

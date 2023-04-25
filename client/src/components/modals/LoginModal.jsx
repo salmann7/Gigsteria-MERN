@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import React, { useCallback, useState } from 'react'
 import { toast } from "react-hot-toast";
 import {useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 // import { useHistory } from 'react-router-dom';
 
 import useRegisterModal from '../../hooks/useRegisterModal';
@@ -17,7 +18,7 @@ import getGoogleUrl from '../../utils/getGoogleUrl';
 
 const LoginModal = () => {
     // const history = useHistory();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
@@ -42,7 +43,9 @@ const LoginModal = () => {
             toast.success('Logged in.');
             loginModal.onClose();
             // history.go(0); // Refresh the page
+            navigate("/dashboard");
             window.location.reload();
+            
         })
         .catch((error) => {
             toast.error(error);

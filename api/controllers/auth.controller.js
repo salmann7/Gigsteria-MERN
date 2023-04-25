@@ -38,11 +38,11 @@ const refreshTokenCookieOptions = {
 
 export const login = async (req, res, next) => {
     try {
-        const user = await userModel.findOne({username: req.body.username});
+        const user = await userModel.findOne({email: req.body.email});
 
         if(!user) return next(createError(401, "Invalid email or password"));
 
-        const isCorrectPassword = bcrypt.compare(req.body.password, user.password);
+        const isCorrectPassword = bcrypt.compareSync(req.body.password, user.password);
 
         console.log(isCorrectPassword)
 
@@ -122,8 +122,8 @@ export const googleOauthHandler = async ( req, res, next ) => {
             const {id_token, access_token } = resTokensObj.data;
             id_tokend = id_token;
             access_tokend = access_token;
-            console.log("accesstoken")
-            console.log(access_token );
+            // console.log("accesstoken")
+            // console.log(access_token );
         } catch (e){
             console.log(e);
         }
@@ -140,8 +140,8 @@ export const googleOauthHandler = async ( req, res, next ) => {
     
             // const { googleUser } = resGoogleUserObj.data;
             googleUserd = resGoogleUserObj.data
-            console.log("googleuser")
-            console.log(resGoogleUserObj.data);
+            // console.log("googleuser")
+            // console.log(resGoogleUserObj.data);
         } catch(e){
             console.log(e);
         }
@@ -150,9 +150,33 @@ export const googleOauthHandler = async ( req, res, next ) => {
             return res.status(403).send("Google account is not verified");
         }
 
+        // let user;
+        // const existingUser = await userModel.findOne({ email: googleUserd.eamil });
+        // if(existingUser){
+        //     console.log("exisiitng user");
+        //     user = await userModel.findOneAndUpdate(
+        //         {
+        //             email: googleUserd.eamil,
+        //         },
+        //         {
+        //             email: googleUserd.email,
+        //             name: googleUserd.name,
+        //             picture: googleUserd.picture,
+        //         },
+        //         {
+        //             new: true,
+        //         }
+        //     );
+        // } else {
+        //     user = await userModel.create({
+        //         email: googleUserd.email,
+        //         name: googleUserd.name,
+        //         picture: googleUserd.picture,
+        //     })
+        // }
         const user = await userModel.findOneAndUpdate(
             {
-                email: googleUserd.eamil,
+                email: googleUserd.email,
             },
             {
                 email: googleUserd.email,
@@ -165,6 +189,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
             }
         );
 
+        console.log(user);
         const session = await sessionModel.create({ user: user._id, userAgent: req.get("user-agent") || ''});
 
         const accessToken = jwt.sign(
@@ -192,7 +217,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
 
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-        res.redirect("http://localhost:3000")
+        res.redirect("http://localhost:3000/dashboard")
 
     } catch(e) {
         next(e)
