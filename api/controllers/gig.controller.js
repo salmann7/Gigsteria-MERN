@@ -1,11 +1,12 @@
-import gigModel from "../models/gig.model";
-import createError from "../utils/createError";
+import gigModel from "../models/gig.model.js";
+import createError from "../utils/createError.js";
 
 export const createGig = async (req, res, next) => {
-    if(!req.isSeller) return next(createError(403, "Only sellers can create a gig"));
+    console.log(res.locals.user._doc.isSeller)
+    if(!res.locals.user._doc.isSeller) return next(createError(403, "Only sellers can create a gig"));
     
     const newGig =  new gigModel({
-        userId: req.userId,
+        user: res.locals.user._doc._id,
         ...req.body,
     });
 
@@ -21,7 +22,7 @@ export const deleteGig = async (req, res, next) => {
     try {
         const existingGig = await gigModel.findById(req.params.id);
 
-        if( existingGig.userId !== req.userId ) return next(createError(403, "You can only delete your gig"));
+        if( existingGig.user !== res.locals.user._doc._id ) return next(createError(403, "You can only delete your gig"));
 
         await gigModel.findByIdAndDelete(req.params.id);
         res.status(200).send("Gig has been deleted");

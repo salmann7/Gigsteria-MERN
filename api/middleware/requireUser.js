@@ -1,4 +1,5 @@
 const requireUser = ( req, res, next ) => {
+    console.log(res.locals.user)
     const user = res.locals.user;
 
     if(!user) {
