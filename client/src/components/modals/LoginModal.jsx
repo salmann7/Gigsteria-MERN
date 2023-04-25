@@ -13,9 +13,11 @@ import Modal from './Modal';
 import Button from '../buttton/Button'
 import Heading from '../heading/Heading'
 import Input from '../inputs/Input'
+import getGoogleUrl from '../../utils/getGoogleUrl';
 
 const LoginModal = () => {
     // const history = useHistory();
+    // const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const registerModal = useRegisterModal();
     const loginModal = useLoginModal();
@@ -28,11 +30,14 @@ const LoginModal = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        axios.post('http://localhost:8800/api/auth/login', data)
+        axios.post('http://localhost:8800/api/auth/login', data,
+          {
+            withCredentials: true,
+          })
         .then(( res ) => {
-            console.log('Setting cookies...');
-            Cookies.set('accessToken', res.data.accessToken);
-            Cookies.set('refreshToken', res.data.refreshToken);
+            // console.log('Setting cookies...');
+            // Cookies.set('accessToken', res.data.accessToken);
+            // Cookies.set('refreshToken', res.data.refreshToken);
             console.log(Cookies.get());
             toast.success('Logged in.');
             loginModal.onClose();
@@ -52,6 +57,24 @@ const LoginModal = () => {
         registerModal.onOpen();
     },[registerModal, loginModal]);
 
+    const handleGoogleLogin = async () => {
+        console.log("here")
+        const url = getGoogleUrl();
+        console.log(url)
+        window.location.href = url;
+        // navigate("/session-timed-out");
+        // const res = await axios.get(url);
+        // console.log(res);
+        // console.log('Setting cookies...');
+        //     Cookies.set('accessToken', res.data.accessToken);
+        //     Cookies.set('refreshToken', res.data.refreshToken);
+        //     console.log(Cookies.get());
+        //     toast.success('Logged in.');
+        //     loginModal.onClose();
+            // history.go(0); // Refresh the page
+            // window.location.reload();
+    }
+
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Heading title="Welcome back" subtitle="Login to your account!" />
@@ -63,8 +86,8 @@ const LoginModal = () => {
     const footerContent = (
         <div className="flex gap-4 flex-col mt-3">
             <hr />
-            <Button outline label="Continue with Google" icon={FcGoogle} onClick={() => ({})} />
-            <Button outline label="Continue with Github" icon={AiFillGithub} onClick={() => ({})} />
+            <Button outline label="Continue with Google" icon={FcGoogle} onClick={handleGoogleLogin} />
+            <Button outline label="Continue with Github" icon={AiFillGithub} onClick={() => (getGoogleUrl())} />
             <div className="text-neutral-500 text-center mt-4 font-light">
                 <p>First time using Gigsteria?
                     <span onClick={onToggle} className='text-neutral-800 cursor-pointer hover:underline'>Create an account</span>
