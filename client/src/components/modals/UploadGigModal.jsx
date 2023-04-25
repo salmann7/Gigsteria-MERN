@@ -4,6 +4,14 @@ import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { useMemo, useState } from 'react';
 
+import { MdDesignServices, MdAddAPhoto } from 'react-icons/md'
+import { GiSpiderWeb, GiClawHammer } from 'react-icons/gi';
+import { TfiWrite } from 'react-icons/tfi';
+import { SiStylelint } from 'react-icons/si'
+import { BsCameraVideo, BsFileEarmarkMusic, BsCodeSlash, BsDatabaseDown } from 'react-icons/bs';
+
+
+
 import useUploadGigModal from '../../hooks/useUploadGigModal.js';
 import Modal from './Modal.jsx';
 import CategoryInput from '../inputs/CategoryInput.jsx';
@@ -15,12 +23,72 @@ const STEPS = {
     INFO: 1,
     COVERIMG: 2,
     PRICE: 3,
+    DELIVERYTIME: 4,
 }
+
+export const deliveryTimeCat = [
+  {
+    label: 'Day',
+    // icon: MdDesignServices
+  },
+  {
+    label: 'Week',
+    // icon: MdDesignServices
+  },
+  {
+    label: 'Month',
+    // icon: MdDesignServices
+  },]
 
 export const categories = [
     {
-      label: 'Beach',
-    //   icon: TbBeach,
+      label: 'Graphic Design',
+      icon: MdDesignServices,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Digital Marketing',
+      icon: GiSpiderWeb,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Writing and Translation',
+      icon: TfiWrite,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Video and Animation',
+      icon: BsCameraVideo,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Music and Audio',
+      icon: BsFileEarmarkMusic,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Programming',
+      icon: BsCodeSlash,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Lifestyle',
+      icon: SiStylelint,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Photography',
+      icon: MdAddAPhoto,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Legal',
+      icon: GiClawHammer,
+      description: 'This property is close to the beach!',
+    },
+    {
+      label: 'Data Entry',
+      icon: BsDatabaseDown,
       description: 'This property is close to the beach!',
     },
 ]
@@ -38,6 +106,7 @@ const UploadGigModal = () => {
             desc: '',
             imageSrc: '',
             price: '',
+            deliveryTime: '',
         }
     });
 
@@ -46,6 +115,7 @@ const UploadGigModal = () => {
     const desc = watch('desc');
     const imageSrc = watch('imageSrc');
     const price = watch('price');
+    const deliveryTime = watch('deliveryTime');
 
     const setCustomValue = ( id, value) => {
         setValue( id, value, {
@@ -64,7 +134,7 @@ const UploadGigModal = () => {
     }
 
     const onSubmit = (data) => {
-        if(step !== STEPS.PRICE){
+        if(step !== STEPS.DELIVERYTIME){
             return onNext();
         }
         setIsLoading(true);
@@ -88,7 +158,7 @@ const UploadGigModal = () => {
     }
 
     const actionLabel = useMemo(() => {
-        if(step === STEPS.PRICE){
+        if(step === STEPS.DELIVERYTIME){
             return 'Create'
         }
         return 'Next'
@@ -117,7 +187,7 @@ const UploadGigModal = () => {
     if(step === STEPS.INFO){
         bodyContent = (
           <div className="flex flex-col gap-8">
-            <Heading title="How would you describe your place?" subtitle="Short and sweet works best!" />
+            <Heading title="How would you describe your Gig?" subtitle="Tell us about your Gig!" />
             <Input id='title' label='Title' disabled={isloading} register={register} errors={errors} required />
             <hr />
             <Input id='desc' label='Description' disabled={isloading} register={register} errors={errors} required />
@@ -128,7 +198,7 @@ const UploadGigModal = () => {
     if(step === STEPS.COVERIMG){
         bodyContent = (
           <div className="flex flex-col gap-8">
-            <Heading title="Add a photo of your place" subtitle="Show guests what your place looks like!" />
+            <Heading title="Add a photo" subtitle="Showcase Your Brand with Stunning Images!" />
             {/* <ImageUpload value={imageSrc} onChange={(value) => setCustomValue('imageSrc', value)} /> */}
           </div>
         )
@@ -137,11 +207,20 @@ const UploadGigModal = () => {
     if(step === STEPS.PRICE){
         bodyContent = (
           <div className="flex flex-col gap-8">
-            <Heading title="Now, set your price" subtitle="How much do you charge per night?" />
+            <Heading title="Now, set your price" subtitle="Set Your Price and Attract Potential Buyers" />
             <Input id='price' label='Price' disabled={isloading} register={register} errors={errors} required formatPrice type='number' />
           </div>
         )
     }
+
+    if(step === STEPS.DELIVERYTIME){
+      bodyContent = (
+        <div className="flex flex-col gap-8">
+          <Heading title="Set Your Delivery Time" subtitle="Timely Delivery for Satisfied Customers! " />
+          <Input id='deliveryTime' label='In Days' disabled={isloading} register={register} errors={errors} required type='number' />
+        </div>
+      )
+  }
 
   return (
     <Modal 
