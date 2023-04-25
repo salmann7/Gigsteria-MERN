@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const GigSchema = new Schema({
-    userId: {
-        type: String,
-        required: true,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     title: {
         type: String,
@@ -16,10 +16,12 @@ const GigSchema = new Schema({
     },
     totalStars: {
         type: Number,
+        required: false,
         default: 0,
     },
     starNumber: {
         type: Number,
+        required: false,
         default: 0,
     },
     cat: {
@@ -32,7 +34,7 @@ const GigSchema = new Schema({
     },
     cover: {
         type: String,
-        required: true,
+        required: false,
     },
     images: {
         type: [String],
@@ -40,19 +42,19 @@ const GigSchema = new Schema({
     },
     shortTitle: {
         type: String,
-        required: true,
+        required: false,
     },
     shortDesc: {
         type: String,
-        required: true,
+        required: false,
     },
     deliveryTime: {
         type: Number,
-        required: true,
+        required: false,
     },
     revisionNumber: {
         type: Number,
-        required: true,
+        required: false,
     },
     features: {
         type: [String],
@@ -60,6 +62,7 @@ const GigSchema = new Schema({
     },
     sales: {
         type: Number,
+        required: false,
         default: 0,
     },
 },{

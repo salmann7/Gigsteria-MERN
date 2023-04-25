@@ -4,16 +4,16 @@ import jwt from 'jsonwebtoken';
 
 
 const deserializeUserP = async ( req, res, next ) => {
-    console.log(req.cookies);
+    // console.log(req.cookies);
     const accessToken = get(req, "cookies.accessToken") || get(req, "headers.authorization", "").replace(/^Bearer\s/, "");
     const refreshToken = get(req, "cookies.refreshToken") || get(req, "headers.x-refresh");
 
     if(!accessToken){
-        console.log("here");
+        console.log("here deseialoze");
         console.log(accessToken);
         return next();
     }
-    console.log(accessToken);
+    // console.log(accessToken);
 
     const decoded = jwt.verify( accessToken, process.env.JWT_KEY);
     const decodedObj = {

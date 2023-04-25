@@ -33,17 +33,17 @@ const UploadGigModal = () => {
 
     const { register, handleSubmit, setValue, watch, formState: { errors,}, reset} = useForm({
         defaultValues: {
-            category: '',
+            cat: '',
             title: '',
-            description: '',
+            desc: '',
             imageSrc: '',
             price: '',
         }
     });
 
-    const category =  watch('category');
+    const cat =  watch('cat');
     const title = watch('title');
-    const description = watch('description');
+    const desc = watch('desc');
     const imageSrc = watch('imageSrc');
     const price = watch('price');
 
@@ -68,8 +68,11 @@ const UploadGigModal = () => {
             return onNext();
         }
         setIsLoading(true);
-        axios.post('/', data)
-        .then(() => {
+        axios.post('http://localhost:8800/api/gigs', data,{
+          withCredentials: true,
+        })
+        .then((res) => {
+          console.log(res)
             toast.success('Gig created');
             
             reset();
@@ -104,7 +107,7 @@ const UploadGigModal = () => {
              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
                {categories.map((item) => (
                  <div className="col-span-1" key={item.label}>
-                   <CategoryInput onClick={(category) => setCustomValue('category', category)} selected={category === item.label} label={item.label} icon={item.icon}/>
+                   <CategoryInput onClick={(cat) => setCustomValue('cat', cat)} selected={cat === item.label} label={item.label} icon={item.icon}/>
                  </div>
                 ))}
              </div>
@@ -117,7 +120,7 @@ const UploadGigModal = () => {
             <Heading title="How would you describe your place?" subtitle="Short and sweet works best!" />
             <Input id='title' label='Title' disabled={isloading} register={register} errors={errors} required />
             <hr />
-            <Input id='description' label='Description' disabled={isloading} register={register} errors={errors} required />
+            <Input id='desc' label='Description' disabled={isloading} register={register} errors={errors} required />
           </div>
         )
     }
