@@ -19,12 +19,12 @@ function App() {
 
   function getCurrentUser() {
     const accessToken = Cookies.get('accessToken');
+    console.log(accessToken)
     const config = {
       headers: {
         Authorization: accessToken ? `Bearer ${accessToken}` : null
       }
     }; 
-    console.log(accessToken)
     return axios.get("http://localhost:8800/api/auth/me", config)
     .then((res) => {
       setCurrentUser(res.data._doc);

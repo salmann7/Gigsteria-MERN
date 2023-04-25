@@ -3,10 +3,12 @@ import sessionModel from "../models/session.model.js";
 import createError from "../utils/createError.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import qs from 'qs';
+import axios from 'axios';
 
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
-    httpOnly: true,
+    httpOnly: false,
     domain: "localhost",
     path: "/",
     sameSite: "lax",
@@ -91,6 +93,111 @@ export const getUserSessionHandler = async ( req, res, next) => {
     const sessions = await sessionModel.findOne({ user: userId, valid: true});
 
     return res.send(sessions);
+}
+
+export const googleOauthHandler = async ( req, res, next ) => {
+    const code = req.query.code;
+    const url = "https://oauth2.googleapis.com/token";
+    const values = {
+        code,
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret:process.env.GOOGLE_CLIENT_SECRET,
+        redirect_uri:process.env.GOOGLE_OAUTH_REDIRECT_URL,
+        grant_type: "authorization_code"
+    };
+    let id_tokend;
+    let access_tokend;
+    let googleUserd;
+
+    try {
+        try{
+            const resTokensObj = await axios.post( 
+                url, 
+                qs.stringify(values),
+                {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                });
+            const {id_token, access_token } = resTokensObj.data;
+            id_tokend = id_token;
+            access_tokend = access_token;
+            console.log("accesstoken")
+            console.log(access_token );
+        } catch (e){
+            console.log(e);
+        }
+
+        try{
+            const resGoogleUserObj = await axios.get(
+                `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_tokend}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${id_tokend}`,
+                    }
+                }
+            )
+    
+            // const { googleUser } = resGoogleUserObj.data;
+            googleUserd = resGoogleUserObj.data
+            console.log("googleuser")
+            console.log(resGoogleUserObj.data);
+        } catch(e){
+            console.log(e);
+        }
+        
+        if(!googleUserd.verified_email){
+            return res.status(403).send("Google account is not verified");
+        }
+
+        const user = await userModel.findOneAndUpdate(
+            {
+                email: googleUserd.eamil,
+            },
+            {
+                email: googleUserd.email,
+                name: googleUserd.name,
+                picture: googleUserd.picture,
+            },
+            {
+                upsert: true,
+                new: true,
+            }
+        );
+
+        const session = await sessionModel.create({ user: user._id, userAgent: req.get("user-agent") || ''});
+
+        const accessToken = jwt.sign(
+            {
+                ...user,
+                session: session._id, 
+            },
+            process.env.JWT_KEY,
+            {
+                expiresIn: 900000,
+            }
+        );
+        const refreshToken = jwt.sign(
+            {
+                ...user,
+                session: session._id, 
+            },
+            process.env.JWT_KEY,
+            {
+                expiresIn: 3.154e10,
+            }
+        );
+
+        res.cookie("accessToken", accessToken, accessTokenCookieOptions);
+
+        res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+
+        res.redirect("http://localhost:3000")
+
+    } catch(e) {
+        next(e)
+        throw new Error(e);
+    }
 }
 
 export const logout = async (req, res, next) => {
