@@ -15,6 +15,7 @@ import LoginModal from './components/modals/LoginModal'
 import { useEffect, useState } from 'react'
 import LandingPage from './components/landingPage/LandingPage';
 import Dashboard from './components/dashboard/Dashboard';
+import UploadGigModal from './components/modals/UploadGigModal';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
+      <UploadGigModal />
       <LoginModal />
       <RegisterModal />
       <Navbar currentUser={currentUser} />
