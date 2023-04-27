@@ -32,7 +32,7 @@ const GigSchema = new Schema({
         type: Number,
         required: true,
     },
-    cover: {
+    coverImageSrc: {
         type: String,
         required: false,
     },
@@ -50,7 +50,7 @@ const GigSchema = new Schema({
     },
     deliveryTime: {
         type: Number,
-        required: false,
+        required: true,
     },
     revisionNumber: {
         type: Number,
