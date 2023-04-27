@@ -104,7 +104,7 @@ const UploadGigModal = () => {
             cat: '',
             title: '',
             desc: '',
-            imageSrc: '',
+            coverImageSrc: '',
             price: '',
             deliveryTime: '',
         }
@@ -113,7 +113,7 @@ const UploadGigModal = () => {
     const cat =  watch('cat');
     const title = watch('title');
     const desc = watch('desc');
-    const imageSrc = watch('imageSrc');
+    const coverImageSrc = watch('coverImageSrc');
     const price = watch('price');
     const deliveryTime = watch('deliveryTime');
 
