@@ -9,6 +9,7 @@ import Avatar from '../avatar/Avatar';
 import useRegisterModal from '../../hooks/useRegisterModal';
 import useLoginModal from '../../hooks/useLoginModal';
 import useUploadGigModal from '../../hooks/useUploadGigModal';
+import Categories from './Categories';
 
 const Navbar = ({currentUser}) => {
   console.log(currentUser);
@@ -79,7 +80,7 @@ const Navbar = ({currentUser}) => {
                     <div onClick={toggleOpen} className="border-[1px] rounded-full p-4 md:py-2 md:px-2 border-x-neutral-200 flex flex-row items-center gap-3 cursor-pointer hover:shadow-md transition">
                         <AiOutlineMenu />
                         <div className="hidden md:block">
-                            <Avatar />
+                            <Avatar src={currentUser?.picture} />
                         </div>
                     </div>
                     {isOpen && (
@@ -87,6 +88,7 @@ const Navbar = ({currentUser}) => {
                     {currentUser ? (
                       <div className="flex flex-col cursor-pointer">
                       {/* <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div> */}
+                      <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition">Upload Gig</div>
                       <div onClick={handleLogout} className="p-4 hover:bg-neutral-50 transition">Logout</div>
                     </div>
                     ) : (
@@ -102,6 +104,7 @@ const Navbar = ({currentUser}) => {
                 </ul>
               </div>
             </Container>
+            {currentUser && (<Categories />)}
         </div>
     </div>
   )
