@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import LandingPage from './components/landingPage/LandingPage';
 import Dashboard from './components/dashboard/Dashboard';
 import UploadGigModal from './components/modals/UploadGigModal';
+import SingleGig from './components/singleGig/SingleGig';
 
 function App() {
 
@@ -48,10 +49,13 @@ function App() {
       <RegisterModal />
       <Navbar currentUser={currentUser} />
 
-      <Routes>
-        <Route exact path='/' element={<LandingPage />} />
-        <Route exact path='/dashboard' element={<Dashboard />} />
-      </Routes>
+      <div className="pt-[130px]">
+        <Routes>
+          <Route exact path='/' element={<LandingPage />} />
+          <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/gig/:id' element={<SingleGig />} />
+        </Routes>
+      </div>
       
       <hr />
       <Footer />
