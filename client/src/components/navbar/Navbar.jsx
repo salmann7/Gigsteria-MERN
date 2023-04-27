@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
 import { BiSearch } from 'react-icons/bi';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useLocation, Link } from 'react-router-dom';
 
 import Container from '../container/Container'
 import Avatar from '../avatar/Avatar';
@@ -12,15 +13,41 @@ import useUploadGigModal from '../../hooks/useUploadGigModal';
 import Categories from './Categories';
 
 const Navbar = ({currentUser}) => {
+  const {pathname} = useLocation();
   console.log(currentUser);
   const [isOpen, setIsOpen] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const uploadGigModal = useUploadGigModal();
+  const [ activeLink, setActiveLink ] = useState(false);
+
+  const isMainPage = (pathname === '/dashboard');
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => (!value))
   },[]);
+
+  useEffect(() => {
+    if(pathname === '/'&& currentUser){
+      setActiveLink(true);
+    }
+  })
+
+  useEffect(() => {
+    console.log(pathname);
+    if(pathname === '/' && currentUser){
+      console.log("here nav")
+      setActiveLink(true);
+    }
+    else if(pathname === '/'){
+      setActiveLink(false);
+    }
+    else if(pathname === '/dashboard'){
+      setActiveLink(true);
+    } else{
+      setActiveLink(false);
+    }
+  },[pathname]);
   
   const handleSignup = () => {
     registerModal.onOpen();
@@ -51,7 +78,9 @@ const Navbar = ({currentUser}) => {
         <div className="border-b-[1px] py-4">
             <Container>
               <div className="flex justify-between items-center">
-                <div className="font-semibold text-md text-2xl cursor-pointer"><span className=' text-green-600'>Gig</span>steria<span className=' text-green-600'>.</span></div>
+                <Link to='/'>
+                  <div className="font-semibold text-md text-2xl cursor-pointer"><span className=' text-green-600'>Gig</span>steria<span className=' text-green-600'>.</span></div>
+                </Link>
                 <div className="flex flex-row items-center justify-center w-full md:w-auto mx-1 sm:mx-0">
                     <div className="border-[1px] rounded-full hover:shadow-md transition cursor-pointer py-2 w-full md:w-auto">
                         <div className="flex flex-row items-center justify-between">
@@ -71,6 +100,22 @@ const Navbar = ({currentUser}) => {
                     </div>
                 </div>
                 <ul className='flex items-center'>
+                  <li>
+                    {currentUser ? (
+                      <Link to='/'>
+                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 ml-2 hover:bg-neutral-100 py-3 rounded-full`}>
+                          Gig Home
+                        </div>
+                      </Link>
+                    ):(
+                      <Link to='/dashboard'>
+                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 ml-2 hover:bg-neutral-100 py-3 rounded-full`}>
+                          Gig Home
+                        </div>
+                      </Link>
+                    )}
+                    
+                  </li>
                   <li>
                     <div onClick={handleUploadGig} className="hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 mx-2 hover:bg-neutral-100 py-3 rounded-full">
                       Upload Gig
@@ -104,7 +149,7 @@ const Navbar = ({currentUser}) => {
                 </ul>
               </div>
             </Container>
-            {currentUser && (<Categories />)}
+            {(currentUser || isMainPage) && (<Categories />)}
         </div>
     </div>
   )

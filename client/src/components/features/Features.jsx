@@ -9,7 +9,7 @@ import FeatureCard from '../featureCard/FeatureCard'
 
 const Features = () => {
   return (
-    <div className='bg-green-50'>
+    <div className='bg-neutral-100'>
       <Container>
         <div className="text-center text-4xl font-bold text-neutral-700 pt-10">Why Choose Us?</div>
         <div className="flex flex-wrap items-center justify-center gap-9 py-10">

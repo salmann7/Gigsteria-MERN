@@ -25,7 +25,7 @@ const HeroFeature = () => {
                 </div>
             </div>
             <div className="flex-shrink-0 hidden md:block">
-                <img src="/images/featurepng.png" alt="" className='w-full h-[250px] lg:h-[500px] rounded-full bg-green-50' />
+                <img src="/images/featurepng.png" alt="" className='w-full h-[250px] lg:h-[500px]  rounded-full bg-neutral-100 shadow-lg' />
             </div>
         </div>
     </Container>

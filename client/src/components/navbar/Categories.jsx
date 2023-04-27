@@ -8,7 +8,7 @@ const Categories = () => {
     const {pathname} = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
     const category = searchParams?.get('cat');
-    const isMainPage = pathname === '/';
+    const isMainPage = (pathname === '/') || (pathname === '/dashboard');
 
     if(!isMainPage){
         return null;
