@@ -45,3 +45,24 @@ export const deleteUser = async (req, res, next) => {
     await userModel.findByIdAndDelete(req.params.id);
     res.status(200).send("user deleted");
 }
+
+export const addFav = async (req, res, next) => {
+
+    await userModel.findByIdAndUpdate(req.body._id, {
+        $addToSet: { favoriteIds: req.params.id }
+    },
+    { new: true});
+    res.status(200).send("added to favorite");
+}
+
+export const deleteFav = async (req, res, next) => {
+    try {
+        const user = await userModel.findByIdAndUpdate(req.body._id, {
+            $pull: { favoriteIds: req.params.id }
+        }, { new: true });
+        res.status(200).json(user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Server error");
+    }
+}

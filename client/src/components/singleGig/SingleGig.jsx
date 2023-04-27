@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Container from '../container/Container';
+import HeartButton from '../heartButton/HeartButton';
 
-const SingleGig = () => {
+const SingleGig = ({ currentUser }) => {
   const { id } = useParams();
   const [ gig, setGig ] = useState({});
   const [ gigUser, setGigUser ] = useState({});
@@ -32,7 +33,10 @@ const SingleGig = () => {
     <Container>
       <div className="pb-24 flex flex-col md:flex-row gap-3">
         <div className="md:w-3/4 bg-white rounded-xl shadow-md overflow-hidden flex flex-col gap-4 p-6">
+          <div className="flex flex-row justify-between gap-3">
           <h2 className='font-bold text-neutral-800 text-3xl'>{gig.title}</h2>
+          <HeartButton gigId={gig._id} currentUser={currentUser} />
+          </div>
           <div className="w-full h-60 sm:h-96">
             <img src={`${gig?.coverImageSrc}`} alt="cover image" className='object-cover md:object-contain h-full w-full' />
           </div>
