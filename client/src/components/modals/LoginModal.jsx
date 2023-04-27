@@ -43,7 +43,7 @@ const LoginModal = () => {
             toast.success('Logged in.');
             loginModal.onClose();
             // history.go(0); // Refresh the page
-            navigate("/dashboard");
+            navigate("/");
             window.location.reload();
             
         })

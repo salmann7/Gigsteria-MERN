@@ -30,7 +30,12 @@ const Navbar = ({currentUser}) => {
   }
 
   const handleUploadGig = () => {
-    uploadGigModal.onOpen();
+    if(currentUser){
+      uploadGigModal.onOpen();
+    } else{
+      registerModal.onOpen();
+    }
+    
   }
 
   const handleLogout = async () => {

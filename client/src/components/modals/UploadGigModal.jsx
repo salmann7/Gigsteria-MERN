@@ -17,6 +17,7 @@ import Modal from './Modal.jsx';
 import CategoryInput from '../inputs/CategoryInput.jsx';
 import Input from '../inputs/Input.jsx'
 import Heading from '../heading/Heading.jsx';
+import useRegisterModal from '../../hooks/useRegisterModal.js';
 
 const STEPS = {
     CATEGORY: 0,
@@ -96,6 +97,7 @@ export const categories = [
 const UploadGigModal = () => {
 
     const uploadGigModal = useUploadGigModal();
+    const registerModal = useRegisterModal();
     const [ isloading, setIsLoading ] = useState(false);
     const [ step, setStep ] = useState(STEPS.CATEGORY);
 
@@ -134,6 +136,9 @@ const UploadGigModal = () => {
     }
 
     const onSubmit = (data) => {
+        // if(!currentUser){
+        //   registerModal.onOpen();
+        // }
         if(step !== STEPS.DELIVERYTIME){
             return onNext();
         }

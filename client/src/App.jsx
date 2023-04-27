@@ -51,8 +51,8 @@ function App() {
 
       <div className="pt-[130px]">
         <Routes>
-          <Route exact path='/' element={<LandingPage />} />
-          <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/' element={currentUser ? <Dashboard /> : <LandingPage />} />
+          {/* <Route exact path='/dashboard' element={<Dashboard />} /> */}
           <Route exact path='/gig/:id' element={<SingleGig currentUser={currentUser} />} />
         </Routes>
       </div>
