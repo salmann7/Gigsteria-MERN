@@ -16,12 +16,13 @@ import { useEffect, useState } from 'react'
 import LandingPage from './components/landingPage/LandingPage';
 import Dashboard from './components/dashboard/Dashboard';
 import UploadGigModal from './components/modals/UploadGigModal';
+import SingleGig from './components/singleGig/SingleGig';
 
 function App() {
 
   const [currentUser, setCurrentUser] = useState(null);
 
-  function getCurrentUser() {
+  async function getCurrentUser() {
     const accessToken = Cookies.get('accessToken');
     console.log(accessToken)
     const config = {
@@ -29,7 +30,7 @@ function App() {
         Authorization: accessToken ? `Bearer ${accessToken}` : null
       }
     }; 
-    return axios.get("http://localhost:8800/api/auth/me", config)
+    return await axios.get("http://localhost:8800/api/auth/me", config)
     .then((res) => {
       setCurrentUser(res.data._doc);
       console.log(res.data._doc)})
@@ -48,10 +49,13 @@ function App() {
       <RegisterModal />
       <Navbar currentUser={currentUser} />
 
-      <Routes>
-        <Route exact path='/' element={<LandingPage />} />
-        <Route exact path='/dashboard' element={<Dashboard />} />
-      </Routes>
+      <div className="pt-[130px]">
+        <Routes>
+          <Route exact path='/' element={<LandingPage />} />
+          <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/gig/:id' element={<SingleGig currentUser={currentUser} />} />
+        </Routes>
+      </div>
       
       <hr />
       <Footer />

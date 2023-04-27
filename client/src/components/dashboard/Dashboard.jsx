@@ -15,13 +15,11 @@ const Dashboard = () => {
     getGigs();
   },[])
   return (
-    <div className='pt-[130px]'>
       <Container>
         { gigsList && (
           <Listings gigsList={gigsList} />
         )}
       </Container>
-    </div>
   )
 }
 

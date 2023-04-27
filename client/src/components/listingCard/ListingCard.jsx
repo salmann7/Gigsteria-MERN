@@ -1,12 +1,14 @@
 import React from 'react'
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 
 const ListingCard = ({
     data
 }) => {
+  const navigate = useNavigate();
     console.log(data);
   return (
-    <div className="group border-2 rounded-lg overflow-hidden cursor-pointer">
+    <div onClick={() => navigate(`/gig/${data._id}`)} className="group border-2 rounded-lg overflow-hidden cursor-pointer">
   <div className="relative">
     <img
       src={data?.coverImageSrc}

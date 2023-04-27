@@ -36,6 +36,10 @@ const userSchema = new Schema({
         type: Boolean,
         default:true,
     },
+    favoriteIds: {
+        type: Array,
+        required: false
+    }
 },{
     timestamps: true
 });
