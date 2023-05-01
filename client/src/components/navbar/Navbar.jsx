@@ -57,6 +57,10 @@ const Navbar = ({currentUser}) => {
     loginModal.onOpen();
   }
 
+  const handleOrder = () => {
+    console.log("order");
+  }
+
   const handleUploadGig = () => {
     if(currentUser){
       uploadGigModal.onOpen();
@@ -134,6 +138,10 @@ const Navbar = ({currentUser}) => {
                       <div className="flex flex-col cursor-pointer">
                       {/* <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div> */}
                       <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition">Upload Gig</div>
+                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Console</div>
+                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Favorites</div>
+                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Orders</div>
+                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Notification</div>
                       <div onClick={handleLogout} className="p-4 hover:bg-neutral-50 transition">Logout</div>
                     </div>
                     ) : (

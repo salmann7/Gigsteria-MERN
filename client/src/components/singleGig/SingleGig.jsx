@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Container from '../container/Container';
 import HeartButton from '../heartButton/HeartButton';
 
@@ -28,6 +28,17 @@ const SingleGig = ({ currentUser }) => {
     }
     getGigUser();
   },[gig]);
+
+  const handleSubmitOrder = async () => {
+    // try{
+    //   const data = gig;
+    //   const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
+    //     withCredentials: true,
+    //   })
+    // } catch(e){
+    //   console.log(e);
+    // }
+  }
 
   return (
     <Container>
@@ -63,7 +74,9 @@ const SingleGig = ({ currentUser }) => {
     </div>
   </div>
   <div class="px-6 py-4 bg-neutral-50 border-t border-gray-300 flex justify-center items-center">
-    <button class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:shadow-outline-green transition duration-150 ease-in-out">Order Now</button>
+    <Link to={`/payment/${id}`}>
+      <button onClick={handleSubmitOrder} class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:shadow-outline-green transition duration-150 ease-in-out">Order Now</button>
+    </Link>
   </div>
 </div>
 
