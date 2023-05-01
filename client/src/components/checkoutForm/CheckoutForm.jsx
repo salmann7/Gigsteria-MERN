@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   PaymentElement,
   LinkAuthenticationElement,
@@ -7,6 +8,8 @@ import {
 } from "@stripe/react-stripe-js";
 
 export default function CheckoutForm() {
+    const navigate = useNavigate();
+    
   const stripe = useStripe();
   const elements = useElements();
   console.log(elements);
@@ -14,6 +17,7 @@ export default function CheckoutForm() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+//   const [clientSecret, setClientSecret ] = useState('');
 
   useEffect(() => {
     if (!stripe) {
@@ -27,6 +31,9 @@ export default function CheckoutForm() {
     const clientSecret = new URLSearchParams(window.location.search).get(
       "payment_intent_client_secret"
     );
+
+    // setClientSecret(clientSecretUrl);
+
 
     console.log(clientSecret);
 
@@ -57,7 +64,7 @@ export default function CheckoutForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(elements);
+    // console.log(clientSecret);
 
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
@@ -67,22 +74,48 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
-    const { error } = await stripe.confirmPayment({
+    const {error} = await stripe.confirmPayment({
       elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/paymentsuccess",
-      },
+    //   confirmParams: {
+    //     // Make sure to change this to your payment completion page
+    //     return_url: null,
+    //     // redirect: 'none',
+    //   }
+    redirect: 'if_required'
     });
+    if(!error){
+        navigate({
+            pathname: window.location.pathname,
+            search: '?payment_success=true',
+        });
+        return;
+    }
+
+    // console.log(res.paymentIntent.status);
+
+    // const { error } = await stripe.confirmCardPayment( clientSecret, {
+    //     payment_method: {
+    //         card: elements,
+    //         billing_details: {
+    //           email: email,
+    //         },
+    //     },
+    // })
 
     // This point will only be reached if there is an immediate error when
     // confirming the payment. Otherwise, your customer will be redirected to
     // your `return_url`. For some payment methods like iDEAL, your customer will
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
+    if (error?.type === "card_error" || error?.type === "validation_error") {
       setMessage(error.message);
-    } else {
+    } 
+    else {
+        navigate({
+            pathname: window.location.pathname,
+            search: '?payment_success=false',
+        });
+
       setMessage("An unexpected error occurred.");
     }
 

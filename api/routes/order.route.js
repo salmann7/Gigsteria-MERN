@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", verifyToken, getOrders);
 router.post("/create-payment-intent/:id", requireUser , intent);
-router.put("/", verifyToken, confirm);
+router.put("/", requireUser, confirm);
 router.post("/create-checkout-session", verifyToken, checkout);
 
 export default router;
