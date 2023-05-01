@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Container from "../container/Container";
 
-// import './payment.css';
+import './payment.css';
 
 const stripePromise = loadStripe("pk_test_51N1dqRSF8yPcIvMfd48NGKyCUOW1oqslCuCTmdmktbjICuO4xE4mRwj2JS92aLcNzEE7P1ad6wdIHRssAQlPPZq00042hshfdD");
 
@@ -22,6 +22,7 @@ const Payment = ({ currentUser }) => {
                 const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
                   withCredentials: true,
                 });
+                console.log(res.data.clientSecret);
                 setClientSecret(res.data.clientSecret);
               } catch(e){
                 console.log(e);
@@ -41,7 +42,7 @@ const Payment = ({ currentUser }) => {
 
   return (
     <Container>
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row justify-center pb-10">
             <div className="max-w-md">
             {clientSecret && (
             <Elements options={options} stripe={stripePromise}>

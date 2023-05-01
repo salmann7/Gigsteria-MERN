@@ -3,6 +3,31 @@ import orderModel from "../models/order.model.js";
 import gigModel from "../models/gig.model.js";
 import Stripe from "stripe";
 
+export const checkout =  async (req, res) => {
+    const stripe = new Stripe(process.env.STRIPE);
+    const YOUR_DOMAIN = 'http://localhost:3000/orders';
+    // console.log(req);
+    // const gig = await gigModel.findById(req.params.id);
+    // console.log(gig);
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+          price_data: {currency: 'inr', product_data: {name: req.body?.title}, unit_amount: req.body?.price * 100},
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${YOUR_DOMAIN}?success=true`,
+      cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    });
+
+    console.log(session);
+    res.send({url: session.url});
+  
+    // res.redirect(303, session.url);
+  };
+
 export const intent = async (req, res, next) => {
     const stripe = new Stripe(process.env.STRIPE);
 
