@@ -217,7 +217,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
 
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-        res.redirect("http://localhost:3000/dashboard")
+        res.redirect("http://localhost:3000/")
 
     } catch(e) {
         next(e)

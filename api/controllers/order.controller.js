@@ -1,6 +1,6 @@
-import createError from "../utils/createError";
-import orderModel from "../models/order.model";
-import gigModel from "../models/gig.model";
+import createError from "../utils/createError.js";
+import orderModel from "../models/order.model.js";
+import gigModel from "../models/gig.model.js";
 import Stripe from "stripe";
 
 export const intent = async (req, res, next) => {
@@ -18,16 +18,16 @@ export const intent = async (req, res, next) => {
 
     const newOrder = new orderModel({
         gigId: gig._id,
-        img: gig.cover,
+        img: gig.coverImageSrc,
         title: gig.title,
-        buyerId: req.userId,
-        sellerId: gig.userId,
+        buyerId: res.locals.user,
+        sellerId: gig.user,
         price: gig.price,
         payment_intent: paymentIntent.id,
     });
 
     await newOrder.save();
-    res.status(200),send({ clientSecret: paymentIntent.client_secret})
+    res.status(200).send({ clientSecret: paymentIntent.client_secret})
 }
 
 export const getOrders = async (req, res, next) => {

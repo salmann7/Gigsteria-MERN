@@ -17,6 +17,9 @@ import LandingPage from './components/landingPage/LandingPage';
 import Dashboard from './components/dashboard/Dashboard';
 import UploadGigModal from './components/modals/UploadGigModal';
 import SingleGig from './components/singleGig/SingleGig';
+import Payment from './components/payment/Payment';
+import PaymentSuccess from './components/paymentSuccess/PaymentSuccess';
+import Orders from './components/orders/Orders';
 
 function App() {
 
@@ -51,9 +54,12 @@ function App() {
 
       <div className="pt-[130px]">
         <Routes>
-          <Route exact path='/' element={<LandingPage />} />
+          <Route exact path='/' element={currentUser ? <Dashboard /> : <LandingPage />} />
           <Route exact path='/dashboard' element={<Dashboard />} />
           <Route exact path='/gig/:id' element={<SingleGig currentUser={currentUser} />} />
+          <Route exact path='/payment/:id' element={<Payment currentUser={currentUser} />} />
+          <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} />
+          <Route exact path='/orders' element={<Orders currentUser={currentUser} />} />
         </Routes>
       </div>
       

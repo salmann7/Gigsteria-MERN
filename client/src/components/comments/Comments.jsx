@@ -62,7 +62,7 @@ const Comments = () => {
         return stars;
       };
   return (
-    <div className='bg-green-50 py-10'>
+    <div className='bg-neutral-100 py-10'>
       <Container>
         <div className="text-center text-4xl font-bold text-neutral-700 py-10">Check Out What Our <span className='text-blue-800'>Users <BiUserCircle  className=' inline'/></span> Have to Say</div>
         <Slider slidesPerRow={4}>

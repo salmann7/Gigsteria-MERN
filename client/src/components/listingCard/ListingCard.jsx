@@ -6,7 +6,7 @@ const ListingCard = ({
     data
 }) => {
   const navigate = useNavigate();
-    console.log(data);
+    // console.log(data);
   return (
     <div onClick={() => navigate(`/gig/${data._id}`)} className="group border-2 rounded-lg overflow-hidden cursor-pointer">
   <div className="relative">
