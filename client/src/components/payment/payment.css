@@ -1,4 +1,4 @@
-#root {
+/* #root {
     display: flex;
     align-items: center;
   }
@@ -12,9 +12,9 @@
     align-content: center;
     height: 100vh;
     width: 100vw;
-  }
+  } */
   
-  form {
+  #payment-form {
     width: 30vw;
     min-width: 500px;
     align-self: center;
@@ -38,7 +38,7 @@
   }
   
   /* Buttons and links */
-  button {
+  #submit {
     background: #5469d4;
     font-family: Arial, sans-serif;
     color: #ffffff;
@@ -54,11 +54,11 @@
     width: 100%;
   }
   
-  button:hover {
+  #submit:hover {
     filter: contrast(115%);
   }
   
-  button:disabled {
+  #submit:disabled {
     opacity: 0.5;
     cursor: default;
   }
@@ -128,7 +128,7 @@
   }
   
   @media only screen and (max-width: 600px) {
-    form {
+    #payment-form {
       width: 80vw;
       min-width: initial;
     }

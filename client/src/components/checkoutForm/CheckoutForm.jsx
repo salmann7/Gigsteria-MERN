@@ -9,6 +9,7 @@ import {
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
+  console.log(elements);
 
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState(null);
@@ -19,17 +20,25 @@ export default function CheckoutForm() {
       return;
     }
 
+    // const clientSecret = elements._commonOptions.clientSecret.clientSecret;
+
+    console.log(new URLSearchParams(window.location.search));
+
     const clientSecret = new URLSearchParams(window.location.search).get(
       "payment_intent_client_secret"
     );
 
+    console.log(clientSecret);
+
     if (!clientSecret) {
+        console.log("no clientscecret");
       return;
     }
 
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent.status) {
         case "succeeded":
+            console.log("here payment success")
           setMessage("Payment succeeded!");
           break;
         case "processing":
@@ -39,6 +48,7 @@ export default function CheckoutForm() {
           setMessage("Your payment was not successful, please try again.");
           break;
         default:
+            console.log("here payment")
           setMessage("Something went wrong.");
           break;
       }
@@ -47,6 +57,7 @@ export default function CheckoutForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(elements);
 
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.

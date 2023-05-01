@@ -57,8 +57,8 @@ function App() {
           <Route exact path='/' element={currentUser ? <Dashboard /> : <LandingPage />} />
           <Route exact path='/dashboard' element={<Dashboard />} />
           <Route exact path='/gig/:id' element={<SingleGig currentUser={currentUser} />} />
-          <Route exact path='/payment/:id' element={<Payment currentUser={currentUser} />} />
-          <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} />
+          {/* <Route exact path='/payment/:id' element={<Payment currentUser={currentUser} />} />
+          <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} /> */}
           <Route exact path='/orders' element={<Orders currentUser={currentUser} />} />
         </Routes>
       </div>

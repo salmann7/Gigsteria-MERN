@@ -38,6 +38,16 @@ const SingleGig = ({ currentUser }) => {
     // } catch(e){
     //   console.log(e);
     // }
+    try{
+      const data = gig;
+      const res = await axios.post(`http://localhost:8800/api/orders/create-checkout-session`, data, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+      window.location.href = res.data.url;
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -74,9 +84,16 @@ const SingleGig = ({ currentUser }) => {
     </div>
   </div>
   <div class="px-6 py-4 bg-neutral-50 border-t border-gray-300 flex justify-center items-center">
-    <Link to={`/payment/${id}`}>
-      <button onClick={handleSubmitOrder} class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:shadow-outline-green transition duration-150 ease-in-out">Order Now</button>
-    </Link>
+  {/* <form action="http://localhost:8800/api/orders/create-checkout-session" method="POST" > */}
+  {/* <input type="hidden" name="gig_id" value={id} /> */}
+    {/* <Link to={`/payment/${id}`}> */}
+      <button onClick={handleSubmitOrder}  class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-full hover:bg-green-600 focus:outline-none focus:shadow-outline-green transition duration-150 ease-in-out">Order Now</button>
+    {/* </Link> */}
+    {/* <form action="/create-checkout-session" method="POST"> */}
+      {/* <button type="submit" onClick={handleSubmitOrder}>
+        Checkout
+      </button> */}
+    {/* </form> */}
   </div>
 </div>
 
