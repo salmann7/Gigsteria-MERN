@@ -3,11 +3,14 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import Container from '../container/Container';
 import HeartButton from '../heartButton/HeartButton';
+import usePaymentModal from '../../hooks/usePaymentModal';
 
 const SingleGig = ({ currentUser }) => {
   const { id } = useParams();
   const [ gig, setGig ] = useState({});
   const [ gigUser, setGigUser ] = useState({});
+  const paymentModal = usePaymentModal();
+  // const [clientSecret, setClientSecret] = useState("");
 
 
   useEffect(() => {
@@ -30,24 +33,41 @@ const SingleGig = ({ currentUser }) => {
   },[gig]);
 
   const handleSubmitOrder = async () => {
+    paymentModal.onOpen();
     // try{
     //   const data = gig;
     //   const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
     //     withCredentials: true,
     //   })
+      
+    // if(clientSecret ){
+    //   const paymentIntent = async () => {
+    //     try{
+    //         const data = id;
+    //         const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
+    //           withCredentials: true,
+    //         });
+    //         console.log(res.data.clientSecret);
+    //         setClientSecret(res.data.clientSecret);
+    //       } catch(e){
+    //         console.log(e);
+    //       }
+    // }
+       
+    // }
     // } catch(e){
     //   console.log(e);
     // }
-    try{
-      const data = gig;
-      const res = await axios.post(`http://localhost:8800/api/orders/create-checkout-session`, data, {
-        withCredentials: true,
-      });
-      console.log(res.data);
-      window.location.href = res.data.url;
-    } catch(e) {
-      console.log(e);
-    }
+    // try{
+    //   const data = gig;
+    //   const res = await axios.post(`http://localhost:8800/api/orders/create-checkout-session`, data, {
+    //     withCredentials: true,
+    //   });
+    //   console.log(res.data);
+    //   window.location.href = res.data.url;
+    // } catch(e) {
+    //   console.log(e);
+    // }
   }
 
   return (

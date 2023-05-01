@@ -75,11 +75,11 @@ const Modal = ({
                                   outline
                                 />
                             )}
-                            <Button 
+                            {actionLabel && <Button 
                               disabled={disabled}
                               label={actionLabel}
                               onClick={handleSubmit}
-                            />
+                            />}
                         </div>
                         {footer}
                     </div>

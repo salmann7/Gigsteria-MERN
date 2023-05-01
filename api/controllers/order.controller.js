@@ -18,7 +18,7 @@ export const checkout =  async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: `${YOUR_DOMAIN}?success=true`,
+      success_url: `${YOUR_DOMAIN}/paymentsuccess?success=true`,
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     });
 
@@ -35,7 +35,7 @@ export const intent = async (req, res, next) => {
 
     const paymentIntent = await stripe.paymentIntents.create({
         amount: gig.price * 100,
-        currency: "usd",
+        currency: "inr",
         automatic_payment_methods: {
             enabled: true,
         },

@@ -20,6 +20,7 @@ import SingleGig from './components/singleGig/SingleGig';
 import Payment from './components/payment/Payment';
 import PaymentSuccess from './components/paymentSuccess/PaymentSuccess';
 import Orders from './components/orders/Orders';
+import PaymentModal from './components/modals/PaymentModal';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
       <UploadGigModal />
       <LoginModal />
       <RegisterModal />
+      <PaymentModal />
       <Navbar currentUser={currentUser} />
 
       <div className="pt-[130px]">
@@ -57,8 +59,8 @@ function App() {
           <Route exact path='/' element={currentUser ? <Dashboard /> : <LandingPage />} />
           <Route exact path='/dashboard' element={<Dashboard />} />
           <Route exact path='/gig/:id' element={<SingleGig currentUser={currentUser} />} />
-          {/* <Route exact path='/payment/:id' element={<Payment currentUser={currentUser} />} />
-          <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} /> */}
+          <Route exact path='/payment/:id' element={<Payment currentUser={currentUser} />} />
+          {/* <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} /> */}
           <Route exact path='/orders' element={<Orders currentUser={currentUser} />} />
         </Routes>
       </div>
