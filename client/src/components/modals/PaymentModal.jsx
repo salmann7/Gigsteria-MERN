@@ -8,6 +8,7 @@ import {useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { BsCheckCircle } from 'react-icons/bs'
 // import { useHistory } from 'react-router-dom';
 
 import useRegisterModal from '../../hooks/useRegisterModal';
@@ -45,6 +46,7 @@ const PaymentModal = () => {
     // const { id } = useParams();
     const id = location.pathname.split('/')[2];
     const paymentModalHook = usePaymentModal();
+    const [ paymentIntent, setPaymentIntent ] = useState('');
 
     useEffect(() => {
         if(paymentModalHook.isOpen){
@@ -55,8 +57,9 @@ const PaymentModal = () => {
                 const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
                   withCredentials: true,
                 });
-                console.log(res.data.clientSecret);
+                setPaymentIntent(res.data.paymentIntent.id);
                 setClientSecret(res.data.clientSecret);
+                setPaymentIntent()
               } catch(e){
                 console.log(e);
               }
@@ -68,9 +71,15 @@ const PaymentModal = () => {
     useEffect(() => {
         if(location?.search === '?payment_success=true'){
             setStep(STEP.SUCCESS);
+            confirmPayment();
         }
         if(location?.search === '?payment_success=false'){
             setStep(STEP.FAILURE);
+            setTimeout(() => {
+              paymentModalHook.onClose();
+              navigate('/');
+              
+            }, 5000);
         }
     },[location])
 
@@ -178,13 +187,39 @@ const PaymentModal = () => {
     // if(location?.search === '?payment_success=true'){
     //     setStep(STEP.SUCCESS);
     // }
+    const confirmPayment = async () => {await axios.put("http://localhost:8800/api/orders", {payment_intent: paymentIntent } , {
+                withCredentials: true
+            });
+            setTimeout(() => {
+              paymentModalHook.onClose();
+                navigate("/orders");
+        },5000);
+
+    }
+
+    // useEffect(() => {
+    //   if(step === STEP.SUCCESS){
+    //     confirmPayment();
+    //   }
+    //   if(step === STEP.FAILURE){
+    //     setTimeout(() => {
+    //       navigate('/');
+    //       paymentModalHook.onClose();
+    //     }, 5000);
+        
+    //   }
+    // },[location]);
 
     if(step === STEP.SUCCESS){
         bodyContent = (
-            <div className="">
-                Success
+            <div className="flex flex-col justify-center items-center gap-5 p-5">
+                <BsCheckCircle size={99} className='text-green-500 text-center'/>
+                <p className=' text-5xl font-semibold text-gray-800 text-center'>Success!</p>
+                <p className='text-xl font-light text-gray-500 text-center'>Your payment has been confirmed!</p>
+                <p className='text-semibold text-lg text-gray-500 text-center'>Please do not close the window, as you will be redirected to the orders page.</p>
             </div>
         )
+        
     }
 
     if(step === STEP.FAILURE){

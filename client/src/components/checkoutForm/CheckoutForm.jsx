@@ -88,6 +88,7 @@ export default function CheckoutForm() {
             pathname: window.location.pathname,
             search: '?payment_success=true',
         });
+        setIsLoading(false);
         return;
     }
 

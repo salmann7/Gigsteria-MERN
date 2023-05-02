@@ -52,7 +52,7 @@ export const intent = async (req, res, next) => {
     });
 
     await newOrder.save();
-    res.status(200).send({ clientSecret: paymentIntent.client_secret})
+    res.status(200).send({ clientSecret: paymentIntent.client_secret, paymentIntent})
 }
 
 export const getOrders = async (req, res, next) => {
