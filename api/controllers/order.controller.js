@@ -2,6 +2,7 @@ import createError from "../utils/createError.js";
 import orderModel from "../models/order.model.js";
 import gigModel from "../models/gig.model.js";
 import Stripe from "stripe";
+import userModel from "../models/user.model.js";
 
 export const checkout =  async (req, res) => {
     const stripe = new Stripe(process.env.STRIPE);
@@ -32,6 +33,7 @@ export const intent = async (req, res, next) => {
     const stripe = new Stripe(process.env.STRIPE);
 
     const gig = await gigModel.findById(req.params.id);
+    const seller = await userModel.findById(gig.user);
 
     const paymentIntent = await stripe.paymentIntents.create({
         amount: gig.price * 100,
@@ -47,6 +49,7 @@ export const intent = async (req, res, next) => {
         title: gig.title,
         buyerId: res.locals.user,
         sellerId: gig.user,
+        sellerName: seller.name,
         price: gig.price,
         payment_intent: paymentIntent.id,
     });

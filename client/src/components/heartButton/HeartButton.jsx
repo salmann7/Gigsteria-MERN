@@ -4,11 +4,11 @@ import useFavorite from '../../hooks/useFavorite';
 
 const HeartButton = ({
     gigId,
-    currentUser
+    user
 }) => {
-    console.log("heart" + currentUser?.favoriteIds)
+    console.log("heart" + user?.favoriteIds)
     const { hasFavorited, toggleFavorite } = useFavorite({
-        gigId, currentUser
+        gigId, user
     });
 
   return (

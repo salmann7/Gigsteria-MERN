@@ -10,7 +10,17 @@ const SingleGig = ({ currentUser }) => {
   const [ gig, setGig ] = useState({});
   const [ gigUser, setGigUser ] = useState({});
   const paymentModal = usePaymentModal();
+  const [ user, setUser ] = useState({});
+  const [ heartClick, setHeartClick ] = useState(false);
   // const [clientSecret, setClientSecret] = useState("");
+
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await axios.get(`http://localhost:8800/api/user/${currentUser._id}`);
+      setUser(res.data);
+    }
+    getUser();
+  },[heartClick, gig]);
 
 
   useEffect(() => {
@@ -76,7 +86,7 @@ const SingleGig = ({ currentUser }) => {
         <div className="md:w-3/4 bg-white rounded-xl shadow-md overflow-hidden flex flex-col gap-4 p-6">
           <div className="flex flex-row justify-between gap-3">
           <h2 className='font-bold text-neutral-800 text-3xl'>{gig.title}</h2>
-          <HeartButton gigId={gig._id} currentUser={currentUser} />
+          <div className="" onClick={() => setHeartClick((p)=>!p)}><HeartButton gigId={gig._id} user={user} /></div>
           </div>
           <div className="w-full h-60 sm:h-96">
             <img src={`${gig?.coverImageSrc}`} alt="cover image" className='object-cover md:object-contain h-full w-full' />
