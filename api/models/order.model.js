@@ -24,6 +24,10 @@ const OrderSchema = new Schema({
         ref: 'User',
         required: true,
     },
+    sellerName: {
+        type: String,
+        required: true,
+    },
     buyerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
