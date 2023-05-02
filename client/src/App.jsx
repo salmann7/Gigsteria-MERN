@@ -21,10 +21,18 @@ import Payment from './components/payment/Payment';
 import PaymentSuccess from './components/paymentSuccess/PaymentSuccess';
 import Orders from './components/orders/Orders';
 import PaymentModal from './components/modals/PaymentModal';
+import Favorites from './components/favorites/Favorites';
 
 function App() {
 
   const [currentUser, setCurrentUser] = useState(null);
+  // const [ user, setUser ] = useState({});
+
+  // const getUser = async () => {
+  //   const res = await axios.get(`http://localhost:8800/api/user/${currentUser?._id}`);
+  //   setUser(res.data);
+  //   console.log(res.data);
+  // }
 
   async function getCurrentUser() {
     const accessToken = Cookies.get('accessToken');
@@ -37,6 +45,7 @@ function App() {
     return await axios.get("http://localhost:8800/api/auth/me", config)
     .then((res) => {
       setCurrentUser(res.data._doc);
+      // getUser();
       console.log(res.data._doc)})
     .catch(e => console.log(e))
   }
@@ -62,6 +71,7 @@ function App() {
           <Route exact path='/payment/:id' element={<Payment currentUser={currentUser} />} />
           {/* <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} /> */}
           <Route exact path='/orders' element={<Orders currentUser={currentUser} />} />
+          <Route exact path='/favorites' element={<Favorites currentUser={currentUser} />} />
         </Routes>
       </div>
       
