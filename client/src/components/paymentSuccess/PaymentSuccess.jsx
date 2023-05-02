@@ -17,9 +17,9 @@ const PaymentSuccess = () => {
             const res = await axios.put("http://localhost:8800/api/orders", {payment_intent} , {
                 withCredentials: true
             });
-            // setTimeout(() => {
-            //     navigate("/orders");
-            // },5000);
+            setTimeout(() => {
+                navigate("/orders");
+            },5000);
         }
 
         confirmOrder();

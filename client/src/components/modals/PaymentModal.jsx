@@ -8,6 +8,7 @@ import {useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { BsCheckCircle } from 'react-icons/bs'
 // import { useHistory } from 'react-router-dom';
 
 import useRegisterModal from '../../hooks/useRegisterModal';
@@ -42,9 +43,14 @@ const PaymentModal = () => {
     const [ step, setStep ] = useState(STEP.CATEGORY);
 
     const [clientSecret, setClientSecret] = useState("");
-    // const { id } = useParams();
+    // const { payment_intent } = useParams();
+    // console.log(location.search)
+    // console.log(payment_intent);
     const id = location.pathname.split('/')[2];
+    const payment_intent = location?.search.split('&')[0].split('=')[1];
+    console.log(payment_intent);
     const paymentModalHook = usePaymentModal();
+    const [ paymentIntent, setPaymentIntent ] = useState('');
 
     useEffect(() => {
         if(paymentModalHook.isOpen){
@@ -55,8 +61,10 @@ const PaymentModal = () => {
                 const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
                   withCredentials: true,
                 });
-                console.log(res.data.clientSecret);
+                console.log(res.data.paymentIntent.id);
+                setPaymentIntent(res.data.paymentIntent.id);
                 setClientSecret(res.data.clientSecret);
+                setPaymentIntent()
               } catch(e){
                 console.log(e);
               }
@@ -66,11 +74,17 @@ const PaymentModal = () => {
     },[paymentModalHook.isOpen])
 
     useEffect(() => {
-        if(location?.search === '?payment_success=true'){
+        if(location?.search.split("&")[1] === 'payment_success=true'){
             setStep(STEP.SUCCESS);
+            confirmPayment();
         }
-        if(location?.search === '?payment_success=false'){
+        if(location?.search.split("&")[1] === 'payment_success=false'){
             setStep(STEP.FAILURE);
+            setTimeout(() => {
+              paymentModalHook.onClose();
+              navigate('/');
+              
+            }, 5000);
         }
     },[location])
 
@@ -178,13 +192,41 @@ const PaymentModal = () => {
     // if(location?.search === '?payment_success=true'){
     //     setStep(STEP.SUCCESS);
     // }
+    const confirmPayment = async () => {
+      console.log(payment_intent);
+      await axios.put("http://localhost:8800/api/orders", {payment_intent} , {
+                withCredentials: true
+            });
+            setTimeout(() => {
+              paymentModalHook.onClose();
+                navigate("/orders");
+        },5000);
+
+    }
+
+    // useEffect(() => {
+    //   if(step === STEP.SUCCESS){
+    //     confirmPayment();
+    //   }
+    //   if(step === STEP.FAILURE){
+    //     setTimeout(() => {
+    //       navigate('/');
+    //       paymentModalHook.onClose();
+    //     }, 5000);
+        
+    //   }
+    // },[location]);
 
     if(step === STEP.SUCCESS){
         bodyContent = (
-            <div className="">
-                Success
+            <div className="flex flex-col justify-center items-center gap-5 p-5">
+                <BsCheckCircle size={99} className='text-green-500 text-center'/>
+                <p className=' text-5xl font-semibold text-gray-800 text-center'>Success!</p>
+                <p className='text-xl font-light text-gray-500 text-center'>Your payment has been confirmed!</p>
+                <p className='text-semibold text-lg text-gray-500 text-center'>Please do not close the window, as you will be redirected to the orders page.</p>
             </div>
         )
+        
     }
 
     if(step === STEP.FAILURE){
