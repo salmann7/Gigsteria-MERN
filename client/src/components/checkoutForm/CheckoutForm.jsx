@@ -74,7 +74,7 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
-    const {error} = await stripe.confirmPayment({
+    const res = await stripe.confirmPayment({
       elements,
     //   confirmParams: {
     //     // Make sure to change this to your payment completion page
@@ -83,10 +83,11 @@ export default function CheckoutForm() {
     //   }
     redirect: 'if_required'
     });
-    if(!error){
+    console.log(res);
+    if(res.paymentIntent.status === "succeeded"){
         navigate({
             pathname: window.location.pathname,
-            search: '?payment_success=true',
+            search: `?payment_intent=${res.paymentIntent.id}&payment_success=true`,
         });
         setIsLoading(false);
         return;
@@ -108,10 +109,11 @@ export default function CheckoutForm() {
     // your `return_url`. For some payment methods like iDEAL, your customer will
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
-    if (error?.type === "card_error" || error?.type === "validation_error") {
-      setMessage(error.message);
-    } 
-    else {
+    // if (error?.type === "card_error" || error?.type === "validation_error") {
+    //   setMessage(error.message);
+    // } 
+    // else
+    if(!res.paymentIntent.status === "succeeded") {
         navigate({
             pathname: window.location.pathname,
             search: '?payment_success=false',

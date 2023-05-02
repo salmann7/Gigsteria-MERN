@@ -43,8 +43,12 @@ const PaymentModal = () => {
     const [ step, setStep ] = useState(STEP.CATEGORY);
 
     const [clientSecret, setClientSecret] = useState("");
-    // const { id } = useParams();
+    // const { payment_intent } = useParams();
+    // console.log(location.search)
+    // console.log(payment_intent);
     const id = location.pathname.split('/')[2];
+    const payment_intent = location?.search.split('&')[0].split('=')[1];
+    console.log(payment_intent);
     const paymentModalHook = usePaymentModal();
     const [ paymentIntent, setPaymentIntent ] = useState('');
 
@@ -57,6 +61,7 @@ const PaymentModal = () => {
                 const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
                   withCredentials: true,
                 });
+                console.log(res.data.paymentIntent.id);
                 setPaymentIntent(res.data.paymentIntent.id);
                 setClientSecret(res.data.clientSecret);
                 setPaymentIntent()
@@ -69,11 +74,11 @@ const PaymentModal = () => {
     },[paymentModalHook.isOpen])
 
     useEffect(() => {
-        if(location?.search === '?payment_success=true'){
+        if(location?.search.split("&")[1] === 'payment_success=true'){
             setStep(STEP.SUCCESS);
             confirmPayment();
         }
-        if(location?.search === '?payment_success=false'){
+        if(location?.search.split("&")[1] === 'payment_success=false'){
             setStep(STEP.FAILURE);
             setTimeout(() => {
               paymentModalHook.onClose();
@@ -187,7 +192,9 @@ const PaymentModal = () => {
     // if(location?.search === '?payment_success=true'){
     //     setStep(STEP.SUCCESS);
     // }
-    const confirmPayment = async () => {await axios.put("http://localhost:8800/api/orders", {payment_intent: paymentIntent } , {
+    const confirmPayment = async () => {
+      console.log(payment_intent);
+      await axios.put("http://localhost:8800/api/orders", {payment_intent} , {
                 withCredentials: true
             });
             setTimeout(() => {
