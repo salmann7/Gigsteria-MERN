@@ -18,6 +18,17 @@ export const createGig = async (req, res, next) => {
     }
 }
 
+export const getUserGigs = async (req, res, next) => {
+    try {
+        const gigs = await gigModel.find({ user: req.params.id});
+        if(!gigs) next(createError(404, "Gig not found"));
+
+        res.status(200).send(gigs);
+    } catch (err) {
+        next(err);
+    }
+}
+
 export const deleteGig = async (req, res, next) => {
     try {
         const existingGig = await gigModel.findById(req.params.id);
