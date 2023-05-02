@@ -5,29 +5,29 @@ import { useCallback, useMemo } from 'react';
 
 const useFavorite = ({
     gigId,
-    currentUser
+    user
 }) => {
     const loginModal = useLoginModal();
 
     const hasFavorited = useMemo(() => {
-        const list = currentUser?.favoriteIds || [];
-        console.log(currentUser?.favoriteIds)
+        const list = user?.favoriteIds || [];
+        console.log(user?.favoriteIds)
          return list.includes(gigId);
-    },[currentUser, gigId]);
+    },[user, gigId]);
 
     const toggleFavorite = useCallback( async () => {
-        if(!currentUser){
+        if(!user){
             return loginModal.onOpen();
         }
 
         try{
             let request;
             if(hasFavorited){
-                let data = currentUser;
+                let data = user;
                 console.log("deleteHere")
                 request = () => axios.put(`http://localhost:8800/api/user/favorites/${gigId}`, data);
             } else{
-                let data = currentUser;
+                let data = user;
                 console.log(data);
                 request = () => axios.post(`http://localhost:8800/api/user/favorites/${gigId}`, data);
             }
@@ -36,7 +36,7 @@ const useFavorite = ({
         }catch(error){
             console.log(error);
         }
-    },[loginModal, hasFavorited, gigId, currentUser]);
+    },[loginModal, hasFavorited, gigId, user]);
     return {
         hasFavorited,
         toggleFavorite
