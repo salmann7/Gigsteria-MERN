@@ -5,51 +5,53 @@ import { BsFillStarFill } from 'react-icons/bs'
 import Slider from 'infinite-react-carousel'
 import Avatar from '../avatar/Avatar'
 
+export const data = [
+  {
+      id: 2,
+      username: 'Cilian Murphy',
+      profilePic: '/images/placeholder.jpg',
+      comment: "I've been using this platform for a few months now, and I've been blown away by the quality of the freelancers I've found. Not only have they delivered high-quality work, but they've also been a pleasure to work with. I highly recommend this platform to anyone looking for top-notch freelancers.",
+      rating: 4
+  },
+  {
+      id: 3,
+      username: 'Tom Hardy',
+      profilePic: '/images/placeholder.jpg',
+      comment: "I was hesitant to try yet another freelancer platform, but I'm so glad I did. The search function is incredibly powerful, and I was able to find the perfect freelancer for my project in just a few clicks. The messaging system also made it easy to communicate with my freelancer and ensure that everything was on track.",
+      rating: 5
+  },
+  {
+      id: 4,
+      username: 'Harvey Spector',
+      profilePic: '/images/placeholder.jpg',
+      comment: "As a freelancer, I've been blown away by the quality of clients I've found on this platform. The payment system is also incredibly secure and reliable, so I never have to worry about getting paid for my work. I highly recommend this platform to any freelancer looking for quality clients and a hassle-free experience.",
+      rating: 3.5
+  },
+  {
+      id: 5,
+      username: 'John Snow',
+      profilePic: '/images/placeholder.jpg',
+      comment: "I've used a number of freelancer platforms in the past, but this one stands out for its exceptional customer service. Whenever I've had a question or issue, the support team has been incredibly responsive and helpful. It's clear that they truly care about their users and their experience on the platform.",
+      rating: 4.5
+  },
+  {
+      id: 6,
+      username: 'Ross Michael',
+      profilePic: '/images/placeholder.jpg',
+      comment: "I've been using this platform for a few months now, and I've been blown away by the quality of the freelancers I've found. Not only have they delivered high-quality work, but they've also been a pleasure to work with. I highly recommend this platform to anyone looking for top-notch freelancers.",
+      rating: 5
+  },
+  {
+      id: 7,
+      username: 'Rachel Dice',
+      profilePic: '/images/placeholder.jpg',
+      comment: "I've been using this platform for a few months now, and I've been blown away by the quality of the freelancers I've found. Not only have they delivered high-quality work, but they've also been a pleasure to work with. I highly recommend this platform to anyone looking for top-notch freelancers.",
+      rating: 4
+  }
+]
+
 const Comments = () => {
-    const data = [
-        {
-            id: 2,
-            username: 'Cilian Murphy',
-            profilePic: '/images/placeholder.jpg',
-            comment: "I've been using this platform for a few months now, and I've been blown away by the quality of the freelancers I've found. Not only have they delivered high-quality work, but they've also been a pleasure to work with. I highly recommend this platform to anyone looking for top-notch freelancers.",
-            rating: 4
-        },
-        {
-            id: 3,
-            username: 'Tom Hardy',
-            profilePic: '/images/placeholder.jpg',
-            comment: "I was hesitant to try yet another freelancer platform, but I'm so glad I did. The search function is incredibly powerful, and I was able to find the perfect freelancer for my project in just a few clicks. The messaging system also made it easy to communicate with my freelancer and ensure that everything was on track.",
-            rating: 5
-        },
-        {
-            id: 4,
-            username: 'Harvey Spector',
-            profilePic: '/images/placeholder.jpg',
-            comment: "As a freelancer, I've been blown away by the quality of clients I've found on this platform. The payment system is also incredibly secure and reliable, so I never have to worry about getting paid for my work. I highly recommend this platform to any freelancer looking for quality clients and a hassle-free experience.",
-            rating: 3.5
-        },
-        {
-            id: 5,
-            username: 'John Snow',
-            profilePic: '/images/placeholder.jpg',
-            comment: "I've used a number of freelancer platforms in the past, but this one stands out for its exceptional customer service. Whenever I've had a question or issue, the support team has been incredibly responsive and helpful. It's clear that they truly care about their users and their experience on the platform.",
-            rating: 4.5
-        },
-        {
-            id: 6,
-            username: 'Ross Michael',
-            profilePic: '/images/placeholder.jpg',
-            comment: "I've been using this platform for a few months now, and I've been blown away by the quality of the freelancers I've found. Not only have they delivered high-quality work, but they've also been a pleasure to work with. I highly recommend this platform to anyone looking for top-notch freelancers.",
-            rating: 5
-        },
-        {
-            id: 7,
-            username: 'Rachel Dice',
-            profilePic: '/images/placeholder.jpg',
-            comment: "I've been using this platform for a few months now, and I've been blown away by the quality of the freelancers I've found. Not only have they delivered high-quality work, but they've also been a pleasure to work with. I highly recommend this platform to anyone looking for top-notch freelancers.",
-            rating: 4
-        }
-    ]
+    
     const getRatingStars = (rating) => {
         const stars = [];
         for (let i = 0; i < 5; i++) {
