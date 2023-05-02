@@ -5,7 +5,7 @@ import requireUser from "../middleware/requireUser.js";
 
 const router = express.Router();
 
-router.get("/", verifyToken, getOrders);
+router.get("/", requireUser, getOrders);
 router.post("/create-payment-intent/:id", requireUser , intent);
 router.put("/", requireUser, confirm);
 router.post("/create-checkout-session", verifyToken, checkout);

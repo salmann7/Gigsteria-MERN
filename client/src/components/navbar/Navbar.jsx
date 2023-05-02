@@ -3,7 +3,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { BiSearch } from 'react-icons/bi';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 import Container from '../container/Container'
 import Avatar from '../avatar/Avatar';
@@ -20,6 +20,7 @@ const Navbar = ({currentUser}) => {
   const loginModal = useLoginModal();
   const uploadGigModal = useUploadGigModal();
   const [ activeLink, setActiveLink ] = useState(false);
+  const navigate = useNavigate();
 
   const isMainPage = (pathname === '/dashboard');
 
@@ -59,6 +60,7 @@ const Navbar = ({currentUser}) => {
 
   const handleOrder = () => {
     console.log("order");
+    navigate('/orders');
   }
 
   const handleUploadGig = () => {
