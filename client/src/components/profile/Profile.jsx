@@ -39,21 +39,15 @@ const skills = [
 
 ]
 
-const communityPosts = [
-    {
-        id: 8,
-        desc: 'this is my first post'
-    },
-    {
-        id: 9,
-        desc: 'new'
-    }
-]
-
-const Profile = () => {
+const Profile = ({
+  currentUser
+}) => {
     const { id } = useParams();
     const [ user, setUser ] = useState({});
     const [ userGigs, setUserGigs ] = useState([]);
+    const [ commPost, setCommPost ] = useState([]);
+    const [ inputPost, setInputPost ] = useState('');
+    const [ self, setSelf ] = useState(false);
     const comments = data;
 
     const getUser = async () => {
@@ -65,6 +59,31 @@ const Profile = () => {
         const res = await axios.get(`http://localhost:8800/api/gigs/${id}`)
         setUserGigs(res.data);
         console.log(res.data);
+    }
+
+    const getCommPosts = async () => {
+      const res = await axios.get(`http://localhost:8800/api/communityPosts/${id}`);
+      setCommPost(res.data.userPosts);
+      console.log(res.data);
+      console.log(commPost);
+    }
+
+    const createPost = async () => {
+      try{
+        const res = await axios.post(`http://localhost:8800/api/communityPosts`, {
+          desc: inputPost,
+        },
+        {
+          withCredentials: true,
+        });
+
+        setInputPost('');
+        
+        getCommPosts();
+        console.log(res.data);
+      } catch(e){
+        console.log(e);
+      }
     }
 
     const getRatingStars = (rating) => {
@@ -80,10 +99,15 @@ const Profile = () => {
     };
     
     useEffect(() => {
+      if(currentUser && (id === currentUser?._id)){
+        setSelf(true);
+      }
         getUser();
         getGigs();
+        getCommPosts();
         console.log(user);
     },[])
+
   return (
     <Container>
         <div className="pb-24 flex flex-col md:flex-row gap-3">
@@ -99,7 +123,7 @@ const Profile = () => {
                             <p>99 Followers</p>
                             <p>75 Followings</p>
                         </div>
-                        <button className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>Follow</button>
+                        <button className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>{self ? 'Edit':'Follow'}</button>
                     </div>
                     <div className="bg-white shadow-lg p-4 flex flex-col gap-4">
                         <h3 className='font-semibold text-lg text-neutral-800'>Achievements</h3>
@@ -128,7 +152,7 @@ const Profile = () => {
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
-                              <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>+ Add</button>
+                              {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>+ Add</button>}
                             </div>
                             <div className="flex flex-row gap-3 flex-wrap">
                               {skills.map((skill) => (
@@ -139,7 +163,10 @@ const Profile = () => {
                     </div>
                     <div className="bg-neutral-50 shadow-md hidden md:block">
                         <div className="flex flex-col gap-4 p-4">
+                        <div className="flex flex-row justify-between">
                           <h3 className='font-semibold text-lg text-neutral-800'>Contacts</h3>
+                          {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>Edit</button>}
+                          </div>
                           <div className="flex flex-row gap-4 text-gray-700 justify-around">
                             <MdEmail size={28} className='hover:cursor-pointer'/>
                             <BsTwitter size={28} className='hover:cursor-pointer' />
@@ -150,16 +177,18 @@ const Profile = () => {
                 </div>
             </div>
             <div className="md:w-2/3 lg:w-3/4 ">
-                <div className="flex flex-col gap-6 shadow-sm bg-white">
+                <div className="flex flex-col-reverse gap-6 shadow-sm bg-white">
                     <div className="shadow-sm bg-white flex flex-col gap-3 p-4">
                         <h3 className='font-semibold text-lg text-neutral-800 text-center'>Community</h3>
-                        <div className="flex flex-row gap-3 justify-center">
-                            <input type="text" placeholder='What on your mind?' className='p-4 bg-neutral-50 rounded-lg flex-grow text-center' />
-                            <button className='text-green-500 hover:text-green-600'><AiFillPlusCircle size={46} /></button>
-                        </div>
-                        <div className="flex flex-col-reverse gap-4 bg-neutral-50 rounded-lg p-4 max-h-80 overflow-y-scroll scroll-smooth">
-                            {communityPosts.map((post) => (
-                                <div className="bg-white rounded-md shadow-md w-fit p-2" key={post.id}>
+                        {self ? (<div className="flex flex-row gap-3 justify-center">
+                            <input onChange={(e) => setInputPost(e.target.value)} value={inputPost} type="text" placeholder='What on your mind?' className='p-4 bg-neutral-50 rounded-lg flex-grow text-center' />
+                            <button disabled={inputPost ? false:true} onClick={() => {createPost()}} className='disabled:cursor-not-allowed text-green-500 hover:text-green-600'><AiFillPlusCircle size={46} /></button>
+                        </div>):(
+                          <p className='text-sm font-semibold text-neutral-500 text-center'>Stay updated on my latest gigs and projects by following me.</p>
+                        )}
+                        <div className="flex flex-col gap-4 bg-neutral-50 rounded-lg p-4 max-h-80 overflow-y-scroll scroll-smooth">
+                            {commPost && commPost.slice().reverse().map((post) => (
+                                <div className="bg-white rounded-md shadow-md w-fit p-2" key={post._id}>
                                     <div className="flex flex-row gap-3 items-center">
                                       <img src={user?.picture || '/images/placeholder.jpg'} alt="" className='w-7 h-7 rounded-full' />
                                       <p className='text-sm font-semibold text-neutral-500'>{post.desc}</p>
@@ -185,7 +214,7 @@ const Profile = () => {
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
-                              <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>+ Add</button>
+                              {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>+ Add</button>}
                             </div>
                             <div className="flex flex-row gap-3 flex-wrap">
                               {skills.map((skill) => (
@@ -196,7 +225,11 @@ const Profile = () => {
                     </div>
                     <div className="bg-neutral-50 shadow-md block md:hidden">
                         <div className="flex flex-col gap-4 p-4">
+                          <div className="flex flex-row justify-between">
                           <h3 className='font-semibold text-lg text-neutral-800'>Contacts</h3>
+                          {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>Edit</button>}
+                          </div>
+                          
                           <div className="flex flex-row gap-4 text-gray-700 justify-around">
                             <MdEmail size={28} className='hover:cursor-pointer'/>
                             <BsTwitter size={28} className='hover:cursor-pointer' />

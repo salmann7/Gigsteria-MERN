@@ -9,6 +9,8 @@ import userRoutes from "./routes/user.route.js";
 import deserializeUserP from "./middleware/deserializeUser.js";
 import gigsRoutes from "./routes/gig.route.js";
 import ordersRoutes from "./routes/order.route.js";
+import profileRoutes from "./routes/profileRoutes.js";
+import communityPostRoutes from "./routes/communityPost.route.js"
 // import reviewsRoutes from "./routes/review.route.js";
 
 const app = express();
@@ -34,6 +36,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/gigs", gigsRoutes);
 app.use("/api/orders", ordersRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/communityPosts", communityPostRoutes)
 // app.use("/api/reviews", reviewsRoutes);
 
 app.use((err, req, res, next) => {
