@@ -39,7 +39,15 @@ const userSchema = new Schema({
     favoriteIds: {
         type: Array,
         required: false
-    }
+    },
+    role: {
+        type: String,
+        required: false,
+    },
+    skills: {
+        type: Array,
+        required: false
+    },
 },{
     timestamps: true
 });

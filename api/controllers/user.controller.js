@@ -66,3 +66,13 @@ export const deleteFav = async (req, res, next) => {
         res.status(500).send("Server error");
     }
 }
+
+export const updateUser = async ( req, res, next ) => {
+    const userId = res.locals.user._doc._id;
+    try{
+        const updatedUser = await userModel.findByIdAndUpdate( userId, req.body, { new: true,});
+        res.status(200).send(updatedUser);
+    }catch(e){
+        next(e);
+    }
+}
