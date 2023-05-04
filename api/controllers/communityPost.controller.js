@@ -23,7 +23,9 @@ export const createPost = async ( req, res, next ) => {
             desc: req.body.desc,
         });
         const savedPost = await newPost.save();
-        res.status(201).send({savedPost});
+
+        const updatedPost = await communityPostModel.find({user:userId});
+        res.status(201).send(updatedPost);
     } catch(e){
         next(e);
     }
