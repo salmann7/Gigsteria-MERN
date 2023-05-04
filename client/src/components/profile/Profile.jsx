@@ -4,40 +4,40 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import { AiFillPlusCircle } from 'react-icons/ai'
 import ListingCard from '../listingCard/ListingCard';
-import { data } from '../comments/Comments';
+// import { data } from '../comments/Comments';
 import ProfileComments from './ProfileComments';
 import { MdEmail } from 'react-icons/md';
 import { BsTwitter } from 'react-icons/bs';
 import { TiSocialLinkedin } from 'react-icons/ti';
 import { BsFillStarFill } from 'react-icons/bs'
 
-const skills = [
-    {
-        id:2,
-        name:'css'
-    },
-    {
-        id:3,
-        name:'html'
-    },
-    {
-        id:4,
-        name:'reactjs'
-    },
-    {
-        id:5,
-        name:'nodejs'
-    },
-    {
-        id:6,
-        name:'web'
-    },
-    {
-        id:7,
-        name:'angular'
-    }
+// const skills = [
+//     {
+//         id:2,
+//         name:'css'
+//     },
+//     {
+//         id:3,
+//         name:'html'
+//     },
+//     {
+//         id:4,
+//         name:'reactjs'
+//     },
+//     {
+//         id:5,
+//         name:'nodejs'
+//     },
+//     {
+//         id:6,
+//         name:'web'
+//     },
+//     {
+//         id:7,
+//         name:'angular'
+//     }
 
-]
+// ]
 
 const Profile = ({
   currentUser
@@ -47,8 +47,15 @@ const Profile = ({
     const [ userGigs, setUserGigs ] = useState([]);
     const [ commPost, setCommPost ] = useState([]);
     const [ inputPost, setInputPost ] = useState('');
+    const [ name, setName ] = useState(user?.name || '');
+    const [ role, setRole ] = useState(user?.role || 'Gigster');
+    const [ skills, setSkills ] = useState(user?.skills || []);
+    // let tempSkills = skills;
+    const [ skill, setSkill ] = useState('');
     const [ self, setSelf ] = useState(false);
-    const comments = data;
+    const [ editMode, setEditMode ] = useState(false);
+    const [data, setData] = useState(user || {});
+    const comments = [];
 
     const getUser = async () => {
         const res = await axios.get(`http://localhost:8800/api/user/${id}`)
@@ -58,14 +65,11 @@ const Profile = ({
     const getGigs = async () => {
         const res = await axios.get(`http://localhost:8800/api/gigs/${id}`)
         setUserGigs(res.data);
-        console.log(res.data);
     }
 
     const getCommPosts = async () => {
       const res = await axios.get(`http://localhost:8800/api/communityPosts/${id}`);
       setCommPost(res.data.userPosts);
-      console.log(res.data);
-      console.log(commPost);
     }
 
     const createPost = async () => {
@@ -80,7 +84,6 @@ const Profile = ({
         setInputPost('');
         
         getCommPosts();
-        console.log(res.data);
       } catch(e){
         console.log(e);
       }
@@ -97,6 +100,65 @@ const Profile = ({
         }
         return stars;
     };
+
+    const handleEdit = (e) => {
+      if(!editMode){
+        setEditMode(true);
+      } else {
+        handleSubmit();
+        setEditMode(false);
+      }
+    }
+
+    const handleSubmit = async () => {
+      setData({...data, name, role});
+    }
+
+    const handleSkills = async () => {
+      if(!editMode){
+        setEditMode(true);
+      } else {
+        // tempSkills.push(skill);
+        skills.push(skill);
+        // setSkills([...skills, [tempSkills]]);
+        setData({...data, skills});
+        setEditMode(false);
+        setSkill(null);
+      }
+      
+    }
+
+    const handleContact = async () => {
+      if(!editMode){
+        setEditMode(true);
+      } else {
+        setEditMode(false);
+      }
+      
+    }
+
+    const handleFollow = async () => {
+      if(!editMode){
+        console.log("here in edit mode on")
+        setEditMode(true);
+      } else {
+        console.log("here in edit mode off")
+        setEditMode(false);
+      }
+    }
+
+    useEffect(() => {
+      const updateUser = async () => {
+        try{
+          const res = await axios.put('http://localhost:8800/api/user', data , { withCredentials: true});
+          setUser(res.data);
+          setName(res.data?.name);
+        }catch(e){
+          console.log(e);
+        }
+      }
+      updateUser();
+    },[data])
     
     useEffect(() => {
       if(currentUser && (id === currentUser?._id)){
@@ -105,8 +167,11 @@ const Profile = ({
         getUser();
         getGigs();
         getCommPosts();
-        console.log(user);
     },[])
+
+    useEffect(() => {
+      setSkills(user?.skills)
+    },[user])
 
   return (
     <Container>
@@ -116,14 +181,22 @@ const Profile = ({
                     <div className="bg-white shadow-lg flex flex-col gap-3 items-center justify-center p-4">
                         <img src={user?.picture || '/images/placeholder.jpg'} alt="profile pic" className=' w-44 h-44 rounded-full' />
                         <div className="text-center">
-                          <h3 className='text-xl font-semibold text-neutral-800'>{user?.name}</h3>
-                          <h6 className='font-light text-md text-neutral-500'>Programmer</h6>
+                          {!editMode 
+                          ? (<h3 className='text-xl font-semibold text-neutral-800'>{user?.name}</h3>)
+                          : (
+                            <input type="text" name='name' value={name} onChange={(e) => setName(e.target.value)} className='border text-center text-xl font-semibold text-neutral-800 block' placeholder={name} />
+                          )}
+                          {!editMode
+                          ? (<h6 className='font-light text-md text-neutral-500'>{role}</h6>)
+                          : (<input type='text' name='role' value={role} onChange={(e) => setRole(e.target.value)} className='font-light text-md text-neutral-500 text-center border block' placeholder={role} />) }
                         </div>
                         <div className="flex flex-row gap-5 text-sm font-semibold text-neutral-500 text-center">
                             <p>99 Followers</p>
                             <p>75 Followings</p>
                         </div>
-                        <button className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>{self ? 'Edit':'Follow'}</button>
+                        {self && <button onClick={() => handleEdit()} className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>{editMode ? 'Submit':'Edit'}</button>}
+                        
+                        {!self && <button onClick={() => {handleFollow()}} className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>Follow</button>}
                     </div>
                     <div className="bg-white shadow-lg p-4 flex flex-col gap-4">
                         <h3 className='font-semibold text-lg text-neutral-800'>Achievements</h3>
@@ -152,11 +225,12 @@ const Profile = ({
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
-                              {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>+ Add</button>}
+                              {self && <button  onClick={() => handleSkills()} className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>{editMode ? 'Submit':'+ Add'}</button>}
                             </div>
+                            {editMode && (<div className=""><input type='text' name='skill' value={skill} onChange={(e) => setSkill(e.target.value)} placeholder='Enter skill' className='border text-center'/><button className='ml-2' onClick={() => setEditMode(false)}>X</button></div>)}
                             <div className="flex flex-row gap-3 flex-wrap">
-                              {skills.map((skill) => (
-                                  <div key={skill.id} className="hover:cursor-pointer bg-green-50 text-green-500 text-sm px-4 py-2">{skill.name}</div>
+                              {skills && skills.map((skill, i) => (
+                                  <div key={skill} className="hover:cursor-pointer bg-green-50 text-green-500 text-sm px-4 py-2">{skill}</div>
                               ))}
                             </div>
                         </div>
@@ -165,7 +239,7 @@ const Profile = ({
                         <div className="flex flex-col gap-4 p-4">
                         <div className="flex flex-row justify-between">
                           <h3 className='font-semibold text-lg text-neutral-800'>Contacts</h3>
-                          {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>Edit</button>}
+                          {self && <button onClick={() => handleContact()} className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>{editMode ? 'Submit':'Edit'}</button>}
                           </div>
                           <div className="flex flex-row gap-4 text-gray-700 justify-around">
                             <MdEmail size={28} className='hover:cursor-pointer'/>
@@ -217,8 +291,8 @@ const Profile = ({
                               {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>+ Add</button>}
                             </div>
                             <div className="flex flex-row gap-3 flex-wrap">
-                              {skills.map((skill) => (
-                                  <div key={skill.id} className="hover:cursor-pointer bg-green-50 text-green-500 text-sm px-4 py-2">{skill.name}</div>
+                              {skills && skills.map((skill, index) => (
+                                  <div key={index} className="hover:cursor-pointer bg-green-50 text-green-500 text-sm px-4 py-2">{skill.name}</div>
                               ))}
                             </div>
                         </div>
