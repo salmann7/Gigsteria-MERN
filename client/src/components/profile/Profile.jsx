@@ -6,38 +6,11 @@ import { AiFillPlusCircle } from 'react-icons/ai'
 import ListingCard from '../listingCard/ListingCard';
 // import { data } from '../comments/Comments';
 import ProfileComments from './ProfileComments';
-import { MdEmail } from 'react-icons/md';
+import { MdEmail, MdArrowDropDown } from 'react-icons/md';
 import { BsTwitter } from 'react-icons/bs';
 import { TiSocialLinkedin } from 'react-icons/ti';
 import { BsFillStarFill } from 'react-icons/bs'
 
-// const skills = [
-//     {
-//         id:2,
-//         name:'css'
-//     },
-//     {
-//         id:3,
-//         name:'html'
-//     },
-//     {
-//         id:4,
-//         name:'reactjs'
-//     },
-//     {
-//         id:5,
-//         name:'nodejs'
-//     },
-//     {
-//         id:6,
-//         name:'web'
-//     },
-//     {
-//         id:7,
-//         name:'angular'
-//     }
-
-// ]
 
 const Profile = ({
   currentUser
@@ -50,11 +23,13 @@ const Profile = ({
     const [ name, setName ] = useState(user?.name || '');
     const [ role, setRole ] = useState(user?.role || 'Gigster');
     const [ skills, setSkills ] = useState(user?.skills || []);
-    // let tempSkills = skills;
     const [ skill, setSkill ] = useState('');
     const [ self, setSelf ] = useState(false);
     const [ editMode, setEditMode ] = useState(false);
     const [data, setData] = useState(user || {});
+    const [isOpen, setIsOpen] = useState(false);
+    const [ selectSocial, setSelectSocial ] = useState('');
+    const [ socialLink, setSocialLink ] = useState('');
     const comments = [];
 
     const getUser = async () => {
@@ -118,9 +93,7 @@ const Profile = ({
       if(!editMode){
         setEditMode(true);
       } else {
-        // tempSkills.push(skill);
         skills.push(skill);
-        // setSkills([...skills, [tempSkills]]);
         setData({...data, skills});
         setEditMode(false);
         setSkill(null);
@@ -132,6 +105,13 @@ const Profile = ({
       if(!editMode){
         setEditMode(true);
       } else {
+        let updatedData;
+        if(selectSocial === 'twitter'){
+          updatedData = { ...data, twitter: socialLink };
+        } else {
+          updatedData = { ...data, linkedin: socialLink };
+        }
+        setData(updatedData);
         setEditMode(false);
       }
       
@@ -180,7 +160,7 @@ const Profile = ({
                 <div className="flex flex-col gap-3">
                     <div className="bg-white shadow-lg flex flex-col gap-3 items-center justify-center p-4">
                         <img src={user?.picture || '/images/placeholder.jpg'} alt="profile pic" className=' w-44 h-44 rounded-full' />
-                        <div className="text-center">
+                        <div className="text-center flex flex-col">
                           {!editMode 
                           ? (<h3 className='text-xl font-semibold text-neutral-800'>{user?.name}</h3>)
                           : (
@@ -188,7 +168,7 @@ const Profile = ({
                           )}
                           {!editMode
                           ? (<h6 className='font-light text-md text-neutral-500'>{role}</h6>)
-                          : (<input type='text' name='role' value={role} onChange={(e) => setRole(e.target.value)} className='font-light text-md text-neutral-500 text-center border block' placeholder={role} />) }
+                          : (<input type='text' name='role' value={role} onChange={(e) => setRole(e.target.value)} className='font-light text-md text-neutral-500 text-center border block flex-grow' placeholder={role} />) }
                         </div>
                         <div className="flex flex-row gap-5 text-sm font-semibold text-neutral-500 text-center">
                             <p>99 Followers</p>
@@ -227,7 +207,7 @@ const Profile = ({
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
                               {self && <button  onClick={() => handleSkills()} className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>{editMode ? 'Submit':'+ Add'}</button>}
                             </div>
-                            {editMode && (<div className=""><input type='text' name='skill' value={skill} onChange={(e) => setSkill(e.target.value)} placeholder='Enter skill' className='border text-center'/><button className='ml-2' onClick={() => setEditMode(false)}>X</button></div>)}
+                            {editMode && (<div className="flex gap-2"><input type='text' name='skill' value={skill} onChange={(e) => setSkill(e.target.value)} placeholder='Enter skill' className='border text-center flex-grow'/><button className='' onClick={() => setEditMode(false)}>X</button></div>)}
                             <div className="flex flex-row gap-3 flex-wrap">
                               {skills && skills.map((skill, i) => (
                                   <div key={skill} className="hover:cursor-pointer bg-green-50 text-green-500 text-sm px-4 py-2">{skill}</div>
@@ -241,10 +221,26 @@ const Profile = ({
                           <h3 className='font-semibold text-lg text-neutral-800'>Contacts</h3>
                           {self && <button onClick={() => handleContact()} className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>{editMode ? 'Submit':'Edit'}</button>}
                           </div>
+                          {editMode && (
+                            <div className="flex flex-row gap-2 relative items-center">
+                              <button onClick={() => setIsOpen((p) => {return !p })} className='hover:cursor-pointer border px-1 text-neutral-500 bg-white '><MdArrowDropDown className='inline-block' size={20}  /></button>
+                              {isOpen && (
+                                <div className="absolute top-[106%] bg-white flex flex-col border text-sm font-semibold text-neutral-500">
+                                  <p onClick={() => setSelectSocial('twitter')} className='border-b-[1px] py-1 px-2 hover:cursor-pointer hover:bg-gray-100'>Twitter</p>
+                                  <p onClick={() => setSelectSocial('other')} className='py-1 px-2 hover:cursor-pointer hover:bg-gray-100'>Linkdeln</p>
+                                </div>
+                              )}
+                              {selectSocial && (
+                                selectSocial === 'twitter' ? <BsTwitter className='text-neutral-500' size={15} /> : <TiSocialLinkedin className='text-neutral-500' size={15} />
+                              )}
+                              <input onChange={(e) => setSocialLink(e.target.value)} type='text' placeholder='Enter home-link of your social' className='border text-xs text-center flex-grow p-1' />
+                              <button className='' onClick={() => setEditMode(false)}>X</button>
+                            </div>
+                          )}
                           <div className="flex flex-row gap-4 text-gray-700 justify-around">
-                            <MdEmail size={28} className='hover:cursor-pointer'/>
-                            <BsTwitter size={28} className='hover:cursor-pointer' />
-                            <TiSocialLinkedin size={28} className='hover:cursor-pointer'/>
+                            {user && user?.email && <div className='' onClick={() => ({})}><MdEmail size={28} className='hover:cursor-pointer'/></div>}
+                            {user && user?.twitter && <div className='' onClick={() => ({})}><BsTwitter size={28} className='hover:cursor-pointer' /></div>}
+                            {user && user?.linkedin && <div className='' onClick={() => ({})}><TiSocialLinkedin size={28} className='hover:cursor-pointer'/></div>}
                           </div>
                         </div>
                     </div>
@@ -303,11 +299,16 @@ const Profile = ({
                           <h3 className='font-semibold text-lg text-neutral-800'>Contacts</h3>
                           {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>Edit</button>}
                           </div>
-                          
+                          {editMode && (
+                            <div className="flex flex-row gap-3">
+                              <button>Hi</button>
+                            </div>
+                          )}
                           <div className="flex flex-row gap-4 text-gray-700 justify-around">
                             <MdEmail size={28} className='hover:cursor-pointer'/>
                             <BsTwitter size={28} className='hover:cursor-pointer' />
                             <TiSocialLinkedin size={28} className='hover:cursor-pointer'/>
+                            <MdArrowDropDown size={28} />
                           </div>
                         </div>
                     </div>

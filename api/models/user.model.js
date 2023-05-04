@@ -48,6 +48,14 @@ const userSchema = new Schema({
         type: Array,
         required: false
     },
+    twitter: {
+        type: String,
+        required: false
+    },
+    linkedin: {
+        type: String,
+        required: false
+    }
 },{
     timestamps: true
 });
