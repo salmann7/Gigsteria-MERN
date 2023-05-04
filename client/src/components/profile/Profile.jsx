@@ -30,21 +30,20 @@ const Profile = ({
     const [isOpen, setIsOpen] = useState(false);
     const [ selectSocial, setSelectSocial ] = useState('');
     const [ socialLink, setSocialLink ] = useState('');
+    const [ totalOrders, setTotalOrders ] = useState(0);
     const comments = [];
 
-    const getUser = async () => {
-        const res = await axios.get(`http://localhost:8800/api/user/${id}`)
-        setUser(res.data);
-    }
-
-    const getGigs = async () => {
-        const res = await axios.get(`http://localhost:8800/api/gigs/${id}`)
-        setUserGigs(res.data);
-    }
-
-    const getCommPosts = async () => {
-      const res = await axios.get(`http://localhost:8800/api/communityPosts/${id}`);
-      setCommPost(res.data.userPosts);
+    const getProfileDetails = async () => {
+      try{
+        const res = await axios.get(`http://localhost:8800/api/profile/${id}`);
+        console.log(res.data);
+        setUser(res.data?.userObj);
+        setUserGigs(res.data?.userGigObj);
+        setCommPost(res.data?.commObj);
+        setTotalOrders(res.data?.orderLength);
+      }catch(e){
+        console.log(e);
+      }
     }
 
     const createPost = async () => {
@@ -55,10 +54,8 @@ const Profile = ({
         {
           withCredentials: true,
         });
-
         setInputPost('');
-        
-        getCommPosts();
+        setCommPost(res.data);
       } catch(e){
         console.log(e);
       }
@@ -114,15 +111,12 @@ const Profile = ({
         setData(updatedData);
         setEditMode(false);
       }
-      
     }
 
     const handleFollow = async () => {
       if(!editMode){
-        console.log("here in edit mode on")
         setEditMode(true);
       } else {
-        console.log("here in edit mode off")
         setEditMode(false);
       }
     }
@@ -144,9 +138,7 @@ const Profile = ({
       if(currentUser && (id === currentUser?._id)){
         setSelf(true);
       }
-        getUser();
-        getGigs();
-        getCommPosts();
+      getProfileDetails();
     },[])
 
     useEffect(() => {
@@ -186,7 +178,7 @@ const Profile = ({
                         </div>
                         <div className="flex flex-row justify-between text-neutral-500 font-semibold text-sm">
                           <h6>Total Orders:- </h6>
-                          <p>55</p>
+                          <p>{totalOrders}</p>
                         </div>
                     </div>
                     <div className="bg-white shadow-md">
