@@ -76,3 +76,43 @@ export const updateUser = async ( req, res, next ) => {
         next(e);
     }
 }
+
+export const addFollower = async ( req, res, next ) => {
+    const userId = req.params.id;
+    const myId = res.locals.user._doc._id;
+    try{
+        const updatedUser = await userModel.findByIdAndUpdate( userId, {
+            $push: {
+                followerIds: myId,
+            }
+        }, { new: true,});
+        const myUser = await userModel.findByIdAndUpdate( myId, {
+            $push: {
+                followingIds: userId,
+            }
+        },{ new: true}  );
+        res.status(200).send(updatedUser);
+    }catch(e){
+        next(e);
+    }
+}
+
+export const removeFollower = async ( req, res, next ) => {
+    const userId = req.params.id;
+    const myId = res.locals.user._doc._id;
+    try{
+        const updatedUser = await userModel.findByIdAndUpdate( userId, {
+            $pull: {
+                followerIds: myId,
+            }
+        }, { new: true,});
+        const myUser = await userModel.findByIdAndUpdate( myId, {
+            $pull: {
+                followingIds: userId,
+            }
+        },{ new: true}  );
+        res.status(200).send(updatedUser);
+    }catch(e){
+        next(e);
+    }
+}

@@ -23,6 +23,8 @@ import Orders from './components/orders/Orders';
 import PaymentModal from './components/modals/PaymentModal';
 import Favorites from './components/favorites/Favorites';
 import Profile from './components/profile/Profile';
+import ProfileWrapper from './components/profile/ProfileWrapper';
+import ProfileOther from './components/profile/ProfileOther';
 
 function App() {
 
@@ -73,7 +75,8 @@ function App() {
           {/* <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} /> */}
           <Route exact path='/orders' element={<Orders currentUser={currentUser} />} />
           <Route exact path='/favorites' element={<Favorites currentUser={currentUser} />} />
-          <Route exact path='/profile/:id' element={<Profile currentUser={currentUser} />} />
+          <Route exact path='/profile/:id' element={<ProfileOther currentUser={currentUser} />} />
+          <Route exact path='/myprofile/:id' element={<Profile currentUser={currentUser} />}  />
         </Routes>
       </div>
       
