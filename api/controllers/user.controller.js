@@ -1,4 +1,5 @@
 // import userModel from "../models/user.model";
+import notificationModel from "../models/notification.model.js";
 import userModel from "../models/user.model.js";
 
 import createError from "../utils/createError.js";
@@ -29,10 +30,18 @@ export const getCurrentUser = async ( req, res, next ) => {
 export const getUser = async (req, res, next) => {
     try {
         const user = await userModel.findById(req.params.id);
-
         res.status(200).send(user);
     } catch (err) {
         return next();
+    }
+}
+
+export const getUserDetail = async ( req, res, next ) => {
+    try{
+        const user = await userModel.findById(res.locals.user._doc._id);
+        res.status(200).send(user);
+    } catch(e){
+        next(e);
     }
 }
 
@@ -84,13 +93,19 @@ export const addFollower = async ( req, res, next ) => {
         const updatedUser = await userModel.findByIdAndUpdate( userId, {
             $push: {
                 followerIds: myId,
-            }
+            },
+            hasNotification: true,
         }, { new: true,});
         const myUser = await userModel.findByIdAndUpdate( myId, {
             $push: {
                 followingIds: userId,
             }
         },{ new: true}  );
+        const newNoti = new notificationModel({
+            user: userId,
+            body: `${res.locals.user._doc.name} started following you`
+        });
+        await newNoti.save();
         res.status(200).send(updatedUser);
     }catch(e){
         next(e);
@@ -104,13 +119,19 @@ export const removeFollower = async ( req, res, next ) => {
         const updatedUser = await userModel.findByIdAndUpdate( userId, {
             $pull: {
                 followerIds: myId,
-            }
+            },
+            hasNotification: true,
         }, { new: true,});
         const myUser = await userModel.findByIdAndUpdate( myId, {
             $pull: {
                 followingIds: userId,
             }
         },{ new: true}  );
+        const newNoti = new notificationModel({
+            user: userId,
+            body: `${res.locals.user._doc.name} has unfollowed you`
+        });
+        await newNoti.save();
         res.status(200).send(updatedUser);
     }catch(e){
         next(e);
