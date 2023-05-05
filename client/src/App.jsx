@@ -26,6 +26,7 @@ import Profile from './components/profile/Profile';
 import ProfileWrapper from './components/profile/ProfileWrapper';
 import ProfileOther from './components/profile/ProfileOther';
 import NotificationModal from './components/modals/NotificationModal';
+import SearchModal from './components/modals/SearchModal';
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
+      <SearchModal currentUser={currentUser} />
       <NotificationModal />
       <UploadGigModal />
       <LoginModal />
