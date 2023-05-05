@@ -14,6 +14,7 @@ import useLoginModal from '../../hooks/useLoginModal';
 import useUploadGigModal from '../../hooks/useUploadGigModal';
 import Categories from './Categories';
 import useNotificationModal from '../../hooks/useNotificationModal';
+import useSearchModal from '../../hooks/useSearchModal';
 
 const Navbar = ({currentUser}) => {
   const {pathname} = useLocation();
@@ -22,6 +23,7 @@ const Navbar = ({currentUser}) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const uploadGigModal = useUploadGigModal();
+  const searchModal = useSearchModal();
   const [ activeLink, setActiveLink ] = useState(false);
   const navigate = useNavigate();
   const notificationModal = useNotificationModal();
@@ -116,15 +118,15 @@ const Navbar = ({currentUser}) => {
                 </Link>
                 <div className="flex flex-row items-center justify-center w-full md:w-auto mx-1 sm:mx-0">
                     <div className="border-[1px] rounded-full hover:shadow-md transition cursor-pointer py-2 w-full md:w-auto">
-                        <div className="flex flex-row items-center justify-between">
+                        <div onClick={() => searchModal.onOpen()} className="flex flex-row items-center justify-between">
                             <div className="text-sm font-semibold md:px-6 px-3">
-                                Find gig
+                               Search 
                             </div>
                             <div className="hidden sm:block text-sm font-semibold px-6 border-x-[1px] flex-1 text-center">
-                                Category
+                                Title
                             </div>
                             <div className="hidden sm:block text-sm font-semibold pl-6 pr-1  flex-1 text-center">
-                                Title
+                                Cost
                             </div>
                             <div className="bg-green-600 p-2 rounded-full mx-2 text-white">
                                 <BiSearch size={18} />
@@ -187,7 +189,7 @@ const Navbar = ({currentUser}) => {
                 </ul>
               </div>
             </Container>
-            {(currentUser || isMainPage) && (<Categories />)}
+            {(currentUser || isMainPage) && (<Categories currentUser={currentUser} />)}
         </div>
     </div>
   )

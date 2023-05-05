@@ -9,12 +9,16 @@ const Dashboard = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get('category');
+  const search = queryParams.get('search');
+  const min = queryParams.get('min');
+  const max = queryParams.get('max');
 
   useEffect(() => {
     const fetchGigs = async () => {
+      console.log(queryParams);
       try {
-        const url = category
-          ? `http://localhost:8800/api/gigs?category=${category}`
+        const url = (category || min || max || search)
+          ? `http://localhost:8800/api/gigs?${category && 'category='+category+'&'}${min && '&min='+min}${max && '&max='+max}${search && '&search='+search}`
           : "http://localhost:8800/api/gigs";
 
         const response = await axios.get(url);

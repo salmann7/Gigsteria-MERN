@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import qs from "query-string";
 
 const CategoryBox = ({
+    currentUser,
     icon: Icon,
     label,
     selected
@@ -32,12 +33,19 @@ const CategoryBox = ({
       delete updatedQuery.category;
     }
 
-    const url = qs.stringifyUrl({
-      url: '/',
-      query: updatedQuery
-    },{ skipNull: true});
-
-    navigate(url);
+    if(currentUser){
+      const url = qs.stringifyUrl({
+        url: '/',
+        query: updatedQuery
+      },{ skipNull: true});
+      navigate(url);
+    } else{
+      const url = qs.stringifyUrl({
+        url: '/dashboard',
+        query: updatedQuery
+      },{ skipNull: true});
+      navigate(url);
+    }
   },[label, queryParams, navigate])
   return (
     <div onClick={handleClick} className={`flex flex-col items-center justify-center gap-2 p-3 border-b-2 hover:text-neutral-800 transition cursor-pointer 

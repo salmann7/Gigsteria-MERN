@@ -4,7 +4,7 @@ import { categories } from '../modals/UploadGigModal'
 import Container from '../container/Container'
 import CategoryBox from '../categoryBox/CategoryBox';
 
-const Categories = () => {
+const Categories = ({currentUser}) => {
     const {pathname} = useLocation();
     // const params = useParams();
     // const qCat = params && params?.category;
@@ -24,7 +24,7 @@ const Categories = () => {
     <Container>
         <div className="pt-4 flex flex-row items-center justify-between overflow-x-auto">
             {categories.map((item) => (
-                <CategoryBox key={item.label} label={item.label} icon={item.icon} selected={category === item.label}/>
+                <CategoryBox currentUser={currentUser} key={item.label} label={item.label} icon={item.icon} selected={category === item.label}/>
             ))}
         </div>
     </Container>
