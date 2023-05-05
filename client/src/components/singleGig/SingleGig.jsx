@@ -138,7 +138,7 @@ const SingleGig = ({ currentUser }) => {
                 {/* <h6 className='font-light text-xs text-neutral-800'>{gigUser?.email}</h6> */}
               </div>
               <p className='font-semibold text-neutral-500'>Programmer</p>
-              <Link className='text-md font-semibold text-blue-500 underline' to={`/profile/${gig?.user}`}>Check profile</Link>
+              <Link className='text-md font-semibold text-blue-500 underline' to={(currentUser && currentUser._id === gig?.user) ? (`/myprofile/${gig?.user}`):(`/profile/${gig?.user}`)}>Check profile</Link>
             </div>
           </div>
         </div>

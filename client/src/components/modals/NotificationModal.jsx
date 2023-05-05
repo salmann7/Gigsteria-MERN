@@ -43,7 +43,7 @@ const NotificationModal = () => {
         <div className="flex flex-col gap-4">
             <Heading title="Notifications" subtitle="Stay up-to-date with your latest notifications!" />
             <div className="flex flex-col">
-                {list && list.map((item) => (
+                {list && list.slice().reverse().map((item) => (
                     <div key={item._id} className="text-sm font-semibold border-b-[1px] border-neutral-500 text-neutral-500 py-2 hover:bg-neutral-50 hover:cursor-pointer">{item.body}</div>
                 ))}
             </div>

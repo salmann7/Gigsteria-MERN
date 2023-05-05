@@ -21,7 +21,7 @@ const HeroFeature = () => {
                 <h1 className=' leading-relaxed font-light text-neutral-600 text-4xl'><span className='text-blue-600 font-normal'>Find</span> the perfect <span className='line-through'>freelancer</span> <span className='text-green-600 italic font-extrabold'>Gig</span>ster for your project, or offer your own services and start <span className='text-blue-600 font-normal'>earning</span> today with our platform.</h1>
                 <div className="flex flex-row gap-4 justify-center md:justify-normal">
                     <button onClick={handleSignup} className='bg-green-600 px-4 py-2 text-white rounded-full font-semibold hover:bg-green-700 transition hover:shadow-md'>Create profile</button>
-                    <button onClick={handleSignup} className='border-[1px] border-green-600 px-4 py-2 rounded-full text-green-500 font-semibold hover:border-green-700 hover:text-green-700 transition hover:shadow-md'>Upload Gig</button>
+                    <button onClick={handleSignup} className='border-[1px] border-green-600 px-4 py-2 rounded-full text-green-500 font-semibold hover:border-green-700 hover:text-green-700 transition hover:shadow-md'>Create Gig</button>
                 </div>
             </div>
             <div className="flex-shrink-0 hidden md:block">

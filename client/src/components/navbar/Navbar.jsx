@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
 import { BiSearch } from 'react-icons/bi';
 import { BsBell, BsGraphUpArrow, BsFileEarmarkSpreadsheet, BsPerson } from 'react-icons/bs';
-import { MdOutlineLogout, MdOutlineFileUpload, MdFavoriteBorder } from 'react-icons/md';
+import { MdOutlineLogout, MdOutlineFileUpload, MdFavoriteBorder, MdHome } from 'react-icons/md';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
@@ -136,14 +136,14 @@ const Navbar = ({currentUser}) => {
                   <li>
                     {currentUser ? (
                       <Link to='/'>
-                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 ml-2 hover:bg-neutral-100 py-3 rounded-full`}>
-                          Gig Home
+                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block  font-semibold text-neutral-500 text-md px-6 ml-2 hover:bg-neutral-100 py-3 rounded-full `}>
+                          <div className="flex flex-row items-center justify-around"><span className=' ml-1'>Home</span></div>
                         </div>
                       </Link>
                     ):(
                       <Link to='/dashboard'>
                         <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 ml-2 hover:bg-neutral-100 py-3 rounded-full`}>
-                          Gig Home
+                        <div className="flex flex-row items-center justify-around"><span className=' ml-1'>Home</span></div>
                         </div>
                       </Link>
                     )}
@@ -151,7 +151,7 @@ const Navbar = ({currentUser}) => {
                   </li>
                   <li>
                     <div onClick={handleUploadGig} className="hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 mx-2 hover:bg-neutral-100 py-3 rounded-full">
-                      Upload Gig
+                      Create
                     </div>
                   </li>
                   <li className='relative'>
@@ -166,7 +166,7 @@ const Navbar = ({currentUser}) => {
                     {currentUser ? (
                       <div className="flex flex-col cursor-pointer">
                       {/* <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div> */}
-                      <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Upload Gig</span><MdOutlineFileUpload size={17} /></div>
+                      <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Create Gig</span><MdOutlineFileUpload size={17} /></div>
                       <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Console</span><BsGraphUpArrow size={17} /></div>
                       <div onClick={handleFav} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Favorites</span><MdFavoriteBorder size={17} /></div>
                       <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Orders</span><BsFileEarmarkSpreadsheet size={17} /></div>
