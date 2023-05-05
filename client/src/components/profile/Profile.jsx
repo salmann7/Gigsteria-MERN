@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Container from '../container/Container'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import { AiFillPlusCircle } from 'react-icons/ai'
 import ListingCard from '../listingCard/ListingCard';
@@ -262,8 +262,8 @@ const Profile = ({
                         </div>
                     </div>
                     {profileData?.userObj?.isSeller && (<div className="shadow-lg bg-white p-4 flex flex-col gap-4">
-                        <h3 className='font-semibold text-lg text-neutral-800 text-center'>Check out my list of top-rated gigs</h3>
-                        <p className='text-sm font-semibold text-neutral-500 text-center'>Explore all my Gigs by <span className=' underline text-blue-500 hover:cursor-pointer'>clicking here!</span></p>
+                        <h3 className='font-semibold text-lg text-neutral-800 text-center'>My Gig Dashboard</h3>
+                        <p className='text-sm font-semibold text-neutral-500 text-center'>Manage your gigs and track their performance by <span className=' underline text-blue-500 hover:cursor-pointer'><Link to={`/profiledashboard/${id}`}>clicking here!</Link></span></p>
                         <div className="flex flex-nowrap overflow-x-auto scrollbar-none">
                           {userGigs ? (userGigs.map((gig) => (
                             <div key={gig._id} className="flex-shrink-0 w-72 mr-4">
