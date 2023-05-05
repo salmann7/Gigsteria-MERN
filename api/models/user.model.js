@@ -55,7 +55,15 @@ const userSchema = new Schema({
     linkedin: {
         type: String,
         required: false
-    }
+    },
+    followerIds: {
+        type: Array,
+        required: false
+    },
+    followingIds: {
+        type: Array,
+        required: false
+    },
 },{
     timestamps: true
 });

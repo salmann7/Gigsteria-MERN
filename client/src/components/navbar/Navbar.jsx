@@ -70,7 +70,7 @@ const Navbar = ({currentUser}) => {
 
   const handleProfile = () => {
     console.log("Profile");
-    navigate(`/profile/${currentUser?._id}`);
+    navigate(`/myprofile/${currentUser?._id}`);
   }
 
   const handleUploadGig = () => {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Container from '../container/Container'
 import { useParams } from 'react-router-dom'
 import axios from 'axios';
-import { AiFillPlusCircle } from 'react-icons/ai'
 import ListingCard from '../listingCard/ListingCard';
 // import { data } from '../comments/Comments';
 import ProfileComments from './ProfileComments';
@@ -12,25 +11,13 @@ import { TiSocialLinkedin } from 'react-icons/ti';
 import { BsFillStarFill } from 'react-icons/bs'
 
 
-const Profile = ({
+const ProfileOther = ({
   currentUser
 }) => {
     const { id } = useParams();
-    const [ user, setUser ] = useState({});
-    const [ userGigs, setUserGigs ] = useState([]);
-    const [ commPost, setCommPost ] = useState([]);
-    const [ inputPost, setInputPost ] = useState('');
-    const [ name, setName ] = useState(user?.name || '');
-    const [ role, setRole ] = useState(user?.role || 'Gigster');
-    const [ skills, setSkills ] = useState(user?.skills || []);
-    const [ skill, setSkill ] = useState('');
-    const [ self, setSelf ] = useState(false);
-    const [ editMode, setEditMode ] = useState(false);
-    const [data, setData] = useState({});
-    const [isOpen, setIsOpen] = useState(false);
-    const [ selectSocial, setSelectSocial ] = useState('');
-    const [ socialLink, setSocialLink ] = useState('');
-    const [ totalOrders, setTotalOrders ] = useState(0);
+    const [ followerList, setFollowerList ] = useState([]);
+    const [ followingList, setFollowingList ] = useState([]);
+    const [ isFollowing, setIsFollowing ] = useState(false);
     const [profileData, setProfileData] = useState({});
     const comments = [];
 
@@ -39,27 +26,12 @@ const Profile = ({
         const res = await axios.get(`http://localhost:8800/api/profile/${id}`);
         console.log(res.data);
         setProfileData(res.data);
-        setUser(res.data?.userObj);
-        setUserGigs(res.data?.userGigObj);
-        setCommPost(res.data?.commObj);
-        setTotalOrders(res.data?.orderLength);
-        setSkills(res.data?.userObj?.skills)
+        if(res.data?.userObj?.followerIds.includes(currentUser?._id)){
+          setIsFollowing(true);
+        }
+        setFollowerList(res.data?.userObj?.followerIds);
+        setFollowingList(res.data?.userObj?.followingIds);
       }catch(e){
-        console.log(e);
-      }
-    }
-
-    const createPost = async () => {
-      try{
-        const res = await axios.post(`http://localhost:8800/api/communityPosts`, {
-          desc: inputPost,
-        },
-        {
-          withCredentials: true,
-        });
-        setInputPost('');
-        setCommPost(res.data);
-      } catch(e){
         console.log(e);
       }
     }
@@ -76,76 +48,38 @@ const Profile = ({
         return stars;
     };
 
-    const handleEdit = (e) => {
-      if(!editMode){
-        setEditMode(true);
-      } else {
-        handleSubmit();
-        setEditMode(false);
+    const handleFollow = async () => {
+      if(isFollowing){
+       //unfollow logic 
+        const filteredFollowerList = followerList.filter(id => id !== currentUser?._id);
+        setFollowerList(filteredFollowerList);
+        removeFollower();
+      } else{
+        //follow logic
+        followerList.push(currentUser?._id);
+        addFollower();
       }
     }
 
-    const handleSubmit = async () => {
-      setData({...data, name, role});
-      // updateUser();
-    }
-
-    const handleSkills = async () => {
-      if(!editMode){
-        setEditMode(true);
-      } else {
-        skills.push(skill);
-        setData({...data, skills});
-        // updateUser();
-        setEditMode(false);
-        setSkill(null);
-      }
-      
-    }
-
-    const handleContact = async () => {
-      if(!editMode){
-        setEditMode(true);
-      } else {
-        let updatedData;
-        if(selectSocial === 'twitter'){
-          updatedData = { ...data, twitter: socialLink };
-        } else {
-          updatedData = { ...data, linkedin: socialLink };
-        }
-        setData(updatedData);
-        // updateUser();
-        setEditMode(false);
-      }
-    }
-
-    // const updateUser = async () => {
-    //   try{
-    //     const res = await axios.put('http://localhost:8800/api/user', data , { withCredentials: true});
-    //     setUser(res.data);
-    //     // setName(res.data?.name);
-    //   }catch(e){
-    //     console.log(e);
-    //   }
-    // }
-
-    useEffect(() => {
-      const updateUser = async () => {
+      const addFollower = async () => {
         try{
-          const res = await axios.put('http://localhost:8800/api/user', data , { withCredentials: true});
-          setUser(res.data);
-          setName(res.data?.name);
-        }catch(e){
+          const res = await axios.put(`http://localhost:8800/api/user/add/${id}`, {followerIds: followerList}, { withCredentials: true});
+          setIsFollowing(true);
+        } catch(e){
           console.log(e);
         }
       }
-      updateUser();
-    },[data])
+
+      const removeFollower = async () => {
+        try{
+          const res = await axios.put(`http://localhost:8800/api/user/remove/${id}`, {followerIds: followerList}, { withCredentials: true});
+          setIsFollowing(false);
+        } catch(e){
+          console.log(e);
+        }
+      }
     
     useEffect(() => {
-      if(currentUser && (id === currentUser?._id)){
-        setSelf(true);
-      }
       getProfileDetails();
     },[])
 
@@ -155,22 +89,16 @@ const Profile = ({
             <div className="md:w-1/3 lg:w-1/4">
                 <div className="flex flex-col gap-3">
                     <div className="bg-white shadow-lg flex flex-col gap-3 items-center justify-center p-4">
-                        <img src={user?.picture || '/images/placeholder.jpg'} alt="profile pic" className=' w-44 h-44 rounded-full' />
+                        <img src={profileData?.userObj?.picture || '/images/placeholder.jpg'} alt="profile pic" className=' w-44 h-44 rounded-full' />
                         <div className="text-center flex flex-col">
-                          {!editMode 
-                          ? (<h3 className='text-xl font-semibold text-neutral-800'>{user?.name}</h3>)
-                          : (
-                            <input type="text" name='name' value={name} onChange={(e) => setName(e.target.value)} className='border text-center text-xl font-semibold text-neutral-800 block' placeholder={name} />
-                          )}
-                          {!editMode
-                          ? (<h6 className='font-light text-md text-neutral-500'>{role}</h6>)
-                          : (<input type='text' name='role' value={role} onChange={(e) => setRole(e.target.value)} className='font-light text-md text-neutral-500 text-center border block flex-grow' placeholder={role} />) }
+                          <h3 className='text-xl font-semibold text-neutral-800'>{profileData?.userObj?.name}</h3>
+                          <h6 className='font-light text-md text-neutral-500'>{profileData?.userObj?.role}</h6>
                         </div>
                         <div className="flex flex-row gap-5 text-sm font-semibold text-neutral-500 text-center">
-                            <p>{profileData?.userObj?.followerIds.length || 0} Followers</p>
-                            <p>{profileData?.userObj?.followingIds.length || 0} Followings</p>
+                            <p>{(followerList && followerList.length) || "0"} Followers</p>
+                            <p>{(followingList && followingList.length) || '0'} Followings</p>
                         </div>
-                        {self && <button onClick={() => handleEdit()} className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>{editMode ? 'Submit':'Edit'}</button>}
+                        <button onClick={() => {handleFollow()}} className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>{isFollowing ? 'Unfollow':'Follow'}</button>
                     </div>
                     <div className="bg-white shadow-lg p-4 flex flex-col gap-4">
                         <h3 className='font-semibold text-lg text-neutral-800'>Achievements</h3>
@@ -180,7 +108,7 @@ const Profile = ({
                         </div>
                         <div className="flex flex-row justify-between text-neutral-500 font-semibold text-sm">
                           <h6>Total Orders:- </h6>
-                          <p>{totalOrders}</p>
+                          <p>{profileData?.orderLength}</p>
                         </div>
                     </div>
                     <div className="bg-white shadow-md">
@@ -199,11 +127,9 @@ const Profile = ({
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
-                              {self && <button  onClick={() => handleSkills()} className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>{editMode ? 'Submit':'+ Add'}</button>}
                             </div>
-                            {editMode && (<div className="flex gap-2"><input type='text' name='skill' value={skill} onChange={(e) => setSkill(e.target.value)} placeholder='Enter skill' className='border text-center flex-grow'/><button className='' onClick={() => setEditMode(false)}>X</button></div>)}
                             <div className="flex flex-row gap-3 flex-wrap">
-                              {skills && skills.map((skill, i) => (
+                              {profileData?.userObj?.skills && profileData?.userObj?.skills.map((skill, i) => (
                                   <div key={skill} className="hover:cursor-pointer bg-green-50 text-green-500 text-sm px-4 py-2">{skill}</div>
                               ))}
                             </div>
@@ -213,28 +139,11 @@ const Profile = ({
                         <div className="flex flex-col gap-4 p-4">
                         <div className="flex flex-row justify-between">
                           <h3 className='font-semibold text-lg text-neutral-800'>Contacts</h3>
-                          {self && <button onClick={() => handleContact()} className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>{editMode ? 'Submit':'Edit'}</button>}
                           </div>
-                          {editMode && (
-                            <div className="flex flex-row gap-2 relative items-center">
-                              <button onClick={() => setIsOpen((p) => {return !p })} className='hover:cursor-pointer border px-1 text-neutral-500 bg-white '><MdArrowDropDown className='inline-block' size={20}  /></button>
-                              {isOpen && (
-                                <div className="absolute top-[106%] bg-white flex flex-col border text-sm font-semibold text-neutral-500">
-                                  <p onClick={() => setSelectSocial('twitter')} className='border-b-[1px] py-1 px-2 hover:cursor-pointer hover:bg-gray-100'>Twitter</p>
-                                  <p onClick={() => setSelectSocial('other')} className='py-1 px-2 hover:cursor-pointer hover:bg-gray-100'>Linkdeln</p>
-                                </div>
-                              )}
-                              {selectSocial && (
-                                selectSocial === 'twitter' ? <BsTwitter className='text-neutral-500' size={15} /> : <TiSocialLinkedin className='text-neutral-500' size={15} />
-                              )}
-                              <input onChange={(e) => setSocialLink(e.target.value)} type='text' placeholder='Enter home-link of your social' className='border text-xs text-center flex-grow p-1' />
-                              <button className='' onClick={() => setEditMode(false)}>X</button>
-                            </div>
-                          )}
                           <div className="flex flex-row gap-4 text-gray-700 justify-around">
-                            {user && user?.email && <div className='' onClick={() => ({})}><MdEmail size={28} className='hover:cursor-pointer'/></div>}
-                            {user && user?.twitter && <div className='' onClick={() => ({})}><BsTwitter size={28} className='hover:cursor-pointer' /></div>}
-                            {user && user?.linkedin && <div className='' onClick={() => ({})}><TiSocialLinkedin size={28} className='hover:cursor-pointer'/></div>}
+                            {profileData?.userObj && profileData?.userObj?.email && <div className='' onClick={() => ({})}><MdEmail size={28} className='hover:cursor-pointer'/></div>}
+                            {profileData?.userObj && profileData?.userObj?.twitter && <div className='' onClick={() => ({})}><BsTwitter size={28} className='hover:cursor-pointer' /></div>}
+                            {profileData?.userObj && profileData?.userObj?.linkedin && <div className='' onClick={() => ({})}><TiSocialLinkedin size={28} className='hover:cursor-pointer'/></div>}
                           </div>
                         </div>
                     </div>
@@ -244,17 +153,12 @@ const Profile = ({
                 <div className="flex flex-col-reverse gap-6 shadow-sm bg-white">
                     <div className="shadow-sm bg-white flex flex-col gap-3 p-4">
                         <h3 className='font-semibold text-lg text-neutral-800 text-center'>Community</h3>
-                        {self ? (<div className="flex flex-row gap-3 justify-center">
-                            <input onChange={(e) => setInputPost(e.target.value)} value={inputPost} type="text" placeholder='What on your mind?' className='p-4 bg-neutral-50 rounded-lg flex-grow text-center' />
-                            <button disabled={inputPost ? false:true} onClick={() => {createPost()}} className='disabled:cursor-not-allowed text-green-500 hover:text-green-600'><AiFillPlusCircle size={46} /></button>
-                        </div>):(
-                          <p className='text-sm font-semibold text-neutral-500 text-center'>Stay updated on my latest gigs and projects by following me.</p>
-                        )}
+                        <p className='text-sm font-semibold text-neutral-500 text-center'>Stay updated on my latest gigs and projects by following me.</p>
                         <div className="flex flex-col gap-4 bg-neutral-50 rounded-lg p-4 max-h-80 overflow-y-scroll scroll-smooth">
-                            {commPost && commPost.slice().reverse().map((post) => (
+                            {profileData?.commObj && profileData?.commObj.slice().reverse().map((post) => (
                                 <div className="bg-white rounded-md shadow-md w-fit p-2" key={post._id}>
                                     <div className="flex flex-row gap-3 items-center">
-                                      <img src={user?.picture || '/images/placeholder.jpg'} alt="" className='w-7 h-7 rounded-full' />
+                                      <img src={profileData?.userObj?.picture || '/images/placeholder.jpg'} alt="" className='w-7 h-7 rounded-full' />
                                       <p className='text-sm font-semibold text-neutral-500'>{post.desc}</p>
                                     </div>
                                 </div>
@@ -265,7 +169,7 @@ const Profile = ({
                         <h3 className='font-semibold text-lg text-neutral-800 text-center'>Check out my list of top-rated gigs</h3>
                         <p className='text-sm font-semibold text-neutral-500 text-center'>Explore all my Gigs by <span className=' underline text-blue-500 hover:cursor-pointer'>clicking here!</span></p>
                         <div className="flex flex-nowrap overflow-x-auto scrollbar-none">
-                          {userGigs ? (userGigs.map((gig) => (
+                          {profileData?.userGigObj ? (profileData?.userGigObj.map((gig) => (
                             <div key={gig._id} className="flex-shrink-0 w-72 mr-4">
                                 <ListingCard data={gig} />
                             </div>
@@ -278,10 +182,9 @@ const Profile = ({
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
-                              {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>+ Add</button>}
                             </div>
                             <div className="flex flex-row gap-3 flex-wrap">
-                              {skills && skills.map((skill, index) => (
+                              {profileData?.userObj?.skills && profileData?.userObj?.skills.map((skill, index) => (
                                   <div key={index} className="hover:cursor-pointer bg-green-50 text-green-500 text-sm px-4 py-2">{skill.name}</div>
                               ))}
                             </div>
@@ -291,18 +194,11 @@ const Profile = ({
                         <div className="flex flex-col gap-4 p-4">
                           <div className="flex flex-row justify-between">
                           <h3 className='font-semibold text-lg text-neutral-800'>Contacts</h3>
-                          {self && <button className='text-white text-xs px-4 py-2 bg-blue-400 rounded-full border-none hover:bg-blue-500 hover:cursor-pointer hover:shadow-sm'>Edit</button>}
                           </div>
-                          {editMode && (
-                            <div className="flex flex-row gap-3">
-                              <button>Hi</button>
-                            </div>
-                          )}
                           <div className="flex flex-row gap-4 text-gray-700 justify-around">
-                            <MdEmail size={28} className='hover:cursor-pointer'/>
-                            <BsTwitter size={28} className='hover:cursor-pointer' />
-                            <TiSocialLinkedin size={28} className='hover:cursor-pointer'/>
-                            <MdArrowDropDown size={28} />
+                            {profileData?.userObj && profileData?.userObj?.email && <div className='' onClick={() => ({})}><MdEmail size={28} className='hover:cursor-pointer'/></div>}
+                            {profileData?.userObj && profileData?.userObj?.twitter && <div className='' onClick={() => ({})}><BsTwitter size={28} className='hover:cursor-pointer' /></div>}
+                            {profileData?.userObj && profileData?.userObj?.linkedin && <div className='' onClick={() => ({})}><TiSocialLinkedin size={28} className='hover:cursor-pointer'/></div>}
                           </div>
                         </div>
                     </div>
@@ -348,4 +244,4 @@ const Profile = ({
   )
 }
 
-export default Profile
+export default ProfileOther
