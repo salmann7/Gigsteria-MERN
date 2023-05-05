@@ -58,7 +58,7 @@ export const getGigs = async (req, res, next) => {
 
     const filters = {
         ...(q.userId && { userId: q.userId}),
-        ...(q.cat && { cat: q.cat}),
+        ...(q.category && { cat: q.category}),
         ...((q.min || q.max) && {
             price: {
                 ...(q.min && { $gt: q.min}),
@@ -67,10 +67,17 @@ export const getGigs = async (req, res, next) => {
         }),
         ...(q.search && { title: { $regex: q.search, $options: "i"}}),
     }
+    console.log(filters);
 
     try {
-        const gigs = await gigModel.find(filters).sort({ [q.sort]: -1});
-        res.status(200).send(gigs);
+        if(filters){
+            const gigs = await gigModel.find(filters).sort({ [q.sort]: -1});
+            res.status(200).send(gigs);
+        }else{
+            const gigs = await gigModel.find().sort({ [q.sort]: -1});
+            res.status(200).send(gigs);
+        }
+        
     } catch(err) {
         next(err);
     }

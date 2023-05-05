@@ -1,13 +1,19 @@
 import React from 'react'
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { categories } from '../modals/UploadGigModal'
 import Container from '../container/Container'
 import CategoryBox from '../categoryBox/CategoryBox';
 
 const Categories = () => {
     const {pathname} = useLocation();
+    // const params = useParams();
+    // const qCat = params && params?.category;
     const [searchParams, setSearchParams] = useSearchParams();
-    const category = searchParams?.get('cat');
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const category = queryParams.get('category');
+    // const category = ''
+    console.log(category)
     const isMainPage = (pathname === '/') || (pathname === '/dashboard');
 
     if(!isMainPage){
