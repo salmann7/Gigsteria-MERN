@@ -93,11 +93,11 @@ export const addFollower = async ( req, res, next ) => {
                 followingIds: userId,
             }
         },{ new: true}  );
-        const newNoti = new notificationModel.create({
+        const newNoti = new notificationModel({
             user: userId,
             body: `${res.locals.user._doc.name} started following you`
         });
-        newNoti.save();
+        await newNoti.save();
         res.status(200).send(updatedUser);
     }catch(e){
         next(e);
@@ -119,11 +119,11 @@ export const removeFollower = async ( req, res, next ) => {
                 followingIds: userId,
             }
         },{ new: true}  );
-        const newNoti = new notificationModel.create({
+        const newNoti = new notificationModel({
             user: userId,
             body: `${res.locals.user._doc.name} has unfollowed you`
         });
-        newNoti.save();
+        await newNoti.save();
         res.status(200).send(updatedUser);
     }catch(e){
         next(e);

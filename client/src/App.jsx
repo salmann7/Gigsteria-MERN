@@ -25,6 +25,7 @@ import Favorites from './components/favorites/Favorites';
 import Profile from './components/profile/Profile';
 import ProfileWrapper from './components/profile/ProfileWrapper';
 import ProfileOther from './components/profile/ProfileOther';
+import NotificationModal from './components/modals/NotificationModal';
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
+      <NotificationModal />
       <UploadGigModal />
       <LoginModal />
       <RegisterModal />

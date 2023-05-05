@@ -11,6 +11,7 @@ import useRegisterModal from '../../hooks/useRegisterModal';
 import useLoginModal from '../../hooks/useLoginModal';
 import useUploadGigModal from '../../hooks/useUploadGigModal';
 import Categories from './Categories';
+import useNotificationModal from '../../hooks/useNotificationModal';
 
 const Navbar = ({currentUser}) => {
   const {pathname} = useLocation();
@@ -21,6 +22,7 @@ const Navbar = ({currentUser}) => {
   const uploadGigModal = useUploadGigModal();
   const [ activeLink, setActiveLink ] = useState(false);
   const navigate = useNavigate();
+  const notificationModal = useNotificationModal();
 
   const isMainPage = (pathname === '/dashboard');
 
@@ -71,6 +73,10 @@ const Navbar = ({currentUser}) => {
   const handleProfile = () => {
     console.log("Profile");
     navigate(`/myprofile/${currentUser?._id}`);
+  }
+
+  const handleNotification = () => {
+    notificationModal.onOpen();
   }
 
   const handleUploadGig = () => {
@@ -153,7 +159,7 @@ const Navbar = ({currentUser}) => {
                       <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Console</div>
                       <div onClick={handleFav} className=" p-4 hover:bg-neutral-50 transition">Favorites</div>
                       <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Orders</div>
-                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Notification</div>
+                      <div onClick={handleNotification} className=" p-4 hover:bg-neutral-50 transition">Notification</div>
                       <div onClick={handleProfile} className=" p-4 hover:bg-neutral-50 transition">My Profile</div>
                       <div onClick={handleLogout} className="p-4 hover:bg-neutral-50 transition">Logout</div>
                     </div>
