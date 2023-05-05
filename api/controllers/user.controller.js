@@ -1,4 +1,5 @@
 // import userModel from "../models/user.model";
+import notificationModel from "../models/notification.model.js";
 import userModel from "../models/user.model.js";
 
 import createError from "../utils/createError.js";
@@ -84,13 +85,19 @@ export const addFollower = async ( req, res, next ) => {
         const updatedUser = await userModel.findByIdAndUpdate( userId, {
             $push: {
                 followerIds: myId,
-            }
+            },
+            hasNotification: true,
         }, { new: true,});
         const myUser = await userModel.findByIdAndUpdate( myId, {
             $push: {
                 followingIds: userId,
             }
         },{ new: true}  );
+        const newNoti = new notificationModel.create({
+            user: userId,
+            body: `${res.locals.user._doc.name} started following you`
+        });
+        newNoti.save();
         res.status(200).send(updatedUser);
     }catch(e){
         next(e);
@@ -104,13 +111,19 @@ export const removeFollower = async ( req, res, next ) => {
         const updatedUser = await userModel.findByIdAndUpdate( userId, {
             $pull: {
                 followerIds: myId,
-            }
+            },
+            hasNotification: true,
         }, { new: true,});
         const myUser = await userModel.findByIdAndUpdate( myId, {
             $pull: {
                 followingIds: userId,
             }
         },{ new: true}  );
+        const newNoti = new notificationModel.create({
+            user: userId,
+            body: `${res.locals.user._doc.name} has unfollowed you`
+        });
+        newNoti.save();
         res.status(200).send(updatedUser);
     }catch(e){
         next(e);

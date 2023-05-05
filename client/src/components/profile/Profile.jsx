@@ -195,7 +195,7 @@ const Profile = ({
                         </div>
                         </div>
                     </div>
-                    <div className="bg-neutral-50 shadow-md hidden md:block">
+                    {profileData?.userObj?.isSeller && <div className="bg-neutral-50 shadow-md hidden md:block">
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
@@ -208,7 +208,7 @@ const Profile = ({
                               ))}
                             </div>
                         </div>
-                    </div>
+                    </div>}
                     <div className="bg-neutral-50 shadow-md hidden md:block">
                         <div className="flex flex-col gap-4 p-4">
                         <div className="flex flex-row justify-between">
@@ -261,7 +261,7 @@ const Profile = ({
                             ))}
                         </div>
                     </div>
-                    <div className="shadow-lg bg-white p-4 flex flex-col gap-4">
+                    {profileData?.userObj?.isSeller && (<div className="shadow-lg bg-white p-4 flex flex-col gap-4">
                         <h3 className='font-semibold text-lg text-neutral-800 text-center'>Check out my list of top-rated gigs</h3>
                         <p className='text-sm font-semibold text-neutral-500 text-center'>Explore all my Gigs by <span className=' underline text-blue-500 hover:cursor-pointer'>clicking here!</span></p>
                         <div className="flex flex-nowrap overflow-x-auto scrollbar-none">
@@ -271,10 +271,10 @@ const Profile = ({
                             </div>
                           ))):(null)}
                         </div>
-                    </div>
+                    </div>)}
                 </div>
             </div>
-            <div className="bg-neutral-50 shadow-md block md:hidden">
+            {profileData?.userObj?.isSeller && (<div className="bg-neutral-50 shadow-md block md:hidden">
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
                               <h3 className='font-semibold text-neutral-800 text-xl'>Skills</h3>
@@ -286,7 +286,7 @@ const Profile = ({
                               ))}
                             </div>
                         </div>
-                    </div>
+                    </div>)}
                     <div className="bg-neutral-50 shadow-md block md:hidden">
                         <div className="flex flex-col gap-4 p-4">
                           <div className="flex flex-row justify-between">
