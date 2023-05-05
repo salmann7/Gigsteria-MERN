@@ -27,6 +27,7 @@ import ProfileWrapper from './components/profile/ProfileWrapper';
 import ProfileOther from './components/profile/ProfileOther';
 import NotificationModal from './components/modals/NotificationModal';
 import SearchModal from './components/modals/SearchModal';
+import ProfileDashboard from './components/dashboard/profileDashboard';
 
 function App() {
 
@@ -74,6 +75,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={currentUser ? <Dashboard /> : <LandingPage />} />
           <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/profiledashboard/:id' element={<ProfileDashboard currentUser={currentUser} />} />
           <Route exact path='/gig/:id' element={<SingleGig currentUser={currentUser} />} />
           <Route exact path='/payment/:id' element={<Payment currentUser={currentUser} />} />
           {/* <Route exact path='/paymentsuccess' element={<PaymentSuccess currentUser={currentUser} />} /> */}

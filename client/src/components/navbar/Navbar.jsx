@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
-import { BiSearch } from 'react-icons/bi';
+import { BiSearch, BiUserPlus } from 'react-icons/bi';
 import { BsBell, BsGraphUpArrow, BsFileEarmarkSpreadsheet, BsPerson } from 'react-icons/bs';
-import { MdOutlineLogout, MdOutlineFileUpload, MdFavoriteBorder, MdHome } from 'react-icons/md';
+import { MdOutlineLogout, MdOutlineFileUpload, MdFavoriteBorder, MdHome, MdOutlineLogin } from 'react-icons/md';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
@@ -178,8 +178,8 @@ const Navbar = ({currentUser}) => {
                     </div>
                     ) : (
                       <div className="flex flex-col cursor-pointer">
-                      <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div>
-                      <div onClick={handleLogin} className="p-4 hover:bg-neutral-50 transition">Login</div>
+                      <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition flex justify-between items-center"><span>Sign up</span><BiUserPlus size={17} /></div>
+                      <div onClick={handleLogin} className="p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Login</span><MdOutlineLogin size={17} /></div>
                     </div>
                     )}
                     
