@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { AiOutlineMenu } from "react-icons/ai";
 import { BiSearch } from 'react-icons/bi';
+import { BsBell, BsGraphUpArrow, BsFileEarmarkSpreadsheet, BsPerson } from 'react-icons/bs';
+import { MdOutlineLogout, MdOutlineFileUpload, MdFavoriteBorder } from 'react-icons/md';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
@@ -23,6 +25,7 @@ const Navbar = ({currentUser}) => {
   const [ activeLink, setActiveLink ] = useState(false);
   const navigate = useNavigate();
   const notificationModal = useNotificationModal();
+  const [ hasNotification, setHasNotification ] = useState(false);
 
   const isMainPage = (pathname === '/dashboard');
 
@@ -35,6 +38,14 @@ const Navbar = ({currentUser}) => {
       setActiveLink(true);
     }
   })
+
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await axios.get(`http://localhost:8800/api/user`, { withCredentials: true});
+      setHasNotification(res.data?.hasNotification);
+    }
+    getUser();
+  },[])
 
   useEffect(() => {
     console.log(pathname);
@@ -145,7 +156,7 @@ const Navbar = ({currentUser}) => {
                   </li>
                   <li className='relative'>
                     <div onClick={toggleOpen} className="border-[1px] rounded-full p-4 md:py-2 md:px-2 border-x-neutral-200 flex flex-row items-center gap-3 cursor-pointer hover:shadow-md transition">
-                        <AiOutlineMenu />
+                        <div className="relative"><AiOutlineMenu  />{hasNotification && <span className='bg-red-500 w-[10px] h-[10px] rounded-full absolute -right-1 -top-1'></span>}</div>
                         <div className="hidden md:block">
                             <Avatar src={currentUser?.picture} />
                         </div>
@@ -155,13 +166,13 @@ const Navbar = ({currentUser}) => {
                     {currentUser ? (
                       <div className="flex flex-col cursor-pointer">
                       {/* <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div> */}
-                      <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition">Upload Gig</div>
-                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Console</div>
-                      <div onClick={handleFav} className=" p-4 hover:bg-neutral-50 transition">Favorites</div>
-                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition">Orders</div>
-                      <div onClick={handleNotification} className=" p-4 hover:bg-neutral-50 transition">Notification</div>
-                      <div onClick={handleProfile} className=" p-4 hover:bg-neutral-50 transition">My Profile</div>
-                      <div onClick={handleLogout} className="p-4 hover:bg-neutral-50 transition">Logout</div>
+                      <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Upload Gig</span><MdOutlineFileUpload size={17} /></div>
+                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Console</span><BsGraphUpArrow size={17} /></div>
+                      <div onClick={handleFav} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Favorites</span><MdFavoriteBorder size={17} /></div>
+                      <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Orders</span><BsFileEarmarkSpreadsheet size={17} /></div>
+                      <div onClick={handleNotification} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Notification</span><div className="relative"><BsBell size={17} />{hasNotification && <span className='bg-red-500 w-[10px] h-[10px] rounded-full absolute -right-1 -top-1'></span>}</div></div>
+                      <div onClick={handleProfile} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>My Profile</span><BsPerson size={17} /></div>
+                      <div onClick={handleLogout} className="p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Logout</span><MdOutlineLogout size={17} /></div>
                     </div>
                     ) : (
                       <div className="flex flex-col cursor-pointer">

@@ -30,10 +30,18 @@ export const getCurrentUser = async ( req, res, next ) => {
 export const getUser = async (req, res, next) => {
     try {
         const user = await userModel.findById(req.params.id);
-
         res.status(200).send(user);
     } catch (err) {
         return next();
+    }
+}
+
+export const getUserDetail = async ( req, res, next ) => {
+    try{
+        const user = await userModel.findById(res.locals.user._doc._id);
+        res.status(200).send(user);
+    } catch(e){
+        next(e);
     }
 }
 
