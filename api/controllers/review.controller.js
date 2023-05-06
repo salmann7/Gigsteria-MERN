@@ -1,32 +1,36 @@
 import createError from "../utils/createError.js";
 import reviewModel from "../models/review.model.js";
 import gigModel from "../models/gig.model.js";
+import userModel from "../models/user.model.js";
 
 export const createReview = async (req, res, next) => {
-    if(req.isSeller) return next(createError(403, "Seller cannot create a review"));
+    // if(req.isSeller) return next(createError(403, "Seller cannot create a review"));
+
+    const userReview = await userModel.findById(res.locals.user._doc._id);
     
     const newReview = new reviewModel({
-        userId: req.userId,
-        gigId: req.body.gigId,
+        user: res.locals.user._doc._id,
+        gig: req.body.id,
         desc: req.body.desc,
         star: req.body.star,
+        userName: userReview?.name,
     });
 
     try {
         const review = await reviewModel.findOne({
-            gigId: req.body.gigId,
-            userId: req.userId,
+            gig: req.body.id,
+            user: res.locals.user._doc._id,
         });
 
         if(review) return next(createError(403, "You have already created a review for this gig"));
 
         const savedReview = await newReview.save();
 
-        await gigModel.findByIdAndUpdate( req.body.gigId, {
-            $inc : {
-                totalStars: req.body.start, starNumber: 1
-            }
-        });
+        // await gigModel.findByIdAndUpdate( req.body.id, {
+        //     $inc : {
+        //         totalStars: req.body.star, starNumber: 1
+        //     }
+        // });
 
         res.status(201).send(savedReview);
     } catch(err) {
@@ -36,7 +40,7 @@ export const createReview = async (req, res, next) => {
 
 export const getReviews = async (req, res, next) => {
     try {
-        const reviews = await reviewModel.find({ gigId: req.params.gigId});
+        const reviews = await reviewModel.find({ gig: req.params.gigId});
 
         res.status(200).send(reviews);
     } catch(err) {
