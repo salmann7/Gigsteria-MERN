@@ -13,6 +13,7 @@ import profileRoutes from "./routes/profileRoutes.js";
 import communityPostRoutes from "./routes/communityPost.route.js";
 import notificationRoutes from "./routes/notification.route.js";
 import reviewsRoutes from "./routes/review.route.js";
+import awsRoutes from "./routes/aws.routes.js";
 
 const app = express();
 dotenv.config();
@@ -41,6 +42,7 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/communityPosts", communityPostRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/api/reviews", reviewsRoutes);
+app.use("/api/s3", awsRoutes);
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;

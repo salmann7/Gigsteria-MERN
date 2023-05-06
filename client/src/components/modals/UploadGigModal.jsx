@@ -18,6 +18,7 @@ import CategoryInput from '../inputs/CategoryInput.jsx';
 import Input from '../inputs/Input.jsx'
 import Heading from '../heading/Heading.jsx';
 import useRegisterModal from '../../hooks/useRegisterModal.js';
+import ImageUpload from '../inputs/ImageUpload.jsx';
 
 const STEPS = {
     CATEGORY: 0,
@@ -204,7 +205,8 @@ const UploadGigModal = () => {
         bodyContent = (
           <div className="flex flex-col gap-8">
             <Heading title="Add a photo" subtitle="Showcase Your Brand with Stunning Images!" />
-            {/* <ImageUpload value={imageSrc} onChange={(value) => setCustomValue('imageSrc', value)} /> */}
+            {/* <ImageUpload /> */}
+            <ImageUpload value={coverImageSrc} onChange={(value) => setCustomValue('coverImageSrc', value)} />
           </div>
         )
     }
