@@ -205,8 +205,7 @@ const UploadGigModal = () => {
         bodyContent = (
           <div className="flex flex-col gap-8">
             <Heading title="Add a photo" subtitle="Showcase Your Brand with Stunning Images!" />
-            {/* <ImageUpload /> */}
-            <ImageUpload value={coverImageSrc} onChange={(value) => setCustomValue('coverImageSrc', value)} />
+            <ImageUpload id='coverImageSrc' disabled={isloading} register={register} errors={errors} required value={coverImageSrc} onChange={(value) => setCustomValue('coverImageSrc', value)} />
           </div>
         )
     }
