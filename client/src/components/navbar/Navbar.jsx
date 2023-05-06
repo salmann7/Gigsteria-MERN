@@ -6,6 +6,7 @@ import { MdOutlineLogout, MdOutlineFileUpload, MdFavoriteBorder, MdHome, MdOutli
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { BsToggleOn, BsToggleOff } from 'react-icons/bs';
 
 import Container from '../container/Container'
 import Avatar from '../avatar/Avatar';
@@ -28,6 +29,7 @@ const Navbar = ({currentUser}) => {
   const navigate = useNavigate();
   const notificationModal = useNotificationModal();
   const [ hasNotification, setHasNotification ] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
 
   const isMainPage = (pathname === '/dashboard');
 
@@ -45,6 +47,7 @@ const Navbar = ({currentUser}) => {
     const getUser = async () => {
       const res = await axios.get(`http://localhost:8800/api/user`, { withCredentials: true});
       setHasNotification(res.data?.hasNotification);
+      setIsSeller(res.data?.isSeller);
     }
     getUser();
   },[])
@@ -99,6 +102,17 @@ const Navbar = ({currentUser}) => {
       registerModal.onOpen();
     }
     
+  }
+
+  const handleToggleSeller = async () => {
+    try{
+      const res = await axios.put(`http://localhost:8800/api/user`, { isSeller: (isSeller ? false : true) }, {
+        withCredentials: true
+      })
+      setIsSeller(res.data?.isSeller);
+    } catch(e){
+      console.log(e);
+    }
   }
 
   const handleLogout = async () => {
@@ -169,6 +183,7 @@ const Navbar = ({currentUser}) => {
                       <div className="flex flex-col cursor-pointer">
                       {/* <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div> */}
                       <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Create Gig</span><MdOutlineFileUpload size={17} /></div>
+                      <div onClick={handleToggleSeller} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Seller</span><BsToggleOff className={`text-red-500 ${isSeller ? 'hidden':'block'}`} size={17} /><BsToggleOn className={`text-green-500 ${isSeller ? 'block':'hidden'}`} size={17} /></div>
                       <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Console</span><BsGraphUpArrow size={17} /></div>
                       <div onClick={handleFav} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Favorites</span><MdFavoriteBorder size={17} /></div>
                       <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Orders</span><BsFileEarmarkSpreadsheet size={17} /></div>

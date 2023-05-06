@@ -9,7 +9,7 @@ import ProfileComments from './ProfileComments';
 import { MdEmail, MdArrowDropDown } from 'react-icons/md';
 import { BsTwitter } from 'react-icons/bs';
 import { TiSocialLinkedin } from 'react-icons/ti';
-import { BsFillStarFill } from 'react-icons/bs'
+import { BsFillStarFill, BsToggleOn, BsToggleOff } from 'react-icons/bs';
 
 
 const Profile = ({
@@ -32,7 +32,12 @@ const Profile = ({
     const [ socialLink, setSocialLink ] = useState('');
     const [ totalOrders, setTotalOrders ] = useState(0);
     const [profileData, setProfileData] = useState({});
+    // const [isSeller, setIsSeller] = useState(false);
     const comments = [];
+
+    // const toggleIsSeller = () => {
+    //   setIsSeller(!isSeller);
+    // };
 
     const getProfileDetails = async () => {
       try{
@@ -172,7 +177,17 @@ const Profile = ({
                         </div>
                         {self && <button onClick={() => handleEdit()} className='text-center px-5 py-2 rounded-full bg-green-500 border-none hover:bg-green-600 hover:shadow-sm transition text-white text-xl font-semibold'>{editMode ? 'Submit':'Edit'}</button>}
                     </div>
-                    <div className="bg-white shadow-lg p-4 flex flex-col gap-4">
+                    {/* <div className="bg-white shadow-md p-4 flex flex-col gap-4 items-start">
+                      <h3 className='font-semibold text-xl text-neutral-800'>Account Type</h3>
+                      <label className='switch'>
+        <input type='checkbox' checked={isSeller} onChange={toggleIsSeller} />
+        <span className='slider round'></span>
+      </label>
+      <span className='ml-4'>
+        {isSeller ? 'Seller' : 'Buyer'}
+      </span>
+                    </div> */}
+                    {/* <div className="bg-white shadow-lg p-4 flex flex-col gap-4">
                         <h3 className='font-semibold text-lg text-neutral-800'>Achievements</h3>
                         <div className="flex flex-row justify-between text-neutral-500 font-semibold text-sm">
                           <h6>Total Rating:- </h6>
@@ -194,7 +209,7 @@ const Profile = ({
                           ))):(null)}
                         </div>
                         </div>
-                    </div>
+                    </div> */}
                     {profileData?.userObj?.isSeller && <div className="bg-neutral-50 shadow-md hidden md:block">
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
