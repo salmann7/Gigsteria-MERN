@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import Container from '../container/Container';
 import HeartButton from '../heartButton/HeartButton';
 import usePaymentModal from '../../hooks/usePaymentModal';
+import Review from '../review/Review';
 
 const SingleGig = ({ currentUser }) => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ const SingleGig = ({ currentUser }) => {
   const paymentModal = usePaymentModal();
   const [ user, setUser ] = useState({});
   const [ heartClick, setHeartClick ] = useState(false);
+  const [ reviewList, SetReviewList ] = useState([]);
   // const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
@@ -29,6 +31,11 @@ const SingleGig = ({ currentUser }) => {
       console.log(res.data);
       setGig(res.data);
     }
+    const getReviews = async () => {
+      const res = await axios.get(`http://localhost:8800/api/reviews/${id}`);
+      SetReviewList(res.data);
+    }
+    getReviews();
     getGigInfo();
     
   },[])
@@ -96,6 +103,7 @@ const SingleGig = ({ currentUser }) => {
             <p className='text-neutral-800 text-xl'>{gig.desc}</p>
           </div>
           <hr />
+          <Review reviewList={reviewList} />
         </div>
         <div className="md:w-1/4 flex flex-col gap-3">
         <div class="bg-white rounded-lg overflow-hidden shadow-lg">
