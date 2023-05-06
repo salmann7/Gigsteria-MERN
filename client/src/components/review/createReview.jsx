@@ -44,7 +44,7 @@ function CreateReview({addReview}) {
                 <BsFillStarFill
                   key={value}
                   size={18}
-                  className={`text-${value <= rating ? "neutral-800" : "gray"}-500 hover:text-neutral-800 cursor-pointer`}
+                  className={`text-${value <= rating ? "neutral-500" : "gray"}-300 hover:text-neutral-800 cursor-pointer`}
                   onClick={() => handleRatingChange(value)}
                 />
                ))}

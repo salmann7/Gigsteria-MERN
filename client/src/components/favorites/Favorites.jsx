@@ -43,14 +43,14 @@ const Favorites = ({
 
   return (
     <Container>
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-9">
             <div className="flex flex-row items-center gap-4">
               <AiFillHeart size={24} className='fill-rose-500' />
               <h1 className='text-3xl text-neutral-800 font-semibold'>Your Favorite Gigs</h1>
             </div>
         </div>
         { gigsList && (
-           <Listings gigsList={gigsList} />
+           <Listings gigsList={gigsList} noTopPadding={true} />
         )}
     </Container>
   )
