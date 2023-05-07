@@ -12,7 +12,7 @@ const accessTokenCookieOptions = {
     domain: "gigsteria-api.onrender.com",
     path: "/",
     sameSite: "lax",
-    secure: false,
+    secure: true,
 };
 
 const refreshTokenCookieOptions = {
