@@ -34,9 +34,7 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true,}));
 
 app.use(deserializeUserP);
 
-app.use('/', (req, res, next ) =>{
-    res.status(200).send("hello");
-})
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
@@ -47,6 +45,10 @@ app.use("/api/communityPosts", communityPostRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/s3", awsRoutes);
+
+app.use('/', (req, res, next ) =>{
+    res.status(200).send("hello");
+})
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
