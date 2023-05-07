@@ -9,7 +9,7 @@ import axios from 'axios';
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
     httpOnly: false,
-    domain: "localhost",
+    domain: "gigsteria.netlify.app",
     path: "/",
     sameSite: "lax",
     secure: false,
@@ -217,7 +217,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
 
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-        res.redirect("http://localhost:3000/")
+        res.redirect("https://gigsteria.netlify.app/")
 
     } catch(e) {
         next(e)
