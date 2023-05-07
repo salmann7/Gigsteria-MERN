@@ -7,5 +7,9 @@ export default defineConfig({
   server: {
     port: 3000,
     host: 'localhost'
-  }
+  },
+  build: {
+    rollupOptions: {
+      external: ['infinite-react-carousel']
+    },}
 })
