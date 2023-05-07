@@ -23,7 +23,7 @@ const ProfileOther = ({
 
     const getProfileDetails = async () => {
       try{
-        const res = await axios.get(`http://localhost:8800/api/profile/${id}`);
+        const res = await axios.get(`https://gigsteria-api.onrender.com/api/profile/${id}`);
         console.log(res.data);
         setProfileData(res.data);
         if(res.data?.userObj?.followerIds.includes(currentUser?._id)){
@@ -63,7 +63,7 @@ const ProfileOther = ({
 
       const addFollower = async () => {
         try{
-          const res = await axios.put(`http://localhost:8800/api/user/add/${id}`, {followerIds: followerList}, { withCredentials: true});
+          const res = await axios.put(`https://gigsteria-api.onrender.com/api/user/add/${id}`, {followerIds: followerList}, { withCredentials: true});
           setIsFollowing(true);
         } catch(e){
           console.log(e);
@@ -72,7 +72,7 @@ const ProfileOther = ({
 
       const removeFollower = async () => {
         try{
-          const res = await axios.put(`http://localhost:8800/api/user/remove/${id}`, {followerIds: followerList}, { withCredentials: true});
+          const res = await axios.put(`https://gigsteria-api.onrender.com/api/user/remove/${id}`, {followerIds: followerList}, { withCredentials: true});
           setIsFollowing(false);
         } catch(e){
           console.log(e);

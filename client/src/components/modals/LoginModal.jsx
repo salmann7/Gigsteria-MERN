@@ -31,7 +31,7 @@ const LoginModal = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        axios.post('http://localhost:8800/api/auth/login', data,
+        axios.post('https://gigsteria-api.onrender.com/api/auth/login', data,
           {
             withCredentials: true,
           })

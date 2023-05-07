@@ -22,7 +22,7 @@ disabled
       return;
     }
     // get secure url from our server
-    const res = await axios.get(`http://localhost:8800/api/s3/getUrl`, { withCredentials: true });
+    const res = await axios.get(`https://gigsteria-api.onrender.com/api/s3/getUrl`, { withCredentials: true });
     const url = res.data.url;
 
     await axios.put(url, file, { headers: { 'Content-Type': file.type } });

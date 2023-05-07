@@ -28,7 +28,7 @@ const RegisterModal = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        axios.post('http://localhost:8800/api/user/register', data)
+        axios.post('https://gigsteria-api.onrender.com/api/user/register', data)
         .then(() => {
             toast.success('Registered.');
             registerModal.onClose();

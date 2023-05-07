@@ -14,7 +14,7 @@ const Favorites = ({
     useEffect(() => {
         const getFav = async () => {
             console.log(currentUser._id)
-            const res = await axios.get(`http://localhost:8800/api/user/${currentUser._id}`);
+            const res = await axios.get(`https://gigsteria-api.onrender.com/api/user/${currentUser._id}`);
             setFavList(res.data?.favoriteIds)
         }
         getFav();
@@ -26,7 +26,7 @@ const Favorites = ({
       
           if (favList) {
             const promises = favList.map(async (fav) => {
-              const res = await axios.get(`http://localhost:8800/api/gigs/single/${fav}`);
+              const res = await axios.get(`https://gigsteria-api.onrender.com/api/gigs/single/${fav}`);
               return res.data;
             });
       

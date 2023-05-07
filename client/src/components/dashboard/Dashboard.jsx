@@ -18,8 +18,8 @@ const Dashboard = () => {
       console.log(queryParams);
       try {
         const url = (category || min || max || search)
-          ? `http://localhost:8800/api/gigs?${category && 'category='+category+'&'}${min && '&min='+min}${max && '&max='+max}${search && '&search='+search}`
-          : "http://localhost:8800/api/gigs";
+          ? `https://gigsteria-api.onrender.com/api/gigs?${category && 'category='+category+'&'}${min && '&min='+min}${max && '&max='+max}${search && '&search='+search}`
+          : "https://gigsteria-api.onrender.com/api/gigs";
 
         const response = await axios.get(url);
         setGigsList(response.data);

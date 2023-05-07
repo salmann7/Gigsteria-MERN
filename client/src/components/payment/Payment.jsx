@@ -19,7 +19,7 @@ const Payment = ({ currentUser }) => {
         const paymentIntent = async () => {
             try{
                 const data = id;
-                const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
+                const res = await axios.post(`https://gigsteria-api.onrender.com/api/orders/create-payment-intent/${id}`, data, {
                   withCredentials: true,
                 });
                 console.log(res.data.clientSecret);

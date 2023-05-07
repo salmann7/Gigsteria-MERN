@@ -25,11 +25,11 @@ const useFavorite = ({
             if(hasFavorited){
                 let data = user;
                 console.log("deleteHere")
-                request = () => axios.put(`http://localhost:8800/api/user/favorites/${gigId}`, data);
+                request = () => axios.put(`https://gigsteria-api.onrender.com/api/user/favorites/${gigId}`, data);
             } else{
                 let data = user;
                 console.log(data);
-                request = () => axios.post(`http://localhost:8800/api/user/favorites/${gigId}`, data);
+                request = () => axios.post(`https://gigsteria-api.onrender.com/api/user/favorites/${gigId}`, data);
             }
             await request();
             console.log("done");

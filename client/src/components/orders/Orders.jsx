@@ -6,7 +6,7 @@ const Orders = ({currentUser}) => {
   const [ orders, setOrders ] = useState([]);
 
   const getOrders = async () => {
-    const res = await axios.get("http://localhost:8800/api/orders",{
+    const res = await axios.get("https://gigsteria-api.onrender.com/api/orders",{
       withCredentials: true
     });
     console.log(res);
