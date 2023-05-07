@@ -12,7 +12,7 @@ const ProfileDashboard = ({currentUser}) => {
   useEffect(() => {
     const fetchGigs = async () => {
       try {
-        const url = `http://localhost:8800/api/gigs/${id}`;
+        const url = `https://gigsteria-api.onrender.com/api/gigs/${id}`;
         const response = await axios.get(url);
         setGigsList(response.data);
       } catch (error) {

@@ -45,10 +45,11 @@ function App() {
     console.log(accessToken)
     const config = {
       headers: {
-        Authorization: accessToken ? `Bearer ${accessToken}` : null
-      }
+        Authorization: accessToken ? `Bearer ${accessToken}` : null,
+        withCredentials: true
+      },
     }; 
-    return await axios.get("http://localhost:8800/api/auth/me", config)
+    return await axios.get("https://gigsteria-api.onrender.com/api/auth/me", config)
     .then((res) => {
       setCurrentUser(res.data._doc);
       // getUser();

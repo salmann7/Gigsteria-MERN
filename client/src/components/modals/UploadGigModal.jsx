@@ -144,7 +144,7 @@ const UploadGigModal = () => {
             return onNext();
         }
         setIsLoading(true);
-        axios.post('http://localhost:8800/api/gigs', data,{
+        axios.post('https://gigsteria-api.onrender.com/api/gigs', data,{
           withCredentials: true,
         })
         .then((res) => {

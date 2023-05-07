@@ -41,7 +41,7 @@ const Profile = ({
 
     const getProfileDetails = async () => {
       try{
-        const res = await axios.get(`http://localhost:8800/api/profile/${id}`);
+        const res = await axios.get(`https://gigsteria-api.onrender.com/api/profile/${id}`);
         console.log(res.data);
         setProfileData(res.data);
         setUser(res.data?.userObj);
@@ -56,7 +56,7 @@ const Profile = ({
 
     const createPost = async () => {
       try{
-        const res = await axios.post(`http://localhost:8800/api/communityPosts`, {
+        const res = await axios.post(`https://gigsteria-api.onrender.com/api/communityPosts`, {
           desc: inputPost,
         },
         {
@@ -137,7 +137,7 @@ const Profile = ({
     useEffect(() => {
       const updateUser = async () => {
         try{
-          const res = await axios.put('http://localhost:8800/api/user', data , { withCredentials: true});
+          const res = await axios.put('https://gigsteria-api.onrender.com/api/user', data , { withCredentials: true});
           setUser(res.data);
           setName(res.data?.name);
         }catch(e){

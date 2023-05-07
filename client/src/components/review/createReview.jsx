@@ -14,7 +14,7 @@ function CreateReview({addReview}) {
     event.preventDefault();
     try{
         let data = {id, star: rating, desc: comment};
-        const res = await axios.post(`http://localhost:8800/api/reviews`, data , { withCredentials: true});
+        const res = await axios.post(`https://gigsteria-api.onrender.com/api/reviews`, data , { withCredentials: true});
         console.log(res.data);
         const newReview = res.data;
         setComment('');

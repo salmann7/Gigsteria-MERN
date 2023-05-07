@@ -18,7 +18,7 @@ const SingleGig = ({ currentUser }) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await axios.get(`http://localhost:8800/api/user/${currentUser._id}`);
+      const res = await axios.get(`https://gigsteria-api.onrender.com/api/user/${currentUser._id}`);
       setUser(res.data);
     }
     getUser();
@@ -27,12 +27,12 @@ const SingleGig = ({ currentUser }) => {
 
   useEffect(() => {
     const getGigInfo = async () => {
-      const res = await axios.get(`http://localhost:8800/api/gigs/single/${id}`)
+      const res = await axios.get(`https://gigsteria-api.onrender.com/api/gigs/single/${id}`)
       console.log(res.data);
       setGig(res.data);
     }
     const getReviews = async () => {
-      const res = await axios.get(`http://localhost:8800/api/reviews/${id}`);
+      const res = await axios.get(`https://gigsteria-api.onrender.com/api/reviews/${id}`);
       SetReviewList(res.data);
     }
     getReviews();
@@ -42,7 +42,7 @@ const SingleGig = ({ currentUser }) => {
 
   useEffect(() => {
     const getGigUser = async () => {
-      const res = await axios.get(`http://localhost:8800/api/user/${gig?.user}`)
+      const res = await axios.get(`https://gigsteria-api.onrender.com/api/user/${gig?.user}`)
       setGigUser(res.data);
       console.log(res.data);
     }

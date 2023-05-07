@@ -58,7 +58,7 @@ const PaymentModal = () => {
             try{
                 const data = id;
                 console.log("inside payment modal" + id)
-                const res = await axios.post(`http://localhost:8800/api/orders/create-payment-intent/${id}`, data, {
+                const res = await axios.post(`https://gigsteria-api.onrender.com/api/orders/create-payment-intent/${id}`, data, {
                   withCredentials: true,
                 });
                 console.log(res.data.paymentIntent.id);
@@ -194,7 +194,7 @@ const PaymentModal = () => {
     // }
     const confirmPayment = async () => {
       console.log(payment_intent);
-      await axios.put("http://localhost:8800/api/orders", {payment_intent} , {
+      await axios.put("https://gigsteria-api.onrender.com/api/orders", {payment_intent} , {
                 withCredentials: true
             });
             setTimeout(() => {

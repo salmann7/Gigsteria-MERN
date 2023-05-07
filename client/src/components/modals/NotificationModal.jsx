@@ -24,12 +24,12 @@ const NotificationModal = () => {
     const notificationModal = useNotificationModal();
 
     const getNotification = async () => {
-        const res = await axios.get(`http://localhost:8800/api/notification`, { withCredentials: true });
+        const res = await axios.get(`https://gigsteria-api.onrender.com/api/notification`, { withCredentials: true });
         setList(res.data);
     }
 
     const close = async () => {
-        const res = await axios.put(`http://localhost:8800/api/user`, { hasNotification: false }, { withCredentials: true});
+        const res = await axios.put(`https://gigsteria-api.onrender.com/api/user`, { hasNotification: false }, { withCredentials: true});
         notificationModal.onClose();
     }
 

@@ -14,7 +14,7 @@ const PaymentSuccess = () => {
 
     useEffect(() => {
         const confirmOrder = async () => {
-            const res = await axios.put("http://localhost:8800/api/orders", {payment_intent} , {
+            const res = await axios.put("https://gigsteria-api.onrender.com/api/orders", {payment_intent} , {
                 withCredentials: true
             });
             setTimeout(() => {
