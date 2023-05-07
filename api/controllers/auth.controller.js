@@ -9,7 +9,7 @@ import axios from 'axios';
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
     httpOnly: false,
-    domain: "gigsteria.netlify.app",
+    domain: "gigsteria-api.onrender.com",
     path: "/",
     sameSite: "lax",
     secure: false,
