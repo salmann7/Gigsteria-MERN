@@ -34,6 +34,10 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true,}));
 
 app.use(deserializeUserP);
 
+app.use('/', (req, res, next ) =>{
+    res.status(200).send("hello");
+})
+
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/gigs", gigsRoutes);

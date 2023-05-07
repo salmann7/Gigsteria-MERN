@@ -152,24 +152,24 @@ const Navbar = ({currentUser}) => {
                   <li>
                     {currentUser ? (
                       <Link to='/'>
-                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block  font-semibold text-neutral-500 text-md px-6 ml-2 hover:bg-neutral-100 py-3 rounded-full `}>
+                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block  font-semibold text-neutral-500 text-md px-6 ml-2 ${!isSeller && 'mr-2'} hover:bg-neutral-100 py-3 rounded-full `}>
                           <div className="flex flex-row items-center justify-around"><span className=' ml-1'>Home</span></div>
                         </div>
                       </Link>
                     ):(
                       <Link to='/dashboard'>
-                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 ml-2 hover:bg-neutral-100 py-3 rounded-full`}>
+                        <div onClick={() => setActiveLink(true)} className={`${activeLink && 'bg-neutral-100 shadow-md'} hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 ml-2 ${!isSeller && 'mr-2'} hover:bg-neutral-100 py-3 rounded-full`}>
                         <div className="flex flex-row items-center justify-around"><span className=' ml-1'>Home</span></div>
                         </div>
                       </Link>
                     )}
                     
                   </li>
-                  <li>
+                  {isSeller && <li>
                     <div onClick={handleUploadGig} className="hidden cursor-pointer sm:block font-semibold text-neutral-500 text-md px-6 mx-2 hover:bg-neutral-100 py-3 rounded-full">
                       Create
                     </div>
-                  </li>
+                  </li>}
                   <li className='relative'>
                     <div onClick={toggleOpen} className="border-[1px] rounded-full p-4 md:py-2 md:px-2 border-x-neutral-200 flex flex-row items-center gap-3 cursor-pointer hover:shadow-md transition">
                         <div className="relative"><AiOutlineMenu  />{hasNotification && <span className='bg-red-500 w-[10px] h-[10px] rounded-full absolute -right-1 -top-1'></span>}</div>
@@ -182,7 +182,7 @@ const Navbar = ({currentUser}) => {
                     {currentUser ? (
                       <div className="flex flex-col cursor-pointer">
                       {/* <div onClick={handleSignup} className="p-4 hover:bg-neutral-50 border-b-[1px] transition">Sign up</div> */}
-                      <div onClick={handleUploadGig} className="sm:hidden p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Create Gig</span><MdOutlineFileUpload size={17} /></div>
+                      {isSeller && <div onClick={handleUploadGig} className={`sm:hidden p-4 hover:bg-neutral-50 transition flex justify-between items-center`}><span>Create Gig</span><MdOutlineFileUpload size={17} /></div>}
                       <div onClick={handleToggleSeller} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Seller</span><BsToggleOff className={`text-red-500 ${isSeller ? 'hidden':'block'}`} size={17} /><BsToggleOn className={`text-green-500 ${isSeller ? 'block':'hidden'}`} size={17} /></div>
                       <div onClick={handleOrder} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Console</span><BsGraphUpArrow size={17} /></div>
                       <div onClick={handleFav} className=" p-4 hover:bg-neutral-50 transition flex justify-between items-center"><span>Favorites</span><MdFavoriteBorder size={17} /></div>

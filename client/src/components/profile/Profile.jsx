@@ -187,7 +187,7 @@ const Profile = ({
         {isSeller ? 'Seller' : 'Buyer'}
       </span>
                     </div> */}
-                    {/* <div className="bg-white shadow-lg p-4 flex flex-col gap-4">
+                    <div className="bg-white shadow-lg p-4 flex flex-col gap-4">
                         <h3 className='font-semibold text-lg text-neutral-800'>Achievements</h3>
                         <div className="flex flex-row justify-between text-neutral-500 font-semibold text-sm">
                           <h6>Total Rating:- </h6>
@@ -209,7 +209,7 @@ const Profile = ({
                           ))):(null)}
                         </div>
                         </div>
-                    </div> */}
+                    </div>
                     {profileData?.userObj?.isSeller && <div className="bg-neutral-50 shadow-md hidden md:block">
                         <div className="flex flex-col gap-3 p-4">
                             <div className="flex flex-row justify-between">
