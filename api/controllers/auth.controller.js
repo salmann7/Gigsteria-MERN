@@ -72,10 +72,13 @@ export const login = async (req, res, next) => {
                 expiresIn: 3.154e10,
             }
         );
+        console.log("accessTokenCookieOptions: ", accessTokenCookieOptions);
+        console.log("refreshTokenCookieOptions: ", refreshTokenCookieOptions);
 
         res.cookie("accessToken", accessToken, accessTokenCookieOptions);
 
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+        console.log("Cookies set successfully");
 
         return res.status(200).send({ accessToken, refreshToken});
         // const { password, ...info} = user._doc;
