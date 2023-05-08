@@ -50,6 +50,13 @@ app.use('/', (req, res, next ) =>{
     res.status(200).send("hello");
 })
 
+app.use((req, res, next) => {
+    res.on('finish', () => {
+      console.log(res.getHeaders());
+    });
+    next();
+  });
+
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went wrong";
