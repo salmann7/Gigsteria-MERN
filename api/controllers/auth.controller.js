@@ -220,7 +220,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
 
         res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
 
-        res.redirect("https://gigsteria.netlify.app/")
+        res.redirect("https://gigsteria.onrender.com/")
 
     } catch(e) {
         next(e)
