@@ -44,7 +44,7 @@ const LoginModal = () => {
             loginModal.onClose();
             // history.go(0); // Refresh the page
             navigate("/");
-            window.location.reload();
+            // window.location.reload();
             
         })
         .catch((error) => {
