@@ -72,7 +72,7 @@ export const login = async (req, res, next) => {
                 expiresIn: 3.154e10,
             }
         );
-        console.log("accessTokenCookieOptions: ", accessTokenCookieOptions);
+        console.log("accessTokenCookieOptions: ", accessToken);
         console.log("refreshTokenCookieOptions: ", refreshTokenCookieOptions);
 
         res.cookie("accessToken", accessToken, accessTokenCookieOptions);
