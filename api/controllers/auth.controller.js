@@ -8,10 +8,10 @@ import axios from 'axios';
 
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
-    httpOnly: false,
+    httpOnly: true,
     domain: ".onrender.com",
     path: "/",
-    sameSite: "lax",
+    sameSite: "none",
     secure: true,
 };
 
@@ -72,7 +72,7 @@ export const login = async (req, res, next) => {
                 expiresIn: 3.154e10,
             }
         );
-        console.log("accessTokenCookieOptions: ", accessTokenCookieOptions);
+        console.log("accessTokenCookieOptions: ", accessToken);
         console.log("refreshTokenCookieOptions: ", refreshTokenCookieOptions);
 
         res.cookie("accessToken", accessToken, accessTokenCookieOptions);
