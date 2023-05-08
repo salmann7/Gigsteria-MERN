@@ -8,10 +8,10 @@ import axios from 'axios';
 
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
-    httpOnly: false,
+    httpOnly: true,
     domain: ".onrender.com",
     path: "/",
-    sameSite: "lax",
+    sameSite: "none",
     secure: true,
 };
 
