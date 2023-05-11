@@ -9,7 +9,7 @@ import axios from 'axios';
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
     httpOnly: false,
-    domain: ".onrender.com",
+    domain: "localhost",
     path: "/",
     sameSite: "none",
     secure: true,
@@ -72,13 +72,13 @@ export const login = async (req, res, next) => {
                 expiresIn: 3.154e10,
             }
         );
-        console.log("accessTokenCookieOptions: ", accessToken);
-        console.log("refreshTokenCookieOptions: ", refreshTokenCookieOptions);
+        // console.log("accessTokenCookieOptions: ", accessToken);
+        // console.log("refreshTokenCookieOptions: ", refreshTokenCookieOptions);
 
-        res.cookie("accessToken", accessToken, accessTokenCookieOptions);
+        // res.cookie("accessToken", accessToken, accessTokenCookieOptions);
 
-        res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
-        console.log("Cookies set successfully");
+        // res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+        // console.log("Cookies set successfully");
 
         return res.status(200).send({ accessToken, refreshToken});
         // const { password, ...info} = user._doc;
@@ -99,6 +99,7 @@ export const getUserSessionHandler = async ( req, res, next) => {
 }
 
 export const googleOauthHandler = async ( req, res, next ) => {
+    console.log("inside google oauth");
     const code = req.query.code;
     const url = "https://oauth2.googleapis.com/token";
     const values = {
@@ -216,11 +217,12 @@ export const googleOauthHandler = async ( req, res, next ) => {
             }
         );
 
-        res.cookie("accessToken", accessToken, accessTokenCookieOptions);
+        // res.cookie("accessToken", accessToken, accessTokenCookieOptions);
 
-        res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+        // res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
+        // res.status(200).send({ accessToken, refreshToken});
 
-        res.redirect("https://gigsteria.onrender.com/")
+        res.redirect(`https://gigsteria.onrender.com/?accesstoken=${accessToken}`);
 
     } catch(e) {
         next(e)

@@ -19,6 +19,7 @@ import Heading from '../heading/Heading'
 import Input from '../inputs/Input'
 import getGoogleUrl from '../../utils/getGoogleUrl';
 import CheckoutForm from '../checkoutForm/CheckoutForm';
+import api from '../../utils/apiCall.js';
 
 import './paymentModal.css';
 import usePaymentModal from '../../hooks/usePaymentModal';
@@ -58,9 +59,7 @@ const PaymentModal = () => {
             try{
                 const data = id;
                 console.log("inside payment modal" + id)
-                const res = await axios.post(`https://gigsteria-api.onrender.com/api/orders/create-payment-intent/${id}`, data, {
-                  withCredentials: true,
-                });
+                const res = await api.post(`/api/orders/create-payment-intent/${id}`, data);
                 console.log(res.data.paymentIntent.id);
                 setPaymentIntent(res.data.paymentIntent.id);
                 setClientSecret(res.data.clientSecret);
@@ -194,7 +193,7 @@ const PaymentModal = () => {
     // }
     const confirmPayment = async () => {
       console.log(payment_intent);
-      await axios.put("https://gigsteria-api.onrender.com/api/orders", {payment_intent} , {
+      await axios.put("/api/orders", {payment_intent} , {
                 withCredentials: true
             });
             setTimeout(() => {

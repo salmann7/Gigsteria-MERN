@@ -13,6 +13,7 @@ import Button from '../buttton/Button'
 import Heading from '../heading/Heading'
 import Input from '../inputs/Input'
 import getGoogleUrl from '../../utils/getGoogleUrl';
+import api from '../../utils/apiCall.js';
 
 const RegisterModal = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +29,7 @@ const RegisterModal = () => {
 
     const onSubmit = (data) => {
         setIsLoading(true);
-        axios.post('https://gigsteria-api.onrender.com/api/user/register', data)
+        api.post('/api/user/register', data)
         .then(() => {
             toast.success('Registered.');
             registerModal.onClose();

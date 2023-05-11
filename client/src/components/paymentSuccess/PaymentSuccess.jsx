@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import api from '../../utils/apiCall.js';
+
 const PaymentSuccess = () => {
 
     const { search } = useLocation();
@@ -14,9 +16,7 @@ const PaymentSuccess = () => {
 
     useEffect(() => {
         const confirmOrder = async () => {
-            const res = await axios.put("https://gigsteria-api.onrender.com/api/orders", {payment_intent} , {
-                withCredentials: true
-            });
+            const res = await api.put("/api/orders", {payment_intent});
             setTimeout(() => {
                 navigate("/orders");
             },5000);

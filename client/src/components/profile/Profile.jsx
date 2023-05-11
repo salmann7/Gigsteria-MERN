@@ -11,6 +11,8 @@ import { BsTwitter } from 'react-icons/bs';
 import { TiSocialLinkedin } from 'react-icons/ti';
 import { BsFillStarFill, BsToggleOn, BsToggleOff } from 'react-icons/bs';
 
+import api from '../../utils/apiCall.js';
+
 
 const Profile = ({
   currentUser
@@ -41,7 +43,7 @@ const Profile = ({
 
     const getProfileDetails = async () => {
       try{
-        const res = await axios.get(`https://gigsteria-api.onrender.com/api/profile/${id}`);
+        const res = await api.get(`/api/profile/${id}`);
         console.log(res.data);
         setProfileData(res.data);
         setUser(res.data?.userObj);
@@ -56,11 +58,8 @@ const Profile = ({
 
     const createPost = async () => {
       try{
-        const res = await axios.post(`https://gigsteria-api.onrender.com/api/communityPosts`, {
+        const res = await api.post(`/api/communityPosts`, {
           desc: inputPost,
-        },
-        {
-          withCredentials: true,
         });
         setInputPost('');
         setCommPost(res.data);
@@ -137,7 +136,7 @@ const Profile = ({
     useEffect(() => {
       const updateUser = async () => {
         try{
-          const res = await axios.put('https://gigsteria-api.onrender.com/api/user', data , { withCredentials: true});
+          const res = await api.put('/api/user', data);
           setUser(res.data);
           setName(res.data?.name);
         }catch(e){

@@ -19,6 +19,7 @@ import Input from '../inputs/Input.jsx'
 import Heading from '../heading/Heading.jsx';
 import useRegisterModal from '../../hooks/useRegisterModal.js';
 import ImageUpload from '../inputs/ImageUpload.jsx';
+import api from '../../utils/apiCall.js';
 
 const STEPS = {
     CATEGORY: 0,
@@ -144,7 +145,7 @@ const UploadGigModal = () => {
             return onNext();
         }
         setIsLoading(true);
-        axios.post('https://gigsteria-api.onrender.com/api/gigs', data,{
+        api.post('/api/gigs', data,{
           withCredentials: true,
         })
         .then((res) => {

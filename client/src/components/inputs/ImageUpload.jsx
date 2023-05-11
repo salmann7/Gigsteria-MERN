@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+import api from '../../utils/apiCall.js';
+
 const ImageUpload = ({ onChange, value ,id,
   register,
   required,
@@ -22,7 +24,7 @@ disabled
       return;
     }
     // get secure url from our server
-    const res = await axios.get(`https://gigsteria-api.onrender.com/api/s3/getUrl`, { withCredentials: true });
+    const res = await api.get(`/api/s3/getUrl`);
     const url = res.data.url;
 
     await axios.put(url, file, { headers: { 'Content-Type': file.type } });

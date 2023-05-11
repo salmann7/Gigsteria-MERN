@@ -7,6 +7,7 @@ import axios from "axios";
 import Container from "../container/Container";
 
 import './payment.css';
+import api from '../../utils/apiCall.js';
 
 const stripePromise = loadStripe("pk_test_51N1dqRSF8yPcIvMfd48NGKyCUOW1oqslCuCTmdmktbjICuO4xE4mRwj2JS92aLcNzEE7P1ad6wdIHRssAQlPPZq00042hshfdD");
 
@@ -19,9 +20,7 @@ const Payment = ({ currentUser }) => {
         const paymentIntent = async () => {
             try{
                 const data = id;
-                const res = await axios.post(`https://gigsteria-api.onrender.com/api/orders/create-payment-intent/${id}`, data, {
-                  withCredentials: true,
-                });
+                const res = await api.post(`/api/orders/create-payment-intent/${id}`, data);
                 console.log(res.data.clientSecret);
                 setClientSecret(res.data.clientSecret);
               } catch(e){
