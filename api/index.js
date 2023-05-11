@@ -35,7 +35,10 @@ app.use(cors({ origin: "https://gigsteria.onrender.com", credentials: true,}));
 app.use(deserializeUserP);
 
 
-
+app.get('/', (req, res) => {
+    res.cookie('myCookie', 'Hello World!', { maxAge: 900000, httpOnly: true });
+    res.send('Cookie set!');
+});
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/gigs", gigsRoutes);
