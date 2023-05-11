@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from 'path';
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
@@ -35,10 +36,10 @@ app.use(cors({ origin: "https://onrender.com", credentials: true,}));
 app.use(deserializeUserP);
 
 
-app.get('/', (req, res) => {
-    res.cookie('myCookie', 'Hello World!', { maxAge: 900000, httpOnly: true });
-    res.send('Cookie set!');
-});
+// app.get('/', (req, res) => {
+//     res.cookie('myCookie', 'Hello World!', { maxAge: 900000, httpOnly: true });
+//     res.send('Cookie set!');
+// });
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/gigs", gigsRoutes);
@@ -49,16 +50,34 @@ app.use("/api/notification", notificationRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/s3", awsRoutes);
 
-app.use('/', (req, res, next ) =>{
-    res.status(200).send("hello");
+const _dirname = path.dirname("")
+const buildPath = path.join(_dirname  , "../client/dist");
+
+app.use(express.static(buildPath))
+
+app.get("/*", function(req, res){
+
+    res.sendFile(
+        path.join(__dirname, "../client/dist/index.html"),
+        function (err) {
+          if (err) {
+            res.status(500).send(err);
+          }
+        }
+      );
+
 })
 
-app.use((req, res, next) => {
-    res.on('finish', () => {
-      console.log(res.getHeaders());
-    });
-    next();
-  });
+// app.use('/', (req, res, next ) =>{
+//     res.status(200).send("hello");
+// })
+
+// app.use((req, res, next) => {
+//     res.on('finish', () => {
+//       console.log(res.getHeaders());
+//     });
+//     next();
+//   });
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
