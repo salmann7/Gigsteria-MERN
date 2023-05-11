@@ -35,7 +35,7 @@ const connectDb = async () => {
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "https://gigsteria.onrender.com", credentials: true,}));
+app.use(cors({ origin: CLIENT_URL, credentials: true,}));
 
 app.use(deserializeUserP);
 

@@ -31,6 +31,19 @@ import ProfileDashboard from './components/dashboard/profileDashboard';
 
 import api from './utils/apiCall.js';
 
+const accessTokenCookieOptions = {
+  expires: 900000, // 15 mins
+  domain: process.env.NODE_ENV === 'production' ? '.onrender':'localhost',
+  path: "/",
+  sameSite: "none",
+  secure: true,
+};
+
+const refreshTokenCookieOptions = {
+  ...accessTokenCookieOptions,
+  expires: 3.154e10, // 1 year
+};
+
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const accessTokenUrl = urlParams.get('accesstoken');
@@ -65,8 +78,8 @@ function App() {
   }
   const setCookie = () => {
     console.log('Setting cookies...');
-    Cookies.set('accessToken', accessTokenUrl);
-    Cookies.set('refreshToken', refreshTokenUrl);
+    Cookies.set('accessToken', accessTokenUrl, accessTokenCookieOptions);
+    Cookies.set('refreshToken', refreshTokenUrl, refreshTokenCookieOptions);
   }
 
   useEffect(() => {

@@ -13,7 +13,7 @@ const CLIENT_URL = process.env.NODE_ENV === 'production'
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
     httpOnly: false,
-    domain: process.env.NODE_ENV === 'production' ? '.onrender':'localhost',
+    // domain: process.env.NODE_ENV === 'production' ? '.onrender':'localhost',
     path: "/",
     sameSite: "none",
     secure: true,
