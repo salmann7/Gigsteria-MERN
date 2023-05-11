@@ -5,6 +5,7 @@ import Container from '../container/Container';
 import HeartButton from '../heartButton/HeartButton';
 import usePaymentModal from '../../hooks/usePaymentModal';
 import Review from '../review/Review';
+import api from '../../utils/apiCall.js';
 
 const SingleGig = ({ currentUser }) => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const SingleGig = ({ currentUser }) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await axios.get(`https://gigsteria-api.onrender.com/api/user/${currentUser._id}`);
+      const res = await api.get(`/api/user/${currentUser._id}`);
       setUser(res.data);
     }
     getUser();
@@ -27,12 +28,12 @@ const SingleGig = ({ currentUser }) => {
 
   useEffect(() => {
     const getGigInfo = async () => {
-      const res = await axios.get(`https://gigsteria-api.onrender.com/api/gigs/single/${id}`)
+      const res = await api.get(`/api/gigs/single/${id}`)
       console.log(res.data);
       setGig(res.data);
     }
     const getReviews = async () => {
-      const res = await axios.get(`https://gigsteria-api.onrender.com/api/reviews/${id}`);
+      const res = await api.get(`/api/reviews/${id}`);
       SetReviewList(res.data);
     }
     getReviews();
@@ -42,7 +43,7 @@ const SingleGig = ({ currentUser }) => {
 
   useEffect(() => {
     const getGigUser = async () => {
-      const res = await axios.get(`https://gigsteria-api.onrender.com/api/user/${gig?.user}`)
+      const res = await api.get(`/api/user/${gig?.user}`)
       setGigUser(res.data);
       console.log(res.data);
     }

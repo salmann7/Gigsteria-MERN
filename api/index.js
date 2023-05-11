@@ -31,7 +31,7 @@ const connectDb = async () => {
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "https://onrender.com", credentials: true,}));
+app.use(cors({ origin: "https://gigsteria.onrender.com", credentials: true,}));
 
 app.use(deserializeUserP);
 
@@ -58,7 +58,7 @@ app.use(express.static(buildPath))
 app.get("/*", function(req, res){
 
     res.sendFile(
-        path.join(__dirname, "../client/dist/index.html"),
+        path.join(_dirname, "../client/dist/index.html"),
         function (err) {
           if (err) {
             res.status(500).send(err);

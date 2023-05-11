@@ -10,6 +10,8 @@ import { BsTwitter } from 'react-icons/bs';
 import { TiSocialLinkedin } from 'react-icons/ti';
 import { BsFillStarFill } from 'react-icons/bs'
 
+import api from '../../utils/apiCall.js';
+
 
 const ProfileOther = ({
   currentUser
@@ -23,7 +25,7 @@ const ProfileOther = ({
 
     const getProfileDetails = async () => {
       try{
-        const res = await axios.get(`https://gigsteria-api.onrender.com/api/profile/${id}`);
+        const res = await api.get(`/api/profile/${id}`);
         console.log(res.data);
         setProfileData(res.data);
         if(res.data?.userObj?.followerIds.includes(currentUser?._id)){
@@ -63,7 +65,7 @@ const ProfileOther = ({
 
       const addFollower = async () => {
         try{
-          const res = await axios.put(`https://gigsteria-api.onrender.com/api/user/add/${id}`, {followerIds: followerList}, { withCredentials: true});
+          const res = await api.put(`/api/user/add/${id}`, {followerIds: followerList});
           setIsFollowing(true);
         } catch(e){
           console.log(e);
@@ -72,7 +74,7 @@ const ProfileOther = ({
 
       const removeFollower = async () => {
         try{
-          const res = await axios.put(`https://gigsteria-api.onrender.com/api/user/remove/${id}`, {followerIds: followerList}, { withCredentials: true});
+          const res = await api.put(`/api/user/remove/${id}`, {followerIds: followerList});
           setIsFollowing(false);
         } catch(e){
           console.log(e);

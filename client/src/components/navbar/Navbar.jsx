@@ -16,6 +16,7 @@ import useUploadGigModal from '../../hooks/useUploadGigModal';
 import Categories from './Categories';
 import useNotificationModal from '../../hooks/useNotificationModal';
 import useSearchModal from '../../hooks/useSearchModal';
+import api from '../../utils/apiCall.js';
 
 const Navbar = ({currentUser}) => {
   const {pathname} = useLocation();
@@ -45,7 +46,7 @@ const Navbar = ({currentUser}) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await axios.get(`https://gigsteria-api.onrender.com/api/user`, { withCredentials: true});
+      const res = await api.get(`/api/user`);
       setHasNotification(res.data?.hasNotification);
       setIsSeller(res.data?.isSeller);
     }
@@ -106,9 +107,7 @@ const Navbar = ({currentUser}) => {
 
   const handleToggleSeller = async () => {
     try{
-      const res = await axios.put(`https://gigsteria-api.onrender.com/api/user`, { isSeller: (isSeller ? false : true) }, {
-        withCredentials: true
-      })
+      const res = await api.put(`/api/user`, { isSeller: (isSeller ? false : true) })
       setIsSeller(res.data?.isSeller);
     } catch(e){
       console.log(e);
@@ -118,7 +117,7 @@ const Navbar = ({currentUser}) => {
   const handleLogout = async () => {
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
-    await axios.post("https://gigsteria-api.onrender.com/api/auth/logout");
+    await api.post("/api/auth/logout");
     window.location.href = '/';
   }
 

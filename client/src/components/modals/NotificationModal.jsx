@@ -16,6 +16,7 @@ import Button from '../buttton/Button'
 import Heading from '../heading/Heading'
 import Input from '../inputs/Input'
 import getGoogleUrl from '../../utils/getGoogleUrl';
+import api from '../../utils/apiCall.js';
 
 const NotificationModal = () => {
     // const history = useHistory();
@@ -24,12 +25,12 @@ const NotificationModal = () => {
     const notificationModal = useNotificationModal();
 
     const getNotification = async () => {
-        const res = await axios.get(`https://gigsteria-api.onrender.com/api/notification`, { withCredentials: true });
+        const res = await api.get(`/api/notification`);
         setList(res.data);
     }
 
     const close = async () => {
-        const res = await axios.put(`https://gigsteria-api.onrender.com/api/user`, { hasNotification: false }, { withCredentials: true});
+        const res = await api.put(`/api/user`, { hasNotification: false });
         notificationModal.onClose();
     }
 

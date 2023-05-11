@@ -4,6 +4,8 @@ import axios from 'axios';
 import Listings from '../Listings/Listings';
 import { AiFillHeart } from 'react-icons/ai';
 
+import api from '../../utils/apiCall.js';
+
 const Favorites = ({
     currentUser
 }) => {
@@ -14,7 +16,7 @@ const Favorites = ({
     useEffect(() => {
         const getFav = async () => {
             console.log(currentUser._id)
-            const res = await axios.get(`https://gigsteria-api.onrender.com/api/user/${currentUser._id}`);
+            const res = await api.get(`/api/user/${currentUser._id}`);
             setFavList(res.data?.favoriteIds)
         }
         getFav();
@@ -26,7 +28,7 @@ const Favorites = ({
       
           if (favList) {
             const promises = favList.map(async (fav) => {
-              const res = await axios.get(`https://gigsteria-api.onrender.com/api/gigs/single/${fav}`);
+              const res = await api.get(`/api/gigs/single/${fav}`);
               return res.data;
             });
       

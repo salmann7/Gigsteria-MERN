@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Container from '../container/Container'
 import axios from 'axios';
 
+import api from '../../utils/apiCall.js';
+
 const Orders = ({currentUser}) => {
   const [ orders, setOrders ] = useState([]);
 
   const getOrders = async () => {
-    const res = await axios.get("https://gigsteria-api.onrender.com/api/orders",{
-      withCredentials: true
-    });
+    const res = await api.get("/api/orders");
     console.log(res);
     setOrders(res.data);
   }

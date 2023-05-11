@@ -10,10 +10,11 @@ const deserializeUserP = async ( req, res, next ) => {
 
     if(!accessToken){
         console.log("here deseialoze");
+        console.log("accessToken");
         console.log(accessToken);
         return next();
     }
-    // console.log(accessToken);
+    console.log(accessToken);
 
     const decoded = jwt.verify( accessToken, process.env.JWT_KEY);
     const decodedObj = {

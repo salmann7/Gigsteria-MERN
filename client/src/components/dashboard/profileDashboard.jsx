@@ -5,6 +5,8 @@ import Listings from '../Listings/Listings';
 import { useParams } from 'react-router-dom';
 import Heading from '../heading/Heading';
 
+import api from '../../utils/apiCall.js';
+
 const ProfileDashboard = ({currentUser}) => {
   const [ gigsList, setGigsList ] = useState([]);
   const { id } = useParams();
@@ -12,8 +14,8 @@ const ProfileDashboard = ({currentUser}) => {
   useEffect(() => {
     const fetchGigs = async () => {
       try {
-        const url = `https://gigsteria-api.onrender.com/api/gigs/${id}`;
-        const response = await axios.get(url);
+        const url = `/api/gigs/${id}`;
+        const response = await api.get(url);
         setGigsList(response.data);
       } catch (error) {
         console.error(error);

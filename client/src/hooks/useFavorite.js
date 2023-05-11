@@ -3,6 +3,8 @@ import axios from 'axios';
 import useLoginModal from './useLoginModal';
 import { useCallback, useMemo } from 'react';
 
+import api from '../utils/apiCall.js';
+
 const useFavorite = ({
     gigId,
     user
@@ -25,11 +27,11 @@ const useFavorite = ({
             if(hasFavorited){
                 let data = user;
                 console.log("deleteHere")
-                request = () => axios.put(`https://gigsteria-api.onrender.com/api/user/favorites/${gigId}`, data);
+                request = () => api.put(`/api/user/favorites/${gigId}`, data);
             } else{
                 let data = user;
                 console.log(data);
-                request = () => axios.post(`https://gigsteria-api.onrender.com/api/user/favorites/${gigId}`, data);
+                request = () => api.post(`/api/user/favorites/${gigId}`, data);
             }
             await request();
             console.log("done");

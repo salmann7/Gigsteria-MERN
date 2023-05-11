@@ -2,7 +2,7 @@
 import './App.css'
 import axios from 'axios'
 import Cookies from 'js-cookie';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from './components/navbar/Navbar'
 import HeroFeature from './components/heroFeature/HeroFeature'
@@ -29,7 +29,13 @@ import NotificationModal from './components/modals/NotificationModal';
 import SearchModal from './components/modals/SearchModal';
 import ProfileDashboard from './components/dashboard/profileDashboard';
 
+import api from './utils/apiCall.js';
+
 function App() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const accessTokenUrl = urlParams.get('accesstoken');
+  console.log(accessTokenUrl);
+
 
   const [currentUser, setCurrentUser] = useState(null);
   // const [ user, setUser ] = useState({});
@@ -41,7 +47,7 @@ function App() {
   // }
 
   async function getCurrentUser() {
-    const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('accessToken') || accessTokenUrl;
     console.log(accessToken)
     const config = {
       headers: {
@@ -49,16 +55,24 @@ function App() {
         withCredentials: true
       },
     }; 
-    return await axios.get("https://gigsteria-api.onrender.com/api/auth/me", config)
+    return await api.get("/api/auth/me", config)
     .then((res) => {
       setCurrentUser(res.data._doc);
       // getUser();
       console.log(res.data._doc)})
     .catch(e => console.log(e))
   }
+  const setCookie = () => {
+    console.log('Setting cookies...');
+    Cookies.set('accessToken', accessTokenUrl);
+  }
 
   useEffect(() => {
     getCurrentUser();
+    if(accessTokenUrl){
+      window.location.href = 'https://gigsteria.onrender.com'
+      setCookie();
+    }
   }, []);
 
   return (

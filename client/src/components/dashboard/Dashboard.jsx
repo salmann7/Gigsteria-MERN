@@ -4,6 +4,8 @@ import Container from '../container/Container';
 import Listings from '../Listings/Listings';
 import { useLocation } from 'react-router-dom';
 
+import api from '../../utils/apiCall.js';
+
 const Dashboard = () => {
   const [ gigsList, setGigsList ] = useState([]);
   const location = useLocation();
@@ -18,10 +20,10 @@ const Dashboard = () => {
       console.log(queryParams);
       try {
         const url = (category || min || max || search)
-          ? `https://gigsteria-api.onrender.com/api/gigs?${category && 'category='+category+'&'}${min && '&min='+min}${max && '&max='+max}${search && '&search='+search}`
-          : "https://gigsteria-api.onrender.com/api/gigs";
+          ? `/api/gigs?${category && 'category='+category+'&'}${min && '&min='+min}${max && '&max='+max}${search && '&search='+search}`
+          : "/api/gigs";
 
-        const response = await axios.get(url);
+        const response = await api.get(url);
         setGigsList(response.data);
       } catch (error) {
         console.error(error);

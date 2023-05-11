@@ -3,6 +3,8 @@ import { useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 
+import api from '../../utils/apiCall.js';
+
 function CreateReview({addReview}) {
   const { id } = useParams();
   const [rating, setRating] = useState(0);
@@ -14,7 +16,7 @@ function CreateReview({addReview}) {
     event.preventDefault();
     try{
         let data = {id, star: rating, desc: comment};
-        const res = await axios.post(`https://gigsteria-api.onrender.com/api/reviews`, data , { withCredentials: true});
+        const res = await api.post(`/api/reviews`, data);
         console.log(res.data);
         const newReview = res.data;
         setComment('');
