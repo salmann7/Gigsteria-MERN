@@ -16,6 +16,10 @@ import notificationRoutes from "./routes/notification.route.js";
 import reviewsRoutes from "./routes/review.route.js";
 import awsRoutes from "./routes/aws.routes.js";
 
+const CLIENT_URL = process.env.NODE_ENV === 'production'
+  ? 'https://gigsteria.onrender.com'
+  : 'http://localhost:3000';
+
 const app = express();
 dotenv.config();
 mongoose.set("strictQuery", true);

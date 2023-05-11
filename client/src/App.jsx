@@ -34,6 +34,7 @@ import api from './utils/apiCall.js';
 function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const accessTokenUrl = urlParams.get('accesstoken');
+  const refreshTokenUrl = urlParams.get('refreshtoken');
   console.log(accessTokenUrl);
 
 
@@ -65,12 +66,13 @@ function App() {
   const setCookie = () => {
     console.log('Setting cookies...');
     Cookies.set('accessToken', accessTokenUrl);
+    Cookies.set('refreshToken', refreshTokenUrl);
   }
 
   useEffect(() => {
     getCurrentUser();
     if(accessTokenUrl){
-      window.location.href = 'https://gigsteria.onrender.com'
+      window.location.href = import.meta.env.VITE_APP_NODE_ENV === 'production'? 'https://gigsteria.onrender.com': 'http://localhost:3000'
       setCookie();
     }
   }, []);
