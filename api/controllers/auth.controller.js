@@ -6,10 +6,14 @@ import bcrypt from "bcrypt";
 import qs from 'qs';
 import axios from 'axios';
 
+const CLIENT_URL = process.env.NODE_ENV === 'production'
+  ? 'https://gigsteria.onrender.com'
+  : 'http://localhost:3000';
+
 const accessTokenCookieOptions = {
     maxAge: 900000, // 15 mins
     httpOnly: false,
-    domain: "localhost",
+    domain: process.env.NODE_ENV === 'production' ? '.onrender':'localhost',
     path: "/",
     sameSite: "none",
     secure: true,
@@ -222,7 +226,7 @@ export const googleOauthHandler = async ( req, res, next ) => {
         // res.cookie("refreshToken", refreshToken, refreshTokenCookieOptions);
         // res.status(200).send({ accessToken, refreshToken});
 
-        res.redirect(`https://gigsteria.onrender.com/?accesstoken=${accessToken}`);
+        res.redirect(`${CLIENT_URL}/?accesstoken=${accessToken}&refreshtoken=${refreshToken}`);
 
     } catch(e) {
         next(e)
