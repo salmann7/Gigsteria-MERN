@@ -17,6 +17,19 @@ import Input from '../inputs/Input'
 import getGoogleUrl from '../../utils/getGoogleUrl';
 import api from '../../utils/apiCall.js';
 
+const accessTokenCookieOptions = {
+    expires: 900000, // 15 mins
+    domain: process.env.NODE_ENV === 'production' ? '.onrender':'localhost',
+    path: "/",
+    sameSite: "none",
+    secure: true,
+};
+
+const refreshTokenCookieOptions = {
+    ...accessTokenCookieOptions,
+    expires: 3.154e10, // 1 year
+};
+
 const LoginModal = () => {
     // const history = useHistory();
     const navigate = useNavigate();
@@ -35,13 +48,13 @@ const LoginModal = () => {
         api.post('/api/auth/login', data)
         .then(( res ) => {
             console.log('Setting cookies...');
-            Cookies.set('accessToken', res.data.accessToken);
-            Cookies.set('refreshToken', res.data.refreshToken);
+            Cookies.set('accessToken', res.data.accessToken, accessTokenCookieOptions);
+            Cookies.set('refreshToken', res.data.refreshToken, refreshTokenCookieOptions);
             console.log(Cookies.get());
             toast.success('Logged in.');
             loginModal.onClose();
             // history.go(0); // Refresh the page
-            // navigate("/");
+            navigate("/");
             window.location.reload();
             
         })
