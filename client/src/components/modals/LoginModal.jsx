@@ -19,7 +19,7 @@ import api from '../../utils/apiCall.js';
 
 const accessTokenCookieOptions = {
     expires: 900000, // 15 mins
-    domain: process.env.NODE_ENV === 'production' ? '.onrender':'localhost',
+    // domain: process.env.NODE_ENV === 'production' ? '.onrender':'localhost',
     path: "/",
     sameSite: "none",
     secure: true,
