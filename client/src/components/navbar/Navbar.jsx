@@ -115,8 +115,8 @@ const Navbar = ({currentUser}) => {
   }
 
   const handleLogout = async () => {
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
+    Cookies.remove('accessToken',{ domain: process.env.NODE_ENV === 'production' ? '.gigsteria.onrender.com' : 'localhost', path: '/' });
+    Cookies.remove('refreshToken',{ domain: process.env.NODE_ENV === 'production' ? '.gigsteria.onrender.com' : 'localhost', path: '/' });
     // await api.post("/api/auth/logout");
     window.location.href = '/';
   }
