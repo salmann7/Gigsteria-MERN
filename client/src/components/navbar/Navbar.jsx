@@ -117,7 +117,7 @@ const Navbar = ({currentUser}) => {
   const handleLogout = async () => {
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
-    await api.post("/api/auth/logout");
+    // await api.post("/api/auth/logout");
     window.location.href = '/';
   }
 
